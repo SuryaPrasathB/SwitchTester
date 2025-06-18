@@ -1,0 +1,25 @@
+[ {
+  "username" : "admin",
+  "passwordHash" : "$2a$12$SyhJzguPX.yrVeR1k6CfXOxne4Ucy3mIHmbPd4QtDNH5qpuQkDXku",
+  "profileType" : "Admin",
+  "permissions" : [ "usersNav", "projectsNav", "settingsNav", "dashboardNav", "debugNav", "executionNav", "reportsNav" ],
+  "hidden" : false
+}, {
+  "username" : "production",
+  "passwordHash" : "$2a$12$./orK5Lc/73hsLzH9FjCYOBfr4iwhAQE0B8kURWGyXn6P2njwMH3C",
+  "profileType" : "Production",
+  "permissions" : [ "projectsNav", "settingsNav", "dashboardNav", "executionNav", "reportsNav" ],
+  "hidden" : true
+}, {
+  "username" : "quality",
+  "passwordHash" : "$2a$12$itpZK3mtaAaF9de.QtmCAujOvlWBM0GEpWeAPAv5jvsgdZhtKx8mC",
+  "profileType" : "Quality",
+  "permissions" : [ "usersNav", "projectsNav", "settingsNav", "dashboardNav", "debugNav", "executionNav", "reportsNav" ],
+  "hidden" : false
+}, {
+  "username" : "maintenance",
+  "passwordHash" : "$2a$12$KAtFNgE3eRNzBenxL4uaVugjrZccT03UlTdPEaF6Cn6ak.aE.i2Sy",
+  "profileType" : "Maintenance",
+  "permissions" : [ "projectsNav", "settingsNav", "dashboardNav", "debugNav", "executionNav", "reportsNav" ],
+  "hidden" : false
+} ]

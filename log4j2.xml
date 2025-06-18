@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="LOG_DIR">logs</Property>
+        <Property name="FILE_NAME">app.log</Property>
+        <Property name="PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${PATTERN}"/>
+        </Console>
+
+        <RollingFile name="RollingFile"
+                     fileName="${LOG_DIR}/${date:yyyy-MM-dd}/${FILE_NAME}"
+                     filePattern="${LOG_DIR}/%d{yyyy-MM-dd}/archive/${FILE_NAME}-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="10 GB"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete action="IF_ANY">
+                    <IfFileName glob="${LOG_DIR}/*/*/*.log.gz"/>
+                    <IfLastModified age="31D"/> </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+
+        <Logger name="com.switchtester.app" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+
+        <Logger name="org.springframework" level="warn"/>
+        <Logger name="org.hibernate" level="warn"/>
+        <Logger name="com.fasterxml.jackson" level="warn"/>
+    </Loggers>
+</Configuration>

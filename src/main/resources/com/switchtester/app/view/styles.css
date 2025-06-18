@@ -1,0 +1,42 @@
+/* Button Styles */
+.start-button {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+	-fx-pref-width: 100;
+}
+
+.stop-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+	-fx-pref-width: 100;
+}
+
+.reset-button {
+    -fx-background-color: #f39c12;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+	-fx-pref-width: 100;
+}
+
+.save-button, .load-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+	-fx-pref-width: 100;
+}
+
+.grid-cell {
+	-fx-border-color: black;
+	-fx-border-width: 2;
+	-fx-padding: 5;
+}
+
+.station-text {
+	-fx-font-weight: bold;
+}

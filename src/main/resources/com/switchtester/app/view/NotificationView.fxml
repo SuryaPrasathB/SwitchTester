@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<HBox fx:id="notificationRoot" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="300.0" spacing="10.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.switchtester.app.viewmodel.NotificationViewModel">
+   <children>
+      <ImageView fx:id="iconImageView" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/info_icon.png" />
+         </image>
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+      </ImageView>
+      <VBox HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="titleLabel" text="Notification Title" textFill="#2c3e50">
+               <font>
+                  <Font name="Inter Bold" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="messageLabel" text="This is a sample notification message." textFill="#34495e" wrapText="true">
+               <font>
+                  <Font name="Inter Regular" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <Button fx:id="closeButton" mnemonicParsing="false" onAction="#handleCloseButton" style="-fx-background-color: transparent; -fx-padding: 5;" text="X" textFill="#7f8c8d">
+         <font>
+            <Font name="Inter Bold" size="12.0" />
+         </font>
+         <HBox.margin>
+            <Insets right="5.0" />
+         </HBox.margin>
+      </Button>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</HBox>

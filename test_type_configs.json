@@ -1,0 +1,45 @@
+[ {
+  "name" : "Normal Operation Test",
+  "description" : "as per 19.1 of IS3854:2023",
+  "numOperations" : "40000",
+  "cycleTime" : "2000",
+  "onTime" : "500",
+  "offTime" : "1500",
+  "pf" : "0.8",
+  "outputVoltage" : "N/A",
+  "outputCurrent" : "N/A",
+  "watts" : "N/A"
+}, {
+  "name" : "Over Current",
+  "description" : "as per 18.7 of IS33333",
+  "numOperations" : "1",
+  "cycleTime" : "N/A",
+  "onTime" : "N/A",
+  "offTime" : "N/A",
+  "pf" : "N/A",
+  "outputVoltage" : "500 V DC",
+  "outputCurrent" : "N/A",
+  "watts" : "N/A"
+}, {
+  "name" : "Dielectric Strength Test",
+  "description" : "High voltage insulation test",
+  "numOperations" : "1",
+  "cycleTime" : "N/A",
+  "onTime" : "N/A",
+  "offTime" : "N/A",
+  "pf" : "N/A",
+  "outputVoltage" : "1500 V AC",
+  "outputCurrent" : "0.001 A",
+  "watts" : "N/A"
+}, {
+  "name" : "Full Load",
+  "description" : "load test ",
+  "numOperations" : "300000",
+  "cycleTime" : "2000",
+  "onTime" : "1000",
+  "offTime" : "1000",
+  "pf" : "",
+  "outputVoltage" : "",
+  "outputCurrent" : "",
+  "watts" : ""
+} ]
