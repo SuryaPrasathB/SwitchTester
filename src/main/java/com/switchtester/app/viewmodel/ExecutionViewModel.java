@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.switchtester.app.ApplicationLauncher;
-import com.switchtester.app.model.TestTypeConfig;
+import com.switchtester.app.model.config.TestTypeConfig;
 import com.switchtester.app.service.TestTypeConfigManager;
 
 import javafx.collections.FXCollections;

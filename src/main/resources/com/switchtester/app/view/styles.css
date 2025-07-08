@@ -40,3 +40,95 @@
 .station-text {
 	-fx-font-weight: bold;
 }
+
+/* General styling for the debug view */
+.root {
+    -fx-background-color: #f4f7f6; /* Light background */
+}
+
+.titled-pane > .title {
+    -fx-background-color: #0080c0; /* Darker header for titled panes */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px 5px 0 0;
+}
+
+.titled-pane > .content {
+    -fx-background-color: #ffffff; /* White content area */
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 0 0 5px 5px;
+    -fx-padding: 15px;
+}
+
+.label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #333333;
+}
+
+.text-field {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+    -fx-padding: 5px;
+}
+
+.button {
+    -fx-background-color: #3498db; /* Blue for buttons */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #2980b9; /* Darker blue on hover */
+}
+
+/* Toggle Switch Styling for CheckBox */
+.toggle-switch {
+    -fx-padding: 0;
+    /* Ensure no default background image for the checkbox itself */
+    -fx-background-image: null;
+}
+
+.toggle-switch .box {
+    -fx-background-color: #ccc;
+    -fx-background-radius: 15px;
+    -fx-padding: 3px;
+    -fx-pref-width: 55px; /* Increased width of the switch track for more room */
+    -fx-pref-height: 25px; /* Height of the switch track */
+}
+
+.toggle-switch .mark {
+    /* This is the thumb (circle) */
+    -fx-background-color: white;
+    -fx-background-radius: 10px; /* Makes it a circle, slightly smaller radius for 16px size */
+    -fx-pref-width: 20px; /* Size of the thumb (smaller) */
+    -fx-pref-height: 16px;
+    -fx-max-width: 30px; /* Enforce min width */
+    -fx-max-height: 20px; /* Enforce min height */
+    -fx-translate-x: -10; /* Initial position for OFF state */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 1);
+    -fx-transition: -fx-translate-x 0.2s ease-in-out; /* Smooth transition */
+    /* Crucial: Remove the default checkmark shape and background image */
+    -fx-shape: null; /* This hides the default tick shape */
+    -fx-background-image: null; /* Ensures no default tick image is drawn */
+}
+
+.toggle-switch:selected .box {
+    -fx-background-color: #2ecc71; /* Green when ON */
+}
+
+.toggle-switch:selected .mark {
+    -fx-translate-x: 10px; /* Adjusted translate-x to match new box width (55 - 19 - 3*2 = 30) */
+}
+
+.toggle-switch .text {
+    -fx-text-fill: #333333;
+    -fx-font-weight: normal;
+    -fx-font-size: 14px;
+    -fx-padding: 0 0 0 10px; /* Space between switch and text */
+}

@@ -1,7 +1,7 @@
 package com.switchtester.app.viewmodel;
 
-import com.switchtester.app.model.TestTypeConfig;
 import com.switchtester.app.service.TestTypeConfigManager;
+import com.switchtester.app.model.config.TestTypeConfig;
 import com.switchtester.app.service.NotificationManager; // Import NotificationManager
 import com.switchtester.app.viewmodel.NotificationViewModel.NotificationType; // Import NotificationType enum
 

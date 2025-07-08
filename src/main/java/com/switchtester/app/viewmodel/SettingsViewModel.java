@@ -1,14 +1,14 @@
 package com.switchtester.app.viewmodel;
 
+import com.switchtester.app.ApplicationLauncher; // Import ApplicationLauncher for logger
 import java.io.IOException;
-
-import com.switchtester.app.ApplicationLauncher;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage; // Import Stage
+import java.util.function.Consumer; // Import Consumer
 
 public class SettingsViewModel {
 
@@ -16,6 +16,7 @@ public class SettingsViewModel {
     private StackPane mainContentPane;
 
     private Stage ownerStage; // New field to hold the owner stage for alerts in sub-views
+    private Consumer<String> mainScreenTitleUpdater; // Callback to update the main dashboard title
 
     /**
      * Sets the owner stage for this SettingsViewModel.
@@ -26,10 +27,19 @@ public class SettingsViewModel {
         this.ownerStage = stage;
     }
 
+    /**
+     * Sets the callback function to update the main screen's title.
+     * @param mainScreenTitleUpdater A Consumer that accepts the new title string.
+     */
+    public void setMainScreenTitleUpdater(Consumer<String> mainScreenTitleUpdater) {
+        this.mainScreenTitleUpdater = mainScreenTitleUpdater;
+    }
+
     @FXML
     public void initialize() {
+        ApplicationLauncher.logger.info("SettingsViewModel initialized.");
         // Optionally load default content when settings page opens
-        // handleTestTypeConfig(); // Uncomment if you want Test Type Config to be the default view
+        handleTestTypeConfig(); // Load Test Type Config to be the default view
     }
 
     @FXML
@@ -47,9 +57,14 @@ public class SettingsViewModel {
             testTypeConfigController.setOwnerStage(this.ownerStage);
 
             mainContentPane.getChildren().setAll(testTypeConfigPane);
+
+            // Update the main dashboard's screen title
+            if (mainScreenTitleUpdater != null) {
+                mainScreenTitleUpdater.accept("Test Type Configuration"); // Set the desired title
+                ApplicationLauncher.logger.debug("Main screen title updated to 'Test Type Configuration' from Settings.");
+            }
         } catch (IOException e) {
-            e.printStackTrace(); // Log the error
-            ApplicationLauncher.logger.error("Error loading TestTypeConfigView.fxml: " + e.getMessage());
+            ApplicationLauncher.logger.error("Error loading TestTypeConfigView.fxml: {}", e.getMessage(), e);
             // Optionally, show an alert to the user
         }
     }
