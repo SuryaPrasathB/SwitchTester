@@ -1,5 +1,6 @@
 package com.switchtester.app;
 
+import com.switchtester.app.service.ModbusService; // Import ModbusService
 import com.switchtester.app.viewmodel.LoginViewModel;
 import com.switchtester.app.viewmodel.SplashViewModel;
 import com.switchtester.app.viewmodel.DashboardViewModel;
@@ -41,7 +42,7 @@ public class ApplicationLauncher extends Application { // Renamed from MainApp
     private static Stage primaryStage;
 
     // Path to the application icon
-    private static final String APP_ICON_PATH = "/com/switchtester/app/images/lscs.png";
+    private static final String APP_ICON_PATH = "/com/switchtester/app/images/app_icon.png";
 
     // --- RBAC: Store Logged-in User Profile and Permissions ---
     private static String loggedInUserProfile; // e.g., "Admin", "Production", "Quality", "Maintenance"
@@ -93,9 +94,10 @@ public class ApplicationLauncher extends Application { // Renamed from MainApp
                 return false;
             }
 
-            // Add a shutdown hook to release the lock when the application exits
+            // Add a shutdown hook to release the lock and close Modbus connection when the application exits
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 releaseLock();
+                ModbusService.shutdown(); // Call ModbusService shutdown
             }));
 
             logger.info("Application lock acquired successfully.");

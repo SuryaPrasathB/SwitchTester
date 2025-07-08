@@ -69,5 +69,28 @@ public class SettingsViewModel {
         }
     }
 
-    // Add handlers for other navigation links as they are added
+    @FXML
+    public void handleArduinoOptaConfig() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/switchtester/app/view/ArduinoOptaConfigView.fxml"));
+            Pane arduinoOptaConfigPane = loader.load();
+
+            // Get the controller for ArduinoOptaConfigViewModel
+            ArduinoOptaConfigViewModel arduinoOptaConfigController = loader.getController();
+
+            // Pass the ownerStage to the ArduinoOptaConfigViewModel
+            arduinoOptaConfigController.setOwnerStage(this.ownerStage);
+
+            mainContentPane.getChildren().setAll(arduinoOptaConfigPane);
+
+            // Update the main dashboard's screen title
+            if (mainScreenTitleUpdater != null) {
+                mainScreenTitleUpdater.accept("Arduino Opta Configuration"); // Set the desired title
+                ApplicationLauncher.logger.debug("Main screen title updated to 'Arduino Opta Configuration' from Settings.");
+            }
+        } catch (IOException e) {
+            ApplicationLauncher.logger.error("Error loading ArduinoOptaConfigView.fxml: {}", e.getMessage(), e);
+            // Optionally, show an alert to the user
+        }
+    }
 }
