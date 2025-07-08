@@ -27,19 +27,12 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-// No longer need to import SLF4J Logger directly here, as we use ApplicationLauncher.logger
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
-
 /**
  * ViewModel for the main Dashboard screen.
  * Manages navigation between different application views and applies Role-Based Access Control (RBAC).
  * Also implements the sliding expandable sidebar menu.
  */
 public class DashboardViewModel implements Initializable {
-
-    // Use the modular logger from ApplicationLauncher
-    // private static final Logger logger = LoggerFactory.getLogger(DashboardViewModel.class); // Removed
 
     @FXML private Label currentScreenTitle;
     @FXML private Label dateTimeLabel;
@@ -294,6 +287,8 @@ public class DashboardViewModel implements Initializable {
             Object controller = loader.getController();
             if (controller instanceof SettingsViewModel) {
                 ((SettingsViewModel) controller).setOwnerStage(dashboardStage);
+                // Pass a callback to SettingsViewModel to allow it to update the main screen title
+                ((SettingsViewModel) controller).setMainScreenTitleUpdater(this::updateMainScreenTitle);
             } else if (controller instanceof UsersViewModel) {
                 ((UsersViewModel) controller).setOwnerStage(dashboardStage);
             } else if (controller instanceof TestTypeConfigViewModel) {
@@ -314,23 +309,56 @@ public class DashboardViewModel implements Initializable {
     }
 
     /**
+     * Helper method to update the main screen title.
+     * This method is passed as a callback to sub-view models.
+     * @param newTitle The new title to set.
+     */
+    private void updateMainScreenTitle(String newTitle) {
+        currentScreenTitle.setText(newTitle);
+        ApplicationLauncher.logger.debug("Main screen title updated to: {}", newTitle);
+    }
+
+
+    /**
      * Updates the styling of the navigation items to highlight the active screen.
+     * This method now uses explicit mapping for clarity and robustness.
      * @param activeTitle The title of the currently active screen.
      */
     private void updateActiveNavItem(String activeTitle) {
         resetNavigationStyles(); // First, reset all styles
-        // Then, apply style to the active item
-        for (Map.Entry<String, HBox> entry : navItems.entrySet()) {
-            HBox navItem = entry.getValue();
-            // Assuming the text label is the second child for comparison
-            if (navItem.getChildren().size() > 1 && navItem.getChildren().get(1) instanceof Label) {
-                Label navLabel = (Label) navItem.getChildren().get(1);
-                if (navLabel.getText().equalsIgnoreCase(activeTitle)) {
-                    navItem.setStyle("-fx-background-color: #3498db; -fx-background-radius: 5;");
-                    ApplicationLauncher.logger.debug("Active navigation item set to: {}", activeTitle);
-                    break; // Found the active item, no need to continue
-                }
+
+        // Determine which navigation key corresponds to the active title
+        String targetNavItemKey = null;
+
+        if (activeTitle.equalsIgnoreCase("Dashboard")) {
+            targetNavItemKey = "dashboardNav";
+        } else if (activeTitle.equalsIgnoreCase("Projects")) {
+            targetNavItemKey = "projectsNav";
+        } else if (activeTitle.equalsIgnoreCase("Execution")) {
+            targetNavItemKey = "executionNav";
+        } else if (activeTitle.equalsIgnoreCase("Reports")) {
+            targetNavItemKey = "reportsNav";
+        } else if (activeTitle.equalsIgnoreCase("Debug Console")) {
+            targetNavItemKey = "debugNav";
+        } else if (activeTitle.equalsIgnoreCase("Users")) {
+            targetNavItemKey = "usersNav";
+        }
+        // Special handling for Settings and its sub-views
+        else if (activeTitle.equalsIgnoreCase("Application Settings") ||
+                   activeTitle.equalsIgnoreCase("Admin Login for Settings") ||
+                   activeTitle.equalsIgnoreCase("Test Type Configuration")) {
+            targetNavItemKey = "settingsNav";
+        }
+
+        // Apply style if a target key was found
+        if (targetNavItemKey != null) {
+            HBox navItemToHighlight = navItems.get(targetNavItemKey);
+            if (navItemToHighlight != null) {
+                navItemToHighlight.setStyle("-fx-background-color: #3498db; -fx-background-radius: 5;");
+                ApplicationLauncher.logger.debug("Active navigation item set to: {}", targetNavItemKey);
             }
+        } else {
+            ApplicationLauncher.logger.warn("No matching navigation item found for active title: {}", activeTitle);
         }
     }
 
@@ -376,16 +404,6 @@ public class DashboardViewModel implements Initializable {
 
     @FXML
     private void showSettingsScreen(MouseEvent event) {
-        Set<String> currentUserPermissions = ApplicationLauncher.getLoggedInUserPermissions();
-        // Check if user has settingsNav permission
-        if (currentUserPermissions == null || !currentUserPermissions.contains("settingsNav")) {
-            NotificationManager.getInstance().showNotification(NotificationType.WARNING,
-                                                               "Permission Denied",
-                                                               "You do not have permission to access the Settings screen.");
-            ApplicationLauncher.logger.warn("Access denied to Settings screen for current user.");
-            return;
-        }
-
         String userProfile = ApplicationLauncher.getLoggedInUserProfile();
         boolean requirePassword = !("Admin".equals(userProfile)); // Admin does not require password
 
@@ -409,7 +427,9 @@ public class DashboardViewModel implements Initializable {
                 });
 
                 contentArea.getChildren().setAll(passwordPromptRoot);
-                currentScreenTitle.setText("Admin Login for Settings");
+                // Update title and highlight immediately when password prompt is shown
+                updateMainScreenTitle("Admin Login for Settings");
+                updateActiveNavItem("Admin Login for Settings"); // Highlight settings nav
                 ApplicationLauncher.logger.debug("Password prompt for settings displayed.");
             } catch (IOException e) {
                 ApplicationLauncher.logger.error("Error loading password prompt for settings: {}", e.getMessage(), e);
@@ -443,13 +463,20 @@ public class DashboardViewModel implements Initializable {
             Parent settingsRoot = settingsLoader.load();
 
             contentArea.getChildren().setAll(settingsRoot);
-            currentScreenTitle.setText("Application Settings");
+            // Initially set the title to "Application Settings" when the settings view is loaded
+            updateMainScreenTitle("Application Settings");
+            updateActiveNavItem("Application Settings"); // Highlight settings nav
 
             SettingsViewModel settingsController = settingsLoader.getController();
             if (dashboardStage != null) {
                 settingsController.setOwnerStage(dashboardStage);
             }
-            settingsController.handleTestTypeConfig(); // Load the default Test Type Configuration within settings
+            // Pass the callback to SettingsViewModel so it can update the main title
+            settingsController.setMainScreenTitleUpdater(this::updateMainScreenTitle);
+
+            // Load the default Test Type Configuration within settings
+            // This will now also trigger the title update within SettingsViewModel
+            settingsController.handleTestTypeConfig();
             ApplicationLauncher.logger.info("Settings view loaded successfully.");
         } catch (IOException e) {
             ApplicationLauncher.logger.error("Error loading settings view: {}", e.getMessage(), e);

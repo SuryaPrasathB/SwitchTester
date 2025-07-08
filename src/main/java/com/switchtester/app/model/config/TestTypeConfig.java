@@ -1,4 +1,4 @@
-package com.switchtester.app.model;
+package com.switchtester.app.model.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties; // For JSON serialization
 import com.fasterxml.jackson.annotation.JsonProperty;

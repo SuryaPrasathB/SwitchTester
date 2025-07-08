@@ -3,7 +3,7 @@ package com.switchtester.app.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.switchtester.app.ApplicationLauncher;
-import com.switchtester.app.model.TestTypeConfig;
+import com.switchtester.app.model.config.TestTypeConfig;
 
 import java.io.File;
 import java.io.IOException;

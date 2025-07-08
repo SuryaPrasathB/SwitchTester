@@ -13,29 +13,11 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.class>com.switchtester.app.ApplicationLauncher</main.class> <log4j.version>2.17.1</log4j.version> </properties>
+        <main.class>com.switchtester.app.ApplicationLauncher</main.class>
+        <log4j.version>2.17.1</log4j.version>
+    </properties>
 
     <dependencies>
-        <!-- JavaFX dependencies are typically bundled with JDK 8.
-             However, for Maven build, we might need to explicitly declare them
-             if the IDE/build environment doesn't pick them up automatically.
-             For JDK 8, these are usually provided by the JRE itself.
-             If you encounter 'package javafx.scene does not exist' errors,
-             you might need to uncomment and adjust these.
-             For this specific Java 8 version (1.8.0_161), they should be present.
-        -->
-        <!-- Example if you needed to add them for a specific JavaFX version,
-             but generally not required for JDK 8 where JavaFX is bundled.
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>11</version> </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>11</version> </dependency>
-        -->
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -48,6 +30,7 @@
             <version>0.4</version>
         </dependency>
 
+        <!-- Log4j2 Dependencies -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
@@ -58,6 +41,7 @@
             <artifactId>log4j-core</artifactId>
             <version>${log4j.version}</version>
         </dependency>
+        <!-- Include Log4j-slf4j-impl if you plan to use SLF4J API (good practice) -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
@@ -67,7 +51,15 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version> </dependency>
+            <version>1.7.32</version> <!-- Use a compatible SLF4J API version -->
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/net.wimpi/jamod -->
+		<dependency>
+		    <groupId>net.wimpi</groupId>
+		    <artifactId>jamod</artifactId>
+		    <version>1.2</version>
+		</dependency>
 
     </dependencies>
 
