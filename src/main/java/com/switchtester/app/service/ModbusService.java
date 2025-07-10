@@ -7,16 +7,18 @@ import net.wimpi.modbus.ModbusException;
 import net.wimpi.modbus.io.ModbusTCPTransaction;
 import net.wimpi.modbus.msg.ReadCoilsRequest;
 import net.wimpi.modbus.msg.ReadCoilsResponse;
+import net.wimpi.modbus.msg.ReadMultipleRegistersRequest; // Corrected import for reading holding registers
+import net.wimpi.modbus.msg.ReadMultipleRegistersResponse; // Corrected import for reading holding registers
 import net.wimpi.modbus.msg.WriteCoilRequest;
+import net.wimpi.modbus.msg.WriteSingleRegisterRequest;
 import net.wimpi.modbus.net.TCPMasterConnection;
+import net.wimpi.modbus.procimg.SimpleRegister;
 import java.net.InetAddress;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
- * Service for Modbus TCP communication with the Arduino Opta PLC.
- * Handles connection management, reading, and writing Modbus coils.
+ * Service class for handling Modbus TCP communication with the Arduino Opta.
+ * This class is responsible for connecting, disconnecting, reading, and writing
+ * Modbus coils and registers using the net.wimpi.modbus library.
  */
 public class ModbusService {
 
@@ -26,23 +28,41 @@ public class ModbusService {
     private static boolean isConnected = false;
     private static final int MODBUS_SLAVE_ID = 1; // Default slave ID for Arduino Opta (often 1)
 
-    // ScheduledExecutorService for connection retry logic
-    private static ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    // Static initializer block to load config
+    static {
+        try {
+            currentConfig = ArduinoOptaConfigManager.getCurrentConfig();
+        } catch (Exception e) {
+            ApplicationLauncher.logger.error("Failed to load Arduino Opta config: {}", e.getMessage(), e);
+            // This error will be caught by the calling ViewModel (e.g., DashboardViewModel)
+            // and a notification will be shown there.
+        }
+    }
 
     /**
-     * Attempts to establish a Modbus TCP connection to the Arduino Opta PLC.
-     * Uses the configuration loaded from ArduinoOptaConfigManager.
-     *
-     * @return true if the connection is successful, false otherwise.
+     * Establishes a connection to the Modbus TCP server.
+     * If already connected, it logs a message and does nothing.
+     * This method is synchronized to prevent multiple connection attempts simultaneously.
+     * @return true if connection is successful or already established, false otherwise.
      */
-    public static boolean connect() {
+    public static synchronized boolean connect() {
         if (isConnected && connection != null && connection.isConnected()) {
             ApplicationLauncher.logger.info("Modbus connection already active.");
             return true;
         }
 
-        currentConfig = ArduinoOptaConfigManager.getCurrentConfig(); // Get the latest config
+        // Ensure currentConfig is loaded before attempting connection
+        if (currentConfig == null) {
+            currentConfig = ArduinoOptaConfigManager.getCurrentConfig();
+            if (currentConfig == null) {
+                ApplicationLauncher.logger.error("Arduino Opta configuration is null. Cannot connect to Modbus master.");
+                NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
+                        "Modbus Connection Failed", "Arduino Opta configuration missing.");
+                return false;
+            }
+        }
 
+        ApplicationLauncher.logger.info("Attempting to connect to Modbus TCP master at {}:{}", currentConfig.getIpAddress(), currentConfig.getPort());
         try {
             InetAddress addr = InetAddress.getByName(currentConfig.getIpAddress());
             connection = new TCPMasterConnection(addr);
@@ -50,7 +70,7 @@ public class ModbusService {
             connection.connect(); // Establish the connection
 
             transaction = new ModbusTCPTransaction(connection);
-            transaction.setRetries(3); // Set retry attempts for transactions
+            transaction.setRetries(3); // Set retry attempts for transactions within a single transaction execution
 
             isConnected = connection.isConnected();
             if (isConnected) {
@@ -58,15 +78,11 @@ public class ModbusService {
                         currentConfig.getIpAddress(), currentConfig.getPort());
                 NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.SUCCESS,
                         "Modbus Connected", "Successfully connected to Arduino Opta.");
-                // Stop any pending retry tasks if connection is successful
-                scheduler.shutdownNow();
-                scheduler = Executors.newSingleThreadScheduledExecutor(); // Re-initialize for future use
             } else {
                 ApplicationLauncher.logger.error("Failed to establish Modbus TCP connection to {}:{}",
                         currentConfig.getIpAddress(), currentConfig.getPort());
                 NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
                         "Modbus Connection Failed", "Could not connect to Arduino Opta.");
-                scheduleReconnect(); // Attempt to reconnect
             }
         } catch (Exception e) {
             isConnected = false;
@@ -74,38 +90,39 @@ public class ModbusService {
                     currentConfig.getIpAddress(), currentConfig.getPort(), e.getMessage(), e);
             NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
                     "Modbus Connection Error", "Error connecting to Arduino Opta: " + e.getMessage());
-            scheduleReconnect(); // Attempt to reconnect
         }
         return isConnected;
     }
 
     /**
-     * Schedules a reconnection attempt after a delay.
-     */
-    private static void scheduleReconnect() {
-        if (scheduler.isShutdown()) {
-            scheduler = Executors.newSingleThreadScheduledExecutor(); // Re-initialize if shutdown
-        }
-        ApplicationLauncher.logger.info("Scheduling Modbus reconnection attempt in 10 seconds...");
-        NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.WARNING,
-                "Modbus Reconnecting", "Attempting to reconnect to Arduino Opta...");
-        scheduler.schedule(ModbusService::connect, 10, TimeUnit.SECONDS);
-    }
-
-    /**
      * Disconnects from the Modbus TCP server.
+     * This method is synchronized to prevent issues during concurrent access.
      */
-    public static void disconnect() {
+    public static synchronized void disconnect() {
         if (connection != null && connection.isConnected()) {
             connection.close();
             isConnected = false;
             ApplicationLauncher.logger.info("Disconnected from Modbus TCP server.");
             NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.INFO,
                     "Modbus Disconnected", "Disconnected from Arduino Opta.");
+        } else {
+            ApplicationLauncher.logger.info("Modbus TCP master not connected, no action needed for disconnect.");
         }
-        // Also shut down any pending retry tasks
-        scheduler.shutdownNow();
-        scheduler = Executors.newSingleThreadScheduledExecutor(); // Re-initialize for future use
+    }
+
+    /**
+     * Checks if the Modbus TCP master is currently connected.
+     * @return true if connected, false otherwise.
+     */
+    public static synchronized boolean isConnected() {
+        // Ensure that the internal 'isConnected' flag is synchronized with the actual connection state
+        // This is important because the connection might drop externally.
+        if (connection != null) {
+            isConnected = connection.isConnected();
+        } else {
+            isConnected = false;
+        }
+        return isConnected;
     }
 
     /**
@@ -117,7 +134,8 @@ public class ModbusService {
      * @return true if the write operation was successful, false otherwise.
      */
     public static boolean writeCoil(int coilAddress, boolean value) {
-        if (!isConnected && !connect()) { // Attempt to connect if not connected
+        // Attempt to connect if not connected before performing the write
+        if (!isConnected() && !connect()) { // Use isConnected() to re-check actual state
             ApplicationLauncher.logger.warn("Cannot write coil {}: Modbus not connected.", coilAddress);
             NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
                     "Modbus Error", "Not connected to Arduino Opta. Cannot write coil.");
@@ -133,18 +151,16 @@ public class ModbusService {
             ApplicationLauncher.logger.info("Successfully wrote coil {}: {}", coilAddress, value);
             return true;
         } catch (ModbusException e) {
-            ApplicationLauncher.logger.error("Modbus error writing coil {}: {}. Attempting reconnect.", coilAddress, e.getMessage(), e);
+            ApplicationLauncher.logger.error("Modbus error writing coil {}: {}. Marking as disconnected.", coilAddress, e.getMessage(), e);
             NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
                     "Modbus Write Error", "Failed to write coil " + coilAddress + ": " + e.getMessage());
             isConnected = false; // Mark as disconnected
-            scheduleReconnect(); // Attempt to reconnect
             return false;
         } catch (Exception e) {
             ApplicationLauncher.logger.error("Unexpected error writing coil {}: {}", coilAddress, e.getMessage(), e);
             NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
                     "Modbus Error", "Unexpected error writing coil " + coilAddress + ": " + e.getMessage());
             isConnected = false; // Mark as disconnected
-            scheduleReconnect(); // Attempt to reconnect
             return false;
         }
     }
@@ -157,7 +173,8 @@ public class ModbusService {
      * @return The boolean value of the coil, or null if the read operation fails.
      */
     public static Boolean readCoil(int coilAddress) {
-        if (!isConnected && !connect()) { // Attempt to connect if not connected
+        // Attempt to connect if not connected before performing the read
+        if (!isConnected() && !connect()) { // Use isConnected() to re-check actual state
             ApplicationLauncher.logger.warn("Cannot read coil {}: Modbus not connected.", coilAddress);
             NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
                     "Modbus Error", "Not connected to Arduino Opta. Cannot read coil.");
@@ -176,28 +193,103 @@ public class ModbusService {
             ApplicationLauncher.logger.info("Successfully read coil {}: {}", coilAddress, value);
             return value;
         } catch (ModbusException e) {
-            ApplicationLauncher.logger.error("Modbus error reading coil {}: {}. Attempting reconnect.", coilAddress, e.getMessage(), e);
+            ApplicationLauncher.logger.error("Modbus error reading coil {}: {}. Marking as disconnected.", coilAddress, e.getMessage(), e);
             NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
                     "Modbus Read Error", "Failed to read coil " + coilAddress + ": " + e.getMessage());
             isConnected = false; // Mark as disconnected
-            scheduleReconnect(); // Attempt to reconnect
             return null;
         } catch (Exception e) {
             ApplicationLauncher.logger.error("Unexpected error reading coil {}: {}", coilAddress, e.getMessage(), e);
             NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
                     "Modbus Error", "Unexpected error reading coil " + coilAddress + ": " + e.getMessage());
             isConnected = false; // Mark as disconnected
-            scheduleReconnect(); // Attempt to reconnect
             return null;
         }
     }
 
     /**
-     * Returns the current connection status.
-     * @return true if connected, false otherwise.
+     * Reads the value of a single Modbus holding register.
+     * Automatically attempts to connect if not already connected.
+     *
+     * @param registerAddress The address of the holding register to read.
+     * @return The integer value of the register, or null if the read operation fails.
      */
-    public static boolean isConnected() {
-        return isConnected;
+    public static Integer readRegister(int registerAddress) {
+        if (!isConnected() && !connect()) {
+            ApplicationLauncher.logger.warn("Cannot read register {}: Modbus not connected.", registerAddress);
+            NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
+                    "Modbus Error", "Not connected to Arduino Opta. Cannot read register.");
+            return null;
+        }
+
+        try {
+            // Read 1 holding register using ReadMultipleRegistersRequest (Function Code 0x03)
+            ReadMultipleRegistersRequest request = new ReadMultipleRegistersRequest(registerAddress, 1);
+            request.setUnitID(MODBUS_SLAVE_ID);
+            transaction.setRequest(request);
+            transaction.execute();
+
+            ReadMultipleRegistersResponse response = (ReadMultipleRegistersResponse) transaction.getResponse();
+            // Get the value from the first (and only) register.
+            // toUnsignedShort() is generally safer for Modbus registers.
+            int value = response.getRegister(0).toUnsignedShort();
+
+            ApplicationLauncher.logger.info("Successfully read register {}: {}", registerAddress, value);
+            return value;
+        } catch (ModbusException e) {
+            ApplicationLauncher.logger.error("Modbus error reading register {}: {}. Marking as disconnected.", registerAddress, e.getMessage(), e);
+            NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
+                    "Modbus Read Error", "Failed to read register " + registerAddress + ": " + e.getMessage());
+            isConnected = false; // Mark as disconnected
+            return null;
+        } catch (Exception e) {
+            ApplicationLauncher.logger.error("Unexpected error reading register {}: {}", registerAddress, e.getMessage(), e);
+            NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
+                    "Modbus Error", "Unexpected error reading register " + registerAddress + ": " + e.getMessage());
+            isConnected = false; // Mark as disconnected
+            return null;
+        }
+    }
+
+    /**
+     * Writes an integer value to a single Modbus holding register.
+     * Automatically attempts to connect if not already connected.
+     *
+     * @param registerAddress The address of the holding register to write.
+     * @param value The integer value to write.
+     * @return true if the write operation is successful, false otherwise.
+     */
+    public static boolean writeRegister(int registerAddress, int value) {
+        if (!isConnected() && !connect()) {
+            ApplicationLauncher.logger.warn("Cannot write register {}: Modbus not connected.", registerAddress);
+            NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
+                    "Modbus Error", "Not connected to Arduino Opta. Cannot write register.");
+            return false;
+        }
+
+        try {
+            // Create a SimpleRegister from the integer value
+            SimpleRegister register = new SimpleRegister(value);
+            WriteSingleRegisterRequest request = new WriteSingleRegisterRequest(registerAddress, register);
+            request.setUnitID(MODBUS_SLAVE_ID);
+            transaction.setRequest(request);
+            transaction.execute();
+
+            ApplicationLauncher.logger.info("Successfully wrote {} to register {}", value, registerAddress);
+            return true;
+        } catch (ModbusException e) {
+            ApplicationLauncher.logger.error("Modbus error writing {} to register {}: {}. Marking as disconnected.", value, registerAddress, e.getMessage(), e);
+            NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
+                    "Modbus Write Error", "Failed to write to register " + registerAddress + ": " + e.getMessage());
+            isConnected = false; // Mark as disconnected
+            return false;
+        } catch (Exception e) {
+            ApplicationLauncher.logger.error("Unexpected error writing {} to register {}: {}", value, registerAddress, e.getMessage(), e);
+            NotificationManager.getInstance().showNotification(NotificationViewModel.NotificationType.ERROR,
+                    "Modbus Error", "Unexpected error writing register " + registerAddress + ": " + e.getMessage());
+            isConnected = false; // Mark as disconnected
+            return false;
+        }
     }
 
     /**
@@ -205,9 +297,5 @@ public class ModbusService {
      */
     public static void shutdown() {
         disconnect();
-        if (scheduler != null && !scheduler.isShutdown()) {
-            scheduler.shutdownNow();
-            ApplicationLauncher.logger.info("Modbus reconnection scheduler shut down.");
-        }
     }
 }

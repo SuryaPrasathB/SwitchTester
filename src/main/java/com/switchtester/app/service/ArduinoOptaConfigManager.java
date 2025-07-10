@@ -85,6 +85,6 @@ public class ArduinoOptaConfigManager {
     private static ArduinoOptaConfig createDefaultConfig() {
         // You can set sensible defaults here.
         // These are example values; replace with your actual Arduino Opta's default IP and Modbus coil address.
-        return new ArduinoOptaConfig("192.168.1.10", 502, 0); // Default IP, Port, Piston Coil 0
+        return new ArduinoOptaConfig("192.168.1.10", 502); // Default IP, Port, Piston Coil 0
     }
 }

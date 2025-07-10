@@ -12,11 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.switchtester.app.viewmodel.ArduinoOptaConfigViewModel">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.switchtester.app.viewmodel.ArduinoOptaConfigViewModel">
    <children>
-      <VBox alignment="TOP_LEFT" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #bdc3c7; -fx-border-width: 1;"
-            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="TOP_LEFT" spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #bdc3c7; -fx-border-width: 1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label text="Arduino Opta Configuration" textFill="#2c3e50">
                <font>
@@ -34,15 +32,12 @@
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <Label text="IP Address:" />
                   <TextField fx:id="ipAddressField" promptText="e.g., 192.168.1.10" GridPane.columnIndex="1" />
                   <Label text="Port:" GridPane.rowIndex="1" />
                   <TextField fx:id="portField" promptText="e.g., 502" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="Piston Coil Address:" GridPane.rowIndex="2" />
-                  <TextField fx:id="pistonCoilAddressField" promptText="e.g., 0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <Label fx:id="messageLabel" textFill="#e74c3c">

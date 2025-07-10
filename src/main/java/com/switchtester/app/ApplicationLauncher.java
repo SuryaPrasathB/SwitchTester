@@ -146,6 +146,8 @@ public class ApplicationLauncher extends Application { // Renamed from MainApp
      */
     @Override
     public void start(Stage stage) throws Exception {
+        // Add a very early log message to check if logging is working
+        logger.debug("Log4j2 initialized successfully (early check in start method)."); 
         logger.info("Starting Switch Tester Application...");
         // Attempt to acquire the application lock
         if (!acquireLock()) {

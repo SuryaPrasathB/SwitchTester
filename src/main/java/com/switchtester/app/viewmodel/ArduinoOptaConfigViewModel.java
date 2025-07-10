@@ -24,7 +24,6 @@ public class ArduinoOptaConfigViewModel implements Initializable {
 
     @FXML private TextField ipAddressField;
     @FXML private TextField portField;
-    @FXML private TextField pistonCoilAddressField;
     @FXML private Label messageLabel;
 
     private Stage ownerStage; // To set the owner of alerts
@@ -61,7 +60,6 @@ public class ArduinoOptaConfigViewModel implements Initializable {
         ArduinoOptaConfig config = ArduinoOptaConfigManager.getCurrentConfig();
         ipAddressField.setText(config.getIpAddress());
         portField.setText(String.valueOf(config.getPort()));
-        pistonCoilAddressField.setText(String.valueOf(config.getPistonCoilAddress()));
         ApplicationLauncher.logger.debug("Loaded config to UI: {}", config);
     }
 
@@ -74,9 +72,8 @@ public class ArduinoOptaConfigViewModel implements Initializable {
             try {
                 String ipAddress = ipAddressField.getText().trim();
                 int port = Integer.parseInt(portField.getText().trim());
-                int pistonCoilAddress = Integer.parseInt(pistonCoilAddressField.getText().trim());
 
-                ArduinoOptaConfig newConfig = new ArduinoOptaConfig(ipAddress, port, pistonCoilAddress);
+                ArduinoOptaConfig newConfig = new ArduinoOptaConfig(ipAddress, port);
                 ArduinoOptaConfigManager.saveConfig(newConfig);
 
                 NotificationManager.getInstance().showNotification(NotificationType.SUCCESS,
@@ -115,15 +112,6 @@ public class ArduinoOptaConfigViewModel implements Initializable {
             }
         } catch (NumberFormatException e) {
             errorMessage += "Port must be a valid number.\n";
-        }
-
-        try {
-            int pistonCoilAddress = Integer.parseInt(pistonCoilAddressField.getText().trim());
-            if (pistonCoilAddress < 0) { // Coil addresses are typically non-negative
-                errorMessage += "Piston Coil Address cannot be negative.\n";
-            }
-        } catch (NumberFormatException e) {
-            errorMessage += "Piston Coil Address must be a valid number.\n";
         }
 
         if (errorMessage.isEmpty()) {

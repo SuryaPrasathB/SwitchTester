@@ -9,244 +9,768 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.switchtester.app.viewmodel.DebugViewModel">
    <children>
-      <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
          <children>
-            <!-- Station 1 Debug Controls -->
-            <TitledPane fx:id="station1TitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" text="STATION 1">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <content>
-                  <GridPane hgap="10.0" vgap="10.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <CheckBox fx:id="station1PistonSwitch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="137.0" prefWidth="290.0" styleClass="toggle-switch" text="Piston" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </CheckBox>
-                        <Label text="STATE VALUE :" GridPane.columnIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <Label text="COMP CYCLES :" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <TextField fx:id="station1StateValueField" GridPane.columnIndex="3">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </TextField>
-                        <TextField fx:id="station1CompCyclesField" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </TextField>
-                        <Button fx:id="station1StartPrepButton" mnemonicParsing="false" text="START PREP." GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <Button fx:id="station1StopPrepButton" mnemonicParsing="false" text="STOP PREP." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <Button fx:id="station1ResetPrepButton" mnemonicParsing="false" text="RESET PREP." GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <Button fx:id="station1UpdateTriggerButton" mnemonicParsing="false" styleClass="start-button" text="UPDATE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                  </GridPane>
-               </content>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </TitledPane>
+            <!-- Left Column: Station Debug Controls -->
+            <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+               <!-- Station 1 Debug Controls -->
+               <TitledPane fx:id="station1TitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" text="STATION 1">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <content>
+                     <GridPane hgap="10.0" vgap="10.0">
+                        <columnConstraints>
+                           <!-- Column 0: CheckBox -->
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           <!-- Column 1: Coil Address TextField -->
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           <!-- Column 2: Labels (STATE VALUE, COMP CYCLES) -->
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           <!-- Column 3: TextFields (STATE VALUE, COMP CYCLES) -->
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <CheckBox fx:id="station1PistonSwitch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="Piston" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="station1PistonCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <Label text="STATE VALUE :" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <Label text="COMP CYCLES :" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <TextField fx:id="station1StateValueField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <TextField fx:id="station1CompCyclesField" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <Button fx:id="station1StartPrepButton" mnemonicParsing="false" text="START PREP." GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                           <Button fx:id="station1StopPrepButton" mnemonicParsing="false" text="STOP PREP." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                           <Button fx:id="station1ResetPrepButton" mnemonicParsing="false" text="RESET PREP." GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                           <Button fx:id="station1UpdateTriggerButton" mnemonicParsing="false" styleClass="start-button" text="UPDATE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                        </children>
+                     </GridPane>
+                  </content>
+               </TitledPane>
 
-            <!-- Station 2 Debug Controls -->
-            <TitledPane fx:id="station2TitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" text="STATION 2">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <content>
-                  <GridPane hgap="10.0" vgap="10.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <CheckBox fx:id="station2PistonSwitch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="137.0" prefWidth="290.0" styleClass="toggle-switch" text="Piston" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </CheckBox>
-                        <Label text="STATE VALUE :" GridPane.columnIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <Label text="COMP CYCLES :" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <TextField fx:id="station2StateValueField" GridPane.columnIndex="3">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </TextField>
-                        <TextField fx:id="station2CompCyclesField" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </TextField>
-                        <Button fx:id="station2StartPrepButton" mnemonicParsing="false" text="START PREP." GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <Button fx:id="station2StopPrepButton" mnemonicParsing="false" text="STOP PREP." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <Button fx:id="station2ResetPrepButton" mnemonicParsing="false" text="RESET PREP." GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <Button fx:id="station2UpdateTriggerButton" mnemonicParsing="false" text="UPDATE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                  </GridPane>
-               </content>
-            </TitledPane>
+               <!-- Station 2 Debug Controls -->
+               <TitledPane fx:id="station2TitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" text="STATION 2">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <content>
+                     <GridPane hgap="10.0" vgap="10.0">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <CheckBox fx:id="station2PistonSwitch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="Piston" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="station2PistonCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <Label text="STATE VALUE :" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <Label text="COMP CYCLES :" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <TextField fx:id="station2StateValueField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <TextField fx:id="station2CompCyclesField" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <Button fx:id="station2StartPrepButton" mnemonicParsing="false" text="START PREP." GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                           <Button fx:id="station2StopPrepButton" mnemonicParsing="false" text="STOP PREP." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                           <Button fx:id="station2ResetPrepButton" mnemonicParsing="false" text="RESET PREP." GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                           <Button fx:id="station2UpdateTriggerButton" mnemonicParsing="false" text="UPDATE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                        </children>
+                     </GridPane>
+                  </content>
+               </TitledPane>
 
-            <!-- Station 3 Debug Controls -->
-            <TitledPane fx:id="station3TitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" text="STATION 3">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <content>
-                  <GridPane hgap="10.0" vgap="10.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <CheckBox fx:id="station3PistonSwitch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="137.0" prefWidth="290.0" styleClass="toggle-switch" text="Piston" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </CheckBox>
-                        <Label text="STATE VALUE :" GridPane.columnIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <Label text="COMP CYCLES :" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <TextField fx:id="station3StateValueField" GridPane.columnIndex="3">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </TextField>
-                        <TextField fx:id="station3CompCyclesField" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </TextField>
-                        <Button fx:id="station3StartPrepButton" mnemonicParsing="false" text="START PREP." GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <Button fx:id="station3StopPrepButton" mnemonicParsing="false" text="STOP PREP." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <Button fx:id="station3ResetPrepButton" mnemonicParsing="false" text="RESET PREP." GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                        <Button fx:id="station3UpdateTriggerButton" mnemonicParsing="false" text="UPDATE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                        </Button>
-                     </children>
-                  </GridPane>
-               </content>
-            </TitledPane>
+               <!-- Station 3 Debug Controls -->
+               <TitledPane fx:id="station3TitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" text="STATION 3">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <content>
+                     <GridPane hgap="10.0" vgap="10.0">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <CheckBox fx:id="station3PistonSwitch" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="Piston" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="station3PistonCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <Label text="STATE VALUE :" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <Label text="COMP CYCLES :" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <TextField fx:id="station3StateValueField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <TextField fx:id="station3CompCyclesField" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <Button fx:id="station3StartPrepButton" mnemonicParsing="false" text="START PREP." GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                           <Button fx:id="station3StopPrepButton" mnemonicParsing="false" text="STOP PREP." GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                           <Button fx:id="station3ResetPrepButton" mnemonicParsing="false" text="RESET PREP." GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                           <Button fx:id="station3UpdateTriggerButton" mnemonicParsing="false" text="UPDATE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </Button>
+                        </children>
+                     </GridPane>
+                  </content>
+               </TitledPane>
+               <HBox spacing="10.0">
+                  <children>
+                     <!-- Station Selection -->
+                     <TitledPane fx:id="stationSelectionTitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" text="STATION SELECTION">
+                        <font>
+                           <Font name="System Bold" size="14.0" />
+                        </font>
+                        <content>
+                           <GridPane hgap="2.0" vgap="10.0">
+                              <columnConstraints>
+                                 <ColumnConstraints hgrow="SOMETIMES" />
+                                 <ColumnConstraints hgrow="SOMETIMES" />
+                              </columnConstraints>
+                              <rowConstraints>
+                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              </rowConstraints>
+                              <children>
+                                 <CheckBox fx:id="stationSelectionSwitch1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="Station 1" GridPane.halignment="LEFT">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </CheckBox>
+                                 <TextField fx:id="stationSelectionSwitch1CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </TextField>
+                                 <CheckBox fx:id="stationSelectionSwitch2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="Station 2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </CheckBox>
+                                 <TextField fx:id="stationSelectionSwitch2CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </TextField>
+                                 <CheckBox fx:id="stationSelectionSwitch3" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="Station 3" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </CheckBox>
+                                 <TextField fx:id="stationSelectionSwitch3CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </TextField>
+                              </children>
+                           </GridPane>
+                        </content>
+                     </TitledPane>
+                     <TitledPane fx:id="stationSelectionTitledPane1" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" text="SETTINGS">
+                        <font>
+                           <Font name="System Bold" size="14.0" />
+                        </font>
+                        <content>
+                           <GridPane hgap="2.0" vgap="10.0">
+                              <columnConstraints>
+                                 <ColumnConstraints hgrow="SOMETIMES" />
+                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 <ColumnConstraints hgrow="SOMETIMES" />
+                              </columnConstraints>
+                              <rowConstraints>
+                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              </rowConstraints>
+                              <children>
+                                 <TextField fx:id="setVoltageCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="2">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </TextField>
+                                 <TextField fx:id="setCurrentCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </TextField>
+                                 <TextField fx:id="stationSelectionSwitch3CoilAddressField1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </TextField>
+                                 <Button fx:id="setVoltageButton" mnemonicParsing="false" text="SET VOLTAGE">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </Button>
+                                 <Button fx:id="setCurrentButton" layoutX="21.0" layoutY="18.0" mnemonicParsing="false" text="SET CURRENT" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </Button>
+                                 <TextField fx:id="voltageTextBox" alignment="CENTER" promptText="V" GridPane.columnIndex="1">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </TextField>
+                                 <TextField fx:id="currentTextBox" alignment="CENTER" layoutX="146.0" layoutY="21.0" promptText="A" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <GridPane.margin>
+                                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </GridPane.margin>
+                                 </TextField>
+                              </children>
+                           </GridPane>
+                        </content>
+                     </TitledPane>
+                  </children>
+               </HBox>
+            </VBox>
 
-            <!-- Manual Controls Section (for future expansion) -->
-            <TitledPane fx:id="manualControlsTitledPane" alignment="CENTER_LEFT" animated="false" collapsible="false" text="MANUAL CONTROLS">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-               <content>
-                  <VBox spacing="10.0">
-                     <children>
-                        <Label text="Relay Manual Controls: (Coming Soon)" />
-                        <Label text="Voltage Control: (Coming Soon)" />
-                        <Label text="Current Control: (Coming Soon)" />
-                        <Label text="Other Debug Controls: (Coming Soon)" />
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </VBox>
-               </content>
-            </TitledPane>
+            <!-- Right Column: Other Controls -->
+            <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+
+               <!-- Test Selection -->
+               <TitledPane fx:id="testSelectionTitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" text="TEST SELECTION">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <content>
+                     <GridPane hgap="2.0" vgap="10.0">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" />
+                           <ColumnConstraints hgrow="SOMETIMES" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <CheckBox fx:id="testSelectionSwitchNrml_IL" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="NRML - IL" GridPane.halignment="LEFT">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="testSelectionSwitchNrml_ILCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="testSelectionSwitchOvr_IL" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="OVRLD - IL" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="testSelectionSwitchOvr_ILCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="testSelectionSwitchOvr_FL" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="OVRLD - FL" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="testSelectionSwitchOvr_FLCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                        </children>
+                     </GridPane>
+                  </content>
+               </TitledPane>
+
+               <!-- Voltage Controls -->
+               <TitledPane fx:id="voltageControlsTitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" text="VOLTAGE CONTROLS">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <content>
+                     <GridPane hgap="2.0" vgap="10.0">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <CheckBox fx:id="voltageControlSwitch230" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="230 V" GridPane.halignment="LEFT">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="voltageControlSwitch230CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="voltageControlSwitch240" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="240 V" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="voltageControlSwitch240CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="voltageControlSwitch250" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="250 V" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="voltageControlSwitch250CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                        </children>
+                     </GridPane>
+                  </content>
+               </TitledPane>
+
+               <!-- Normal Operation - IL -->
+               <TitledPane fx:id="normalOperationIL_TitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="403.0" prefWidth="220.0" text="NORMAL OPERATION - IL">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <content>
+                     <GridPane hgap="2.0" vgap="10.0">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <CheckBox fx:id="normalOpIL_1A" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="1 A" GridPane.halignment="LEFT">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="normalOpIL_1ACoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="normalOpIL_2A_1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="2 A (1)" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="normalOpIL_2A_1CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="normalOpIL_2A_2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="2 A (2)" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="normalOpIL_2A_2CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="normalOpIL_5A" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="5 A" GridPane.rowIndex="3">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="normalOpIL_5ACoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="normalOpIL_10A_1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="10 A (1)" GridPane.rowIndex="4">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="normalOpIL_10A_1CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="normalOpIL_10A_2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="10 A (2)" GridPane.rowIndex="5">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="normalOpIL_10A_2CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="normalOpIL_10A_3" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="10 A (3)" GridPane.rowIndex="6">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="normalOpIL_10A_3CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                        </children>
+                     </GridPane>
+                  </content>
+               </TitledPane>
+            </VBox>
+
+            <!-- Right Column: Overload Test Controls -->
+            <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+               <!-- Overload Test - IL -->
+               <TitledPane fx:id="overloadTestIL_TitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" text="OVERLOAD TEST - IL">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <content>
+                     <GridPane hgap="2.0" vgap="10.0">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" />
+                           <ColumnConstraints hgrow="SOMETIMES" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <CheckBox fx:id="overloadIL_0_1A" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="0.1 A" GridPane.halignment="LEFT">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadIL_0_1ACoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadIL_0_2A_1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="0.2 A (1)" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadIL_0_2A_1CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadIL_0_2A_2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="0.2 A (2)" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadIL_0_2A_2CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadIL_0_5A" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="0.5 A" GridPane.rowIndex="3">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadIL_0_5ACoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadIL_1A" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="1 A" GridPane.rowIndex="4">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadIL_1ACoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadIL_2A_1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="2 A (1)" GridPane.rowIndex="5">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadIL_2A_1CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadIL_2A_2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="2 A (2)" GridPane.rowIndex="6">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadIL_2A_2CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadIL_5A" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="5 A" GridPane.rowIndex="7">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadIL_5ACoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadIL_10A_1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="10 A (1)" GridPane.rowIndex="8">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadIL_10A_1CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadIL_10A_2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="10 A (2)" GridPane.rowIndex="9">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadIL_10A_2CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadIL_10A_3" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="10 A (3)" GridPane.rowIndex="10">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadIL_10A_3CoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                        </children>
+                     </GridPane>
+                  </content>
+               </TitledPane>
+
+               <!-- Overload Test - FL -->
+               <TitledPane fx:id="overloadTestFL_TitledPane" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" text="OVERLOAD TEST - FL">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <content>
+                     <GridPane hgap="2.0" vgap="10.0">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <CheckBox fx:id="overloadFl_6A_Bulbs" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="6A Bulbs" GridPane.halignment="LEFT">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadFl_6A_BulbsCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadFl_10A_Bulbs" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="10A Bulbs" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadFl_10A_BulbsCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadFl_13A_Bulbs" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="13A Bulbs" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadFl_13A_BulbsCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                           <CheckBox fx:id="overloadFl_16A_Bulbs" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="toggle-switch" text="16A Bulbs" GridPane.rowIndex="3">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </CheckBox>
+                           <TextField fx:id="overloadFl_16A_BulbsCoilAddressField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="80.0" promptText="Coil Address" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <GridPane.margin>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </GridPane.margin>
+                           </TextField>
+                        </children>
+                     </GridPane>
+                  </content>
+               </TitledPane>
+            </VBox>
          </children>
-      </VBox>
+      </HBox>
    </children>
 </AnchorPane>

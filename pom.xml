@@ -13,7 +13,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.class>com.switchtester.app.ApplicationLauncher</main.class>
+        <main.class>com.switchtester.app.ApplicationLauncher</main.class> <!-- CORRECTED: Point to ApplicationLauncher -->
         <log4j.version>2.17.1</log4j.version>
     </properties>
 
@@ -53,14 +53,14 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.32</version> <!-- Use a compatible SLF4J API version -->
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/net.wimpi/jamod -->
+		
+		<!-- https://mvnrepository.com/artifact/net.wimpi/jamod -->
 		<dependency>
 		    <groupId>net.wimpi</groupId>
 		    <artifactId>jamod</artifactId>
 		    <version>1.2</version>
 		</dependency>
-
+		       
     </dependencies>
 
     <build>
@@ -73,6 +73,31 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                 </configuration>
+            </plugin>
+
+            <!-- Explicitly configure maven-resources-plugin to ensure resources are copied -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
