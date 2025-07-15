@@ -1,0 +1,302 @@
+2025-07-14 09:50:01.104 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Log4j2 initialized successfully (early check in start method).
+2025-07-14 09:50:01.110 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Starting Switch Tester Application...
+2025-07-14 09:50:01.117 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Application lock acquired successfully.
+2025-07-14 09:50:01.219 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Application icon loaded from: /com/switchtester/app/images/app_icon.png
+2025-07-14 09:50:01.945 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Splash screen displayed.
+2025-07-14 09:50:04.387 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Login screen displayed.
+2025-07-14 09:50:06.622 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Logged in user profile set to: Admin
+2025-07-14 09:50:06.622 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Logged in user permissions set: [usersNav, projectsNav, settingsNav, dashboardNav, debugNav, executionNav, reportsNav]
+2025-07-14 09:50:06.622 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Login successful for admin (Admin)!
+2025-07-14 09:50:07.230 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard View Initializing...
+2025-07-14 09:50:07.232 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Container set. Visible: true, Managed: true
+2025-07-14 09:50:07.233 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard loaded successfully. Testing notifications.
+2025-07-14 09:50:07.234 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - RBAC applied for user permissions: [usersNav, projectsNav, settingsNav, dashboardNav, debugNav, executionNav, reportsNav]
+2025-07-14 09:50:07.265 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard Content View Initialized.
+2025-07-14 09:50:07.283 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Navigation styles reset.
+2025-07-14 09:50:07.283 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Active navigation item set to: dashboardNav
+2025-07-14 09:50:07.284 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Screen loaded: /com/switchtester/app/view/DashboardContent.fxml (Title: Dashboard)
+2025-07-14 09:50:07.288 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Modbus status update scheduler started.
+2025-07-14 09:50:07.289 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard View Initialized successfully.
+2025-07-14 09:50:07.527 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Main Dashboard screen displayed in fullscreen.
+2025-07-14 09:50:07.535 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Attempting to load NotificationView.fxml for: Welcome!
+2025-07-14 09:50:07.578 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Added notification 'Welcome!'. Current children count: 1
+2025-07-14 09:50:07.578 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Notification container dimensions - Width: 1840.0, Height: 1060.0
+2025-07-14 09:50:07.580 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Sidebar initialized to closed state after layout.
+2025-07-14 09:50:07.599 [JavaFX Application Thread] ERROR com.switchtester.app.ApplicationLauncher - Error loading Arduino Opta configuration: Unrecognized field "pistonCoilAddress" (class com.switchtester.app.model.config.ArduinoOptaConfig), not marked as ignorable (2 known properties: "port", "ipAddress"])
+ at [Source: (File); line: 4, column: 26] (through reference chain: com.switchtester.app.model.config.ArduinoOptaConfig["pistonCoilAddress"])
+com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "pistonCoilAddress" (class com.switchtester.app.model.config.ArduinoOptaConfig), not marked as ignorable (2 known properties: "port", "ipAddress"])
+ at [Source: (File); line: 4, column: 26] (through reference chain: com.switchtester.app.model.config.ArduinoOptaConfig["pistonCoilAddress"])
+	at com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException.from(UnrecognizedPropertyException.java:61) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.DeserializationContext.handleUnknownProperty(DeserializationContext.java:1138) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.deser.std.StdDeserializer.handleUnknownProperty(StdDeserializer.java:2224) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperty(BeanDeserializerBase.java:1709) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownVanilla(BeanDeserializerBase.java:1687) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:284) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer._deserializeUsingPropertyBased(BeanDeserializer.java:463) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.deserializeFromObjectUsingNonDefault(BeanDeserializerBase.java:1409) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserializeFromObject(BeanDeserializer.java:352) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:185) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:323) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4825) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3637) ~[jackson-databind-2.15.2.jar:2.15.2]
+	at com.switchtester.app.service.ArduinoOptaConfigManager.loadConfig(ArduinoOptaConfigManager.java:42) ~[classes/:?]
+	at com.switchtester.app.service.ArduinoOptaConfigManager.<clinit>(ArduinoOptaConfigManager.java:24) ~[classes/:?]
+	at com.switchtester.app.service.ModbusService.<clinit>(ModbusService.java:34) ~[classes/:?]
+	at com.switchtester.app.viewmodel.DashboardViewModel.lambda$11(DashboardViewModel.java:540) ~[classes/:?]
+	at com.sun.javafx.application.PlatformImpl.lambda$null$172(PlatformImpl.java:295) ~[jfxrt.jar:?]
+	at java.security.AccessController.doPrivileged(Native Method) ~[?:1.8.0_161]
+	at com.sun.javafx.application.PlatformImpl.lambda$runLater$173(PlatformImpl.java:294) ~[jfxrt.jar:?]
+	at com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:95) ~[jfxrt.jar:?]
+	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[jfxrt.jar:?]
+	at com.sun.glass.ui.win.WinApplication.lambda$null$147(WinApplication.java:177) ~[jfxrt.jar:?]
+	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_161]
+2025-07-14 09:50:07.607 [JavaFX Application Thread] WARN  com.switchtester.app.ApplicationLauncher - Falling back to default Arduino Opta configuration due to load error.
+2025-07-14 09:50:07.607 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Modbus status UI updated: Disconnected.
+2025-07-14 09:50:07.608 [PeriodicModbusConnect] INFO  com.switchtester.app.ApplicationLauncher - Attempting to connect to Modbus TCP master at 192.168.1.10:502
+2025-07-14 09:57:36.752 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Log4j2 initialized successfully (early check in start method).
+2025-07-14 09:57:36.756 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Starting Switch Tester Application...
+2025-07-14 09:57:36.759 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Application lock acquired successfully.
+2025-07-14 09:57:36.802 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Application icon loaded from: /com/switchtester/app/images/app_icon.png
+2025-07-14 09:57:37.266 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Splash screen displayed.
+2025-07-14 09:57:39.723 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Login screen displayed.
+2025-07-14 09:57:41.255 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Logged in user profile set to: Admin
+2025-07-14 09:57:41.255 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Logged in user permissions set: [usersNav, projectsNav, settingsNav, dashboardNav, debugNav, executionNav, reportsNav]
+2025-07-14 09:57:41.256 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Login successful for admin (Admin)!
+2025-07-14 09:57:41.867 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard View Initializing...
+2025-07-14 09:57:41.869 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Container set. Visible: true, Managed: true
+2025-07-14 09:57:41.871 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard loaded successfully. Testing notifications.
+2025-07-14 09:57:41.871 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - RBAC applied for user permissions: [usersNav, projectsNav, settingsNav, dashboardNav, debugNav, executionNav, reportsNav]
+2025-07-14 09:57:41.907 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard Content View Initialized.
+2025-07-14 09:57:41.923 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Navigation styles reset.
+2025-07-14 09:57:41.923 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Active navigation item set to: dashboardNav
+2025-07-14 09:57:41.923 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Screen loaded: /com/switchtester/app/view/DashboardContent.fxml (Title: Dashboard)
+2025-07-14 09:57:41.927 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Modbus status update scheduler started.
+2025-07-14 09:57:41.927 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard View Initialized successfully.
+2025-07-14 09:57:42.207 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Main Dashboard screen displayed in fullscreen.
+2025-07-14 09:57:42.238 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Attempting to load NotificationView.fxml for: Welcome!
+2025-07-14 09:57:42.259 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Added notification 'Welcome!'. Current children count: 1
+2025-07-14 09:57:42.259 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Notification container dimensions - Width: 1840.0, Height: 1060.0
+2025-07-14 09:57:42.262 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Sidebar initialized to closed state after layout.
+2025-07-14 09:57:42.273 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Modbus status UI updated: Disconnected.
+2025-07-14 09:57:42.274 [PeriodicModbusConnect] INFO  com.switchtester.app.ApplicationLauncher - Attempting to connect to Modbus TCP master at 192.168.1.123:502
+2025-07-14 10:14:34.695 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Log4j2 initialized successfully (early check in start method).
+2025-07-14 10:14:34.701 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Starting Switch Tester Application...
+2025-07-14 10:14:34.704 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Application lock acquired successfully.
+2025-07-14 10:14:34.744 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Application icon loaded from: /com/switchtester/app/images/app_icon.png
+2025-07-14 10:14:35.142 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Splash screen displayed.
+2025-07-14 10:14:37.612 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Login screen displayed.
+2025-07-14 10:14:38.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Logged in user profile set to: Admin
+2025-07-14 10:14:38.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Logged in user permissions set: [usersNav, projectsNav, settingsNav, dashboardNav, debugNav, executionNav, reportsNav]
+2025-07-14 10:14:38.981 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Login successful for admin (Admin)!
+2025-07-14 10:14:39.603 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard View Initializing...
+2025-07-14 10:14:39.604 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Container set. Visible: true, Managed: true
+2025-07-14 10:14:39.605 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard loaded successfully. Testing notifications.
+2025-07-14 10:14:39.606 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - RBAC applied for user permissions: [usersNav, projectsNav, settingsNav, dashboardNav, debugNav, executionNav, reportsNav]
+2025-07-14 10:14:39.635 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard Content View Initialized.
+2025-07-14 10:14:39.651 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Navigation styles reset.
+2025-07-14 10:14:39.651 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Active navigation item set to: dashboardNav
+2025-07-14 10:14:39.651 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Screen loaded: /com/switchtester/app/view/DashboardContent.fxml (Title: Dashboard)
+2025-07-14 10:14:39.653 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Modbus status update scheduler started.
+2025-07-14 10:14:39.653 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard View Initialized successfully.
+2025-07-14 10:14:39.975 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Main Dashboard screen displayed in fullscreen.
+2025-07-14 10:14:39.986 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Attempting to load NotificationView.fxml for: Welcome!
+2025-07-14 10:14:40.020 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Added notification 'Welcome!'. Current children count: 1
+2025-07-14 10:14:40.020 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Notification container dimensions - Width: 1840.0, Height: 1060.0
+2025-07-14 10:14:40.023 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Sidebar initialized to closed state after layout.
+2025-07-14 10:14:40.036 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Modbus status UI updated: Disconnected.
+2025-07-14 10:14:40.037 [PeriodicModbusConnect] INFO  com.switchtester.app.ApplicationLauncher - Attempting to connect to Modbus TCP master at 192.168.1.123:502
+2025-07-14 10:19:58.332 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Log4j2 initialized successfully (early check in start method).
+2025-07-14 10:19:58.336 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Starting Switch Tester Application...
+2025-07-14 10:19:58.339 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Application lock acquired successfully.
+2025-07-14 10:19:58.369 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Application icon loaded from: /com/switchtester/app/images/app_icon.png
+2025-07-14 10:19:58.726 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Splash screen displayed.
+2025-07-14 10:20:01.243 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Login screen displayed.
+2025-07-14 10:20:02.904 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Logged in user profile set to: Admin
+2025-07-14 10:20:02.904 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Logged in user permissions set: [usersNav, projectsNav, settingsNav, dashboardNav, debugNav, executionNav, reportsNav]
+2025-07-14 10:20:02.906 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Login successful for admin (Admin)!
+2025-07-14 10:20:03.522 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard View Initializing...
+2025-07-14 10:20:03.524 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Container set. Visible: true, Managed: true
+2025-07-14 10:20:03.526 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard loaded successfully. Testing notifications.
+2025-07-14 10:20:03.527 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - RBAC applied for user permissions: [usersNav, projectsNav, settingsNav, dashboardNav, debugNav, executionNav, reportsNav]
+2025-07-14 10:20:03.555 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard Content View Initialized.
+2025-07-14 10:20:03.571 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Navigation styles reset.
+2025-07-14 10:20:03.571 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Active navigation item set to: dashboardNav
+2025-07-14 10:20:03.571 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Screen loaded: /com/switchtester/app/view/DashboardContent.fxml (Title: Dashboard)
+2025-07-14 10:20:03.574 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Modbus status update scheduler started.
+2025-07-14 10:20:03.574 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Dashboard View Initialized successfully.
+2025-07-14 10:20:03.884 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Main Dashboard screen displayed in fullscreen.
+2025-07-14 10:20:03.903 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Attempting to load NotificationView.fxml for: Welcome!
+2025-07-14 10:20:03.938 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Added notification 'Welcome!'. Current children count: 1
+2025-07-14 10:20:03.939 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Notification container dimensions - Width: 1840.0, Height: 1060.0
+2025-07-14 10:20:03.940 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Sidebar initialized to closed state after layout.
+2025-07-14 10:20:03.961 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Modbus status UI updated: Disconnected.
+2025-07-14 10:20:03.962 [PeriodicModbusConnect] INFO  com.switchtester.app.ApplicationLauncher - Attempting to connect to Modbus TCP master at 192.168.1.123:502
+2025-07-14 10:20:03.971 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Modbus status UI updated: Disconnected.
+2025-07-14 10:20:03.971 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Modbus connection attempt already in progress. Skipping new attempt.
+2025-07-14 10:20:04.500 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Mouse Entered Sidebar - Expanding...
+2025-07-14 10:20:04.501 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Dashboard (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:04.502 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Dashboard: visible=true, managed=true
+2025-07-14 10:20:04.505 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Dashboard (New managed: true, opacity: 0.0)
+2025-07-14 10:20:04.505 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Reports (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:04.505 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Reports: visible=true, managed=true
+2025-07-14 10:20:04.506 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Reports (New managed: true, opacity: 0.0)
+2025-07-14 10:20:04.506 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Settings (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:04.507 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Settings: visible=true, managed=true
+2025-07-14 10:20:04.509 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Settings (New managed: true, opacity: 0.0)
+2025-07-14 10:20:04.509 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Users (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:04.509 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Users: visible=true, managed=true
+2025-07-14 10:20:04.509 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Users (New managed: true, opacity: 0.0)
+2025-07-14 10:20:04.509 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Execution (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:04.509 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Execution: visible=true, managed=true
+2025-07-14 10:20:04.510 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Execution (New managed: true, opacity: 0.0)
+2025-07-14 10:20:04.510 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Debug (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:04.510 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Debug: visible=true, managed=true
+2025-07-14 10:20:04.510 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Debug (New managed: true, opacity: 0.0)
+2025-07-14 10:20:04.511 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Switch Tester (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:04.511 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Switch Tester: visible=true, managed=true
+2025-07-14 10:20:04.511 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Switch Tester (New managed: true, opacity: 0.0)
+2025-07-14 10:20:04.511 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Projects (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:04.511 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Projects: visible=true, managed=true
+2025-07-14 10:20:04.512 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Projects (New managed: true, opacity: 0.0)
+2025-07-14 10:20:04.512 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Logout (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:04.512 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Logout: visible=true, managed=true
+2025-07-14 10:20:04.512 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Logout (New managed: true, opacity: 0.0)
+2025-07-14 10:20:06.974 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Debug View Initializing...
+2025-07-14 10:20:06.978 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch station1PistonSwitch as Modbus is not connected.
+2025-07-14 10:20:06.978 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch station2PistonSwitch as Modbus is not connected.
+2025-07-14 10:20:06.978 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch station3PistonSwitch as Modbus is not connected.
+2025-07-14 10:20:06.978 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch stationSelectionSwitch1 as Modbus is not connected.
+2025-07-14 10:20:06.978 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch stationSelectionSwitch2 as Modbus is not connected.
+2025-07-14 10:20:06.978 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch stationSelectionSwitch3 as Modbus is not connected.
+2025-07-14 10:20:06.978 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch testSelectionSwitchNrml_IL as Modbus is not connected.
+2025-07-14 10:20:06.979 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch testSelectionSwitchOvr_IL as Modbus is not connected.
+2025-07-14 10:20:06.979 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch testSelectionSwitchOvr_FL as Modbus is not connected.
+2025-07-14 10:20:06.979 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch voltageControlSwitch230 as Modbus is not connected.
+2025-07-14 10:20:06.979 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch voltageControlSwitch240 as Modbus is not connected.
+2025-07-14 10:20:06.979 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch voltageControlSwitch250 as Modbus is not connected.
+2025-07-14 10:20:06.979 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch normalOpIL_1A as Modbus is not connected.
+2025-07-14 10:20:06.979 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch normalOpIL_2A_1 as Modbus is not connected.
+2025-07-14 10:20:06.980 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch normalOpIL_2A_2 as Modbus is not connected.
+2025-07-14 10:20:06.980 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch normalOpIL_5A as Modbus is not connected.
+2025-07-14 10:20:06.980 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch normalOpIL_10A_1 as Modbus is not connected.
+2025-07-14 10:20:06.980 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch normalOpIL_10A_2 as Modbus is not connected.
+2025-07-14 10:20:06.980 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch normalOpIL_10A_3 as Modbus is not connected.
+2025-07-14 10:20:06.980 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadIL_0_1A as Modbus is not connected.
+2025-07-14 10:20:06.980 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadIL_0_2A_1 as Modbus is not connected.
+2025-07-14 10:20:06.980 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadIL_0_2A_2 as Modbus is not connected.
+2025-07-14 10:20:06.980 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadIL_0_5A as Modbus is not connected.
+2025-07-14 10:20:06.980 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadIL_1A as Modbus is not connected.
+2025-07-14 10:20:06.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadIL_2A_1 as Modbus is not connected.
+2025-07-14 10:20:06.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadIL_2A_2 as Modbus is not connected.
+2025-07-14 10:20:06.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadIL_5A as Modbus is not connected.
+2025-07-14 10:20:06.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadIL_10A_1 as Modbus is not connected.
+2025-07-14 10:20:06.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadIL_10A_2 as Modbus is not connected.
+2025-07-14 10:20:06.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadIL_10A_3 as Modbus is not connected.
+2025-07-14 10:20:06.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadFl_6A_Bulbs as Modbus is not connected.
+2025-07-14 10:20:06.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadFl_10A_Bulbs as Modbus is not connected.
+2025-07-14 10:20:06.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadFl_13A_Bulbs as Modbus is not connected.
+2025-07-14 10:20:06.981 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Skipping read for switch overloadFl_16A_Bulbs as Modbus is not connected.
+2025-07-14 10:20:07.012 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Navigation styles reset.
+2025-07-14 10:20:07.012 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Active navigation item set to: debugNav
+2025-07-14 10:20:07.013 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Screen loaded: /com/switchtester/app/view/DebugView.fxml (Title: Debug Console)
+2025-07-14 10:20:07.884 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Mouse Exited Sidebar - Collapsing...
+2025-07-14 10:20:07.884 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Dashboard (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:07.886 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Reports (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:07.887 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Settings (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:07.887 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Users (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:07.889 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Execution (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:07.889 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Debug (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:07.890 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Switch Tester (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:07.890 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Projects (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:07.890 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Logout (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:08.101 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Dashboard (New managed: false, opacity: 0.0)
+2025-07-14 10:20:08.101 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Reports (New managed: false, opacity: 0.0)
+2025-07-14 10:20:08.101 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Settings (New managed: false, opacity: 0.0)
+2025-07-14 10:20:08.101 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Users (New managed: false, opacity: 0.0)
+2025-07-14 10:20:08.101 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Execution (New managed: false, opacity: 0.0)
+2025-07-14 10:20:08.101 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Debug (New managed: false, opacity: 0.0)
+2025-07-14 10:20:08.102 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Switch Tester (New managed: false, opacity: 0.0)
+2025-07-14 10:20:08.102 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Projects (New managed: false, opacity: 0.0)
+2025-07-14 10:20:08.102 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Logout (New managed: false, opacity: 0.0)
+2025-07-14 10:20:08.574 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Modbus status UI updated: Disconnected.
+2025-07-14 10:20:08.575 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Modbus connection attempt already in progress. Skipping new attempt.
+2025-07-14 10:20:09.462 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - NotificationManager: Notification closed: Welcome!
+2025-07-14 10:20:12.532 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Mouse Entered Sidebar - Expanding...
+2025-07-14 10:20:12.532 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Dashboard (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:12.532 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Dashboard: visible=true, managed=true
+2025-07-14 10:20:12.532 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Dashboard (New managed: true, opacity: 0.0)
+2025-07-14 10:20:12.532 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Reports (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:12.534 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Reports: visible=true, managed=true
+2025-07-14 10:20:12.534 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Reports (New managed: true, opacity: 0.0)
+2025-07-14 10:20:12.534 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Settings (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:12.535 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Settings: visible=true, managed=true
+2025-07-14 10:20:12.535 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Settings (New managed: true, opacity: 0.0)
+2025-07-14 10:20:12.535 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Users (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:12.535 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Users: visible=true, managed=true
+2025-07-14 10:20:12.535 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Users (New managed: true, opacity: 0.0)
+2025-07-14 10:20:12.536 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Execution (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:12.536 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Execution: visible=true, managed=true
+2025-07-14 10:20:12.536 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Execution (New managed: true, opacity: 0.0)
+2025-07-14 10:20:12.536 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Debug (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:12.536 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Debug: visible=true, managed=true
+2025-07-14 10:20:12.536 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Debug (New managed: true, opacity: 0.0)
+2025-07-14 10:20:12.537 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Switch Tester (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:12.537 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Switch Tester: visible=true, managed=true
+2025-07-14 10:20:12.537 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Switch Tester (New managed: true, opacity: 0.0)
+2025-07-14 10:20:12.537 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Projects (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:12.537 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Projects: visible=true, managed=true
+2025-07-14 10:20:12.538 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Projects (New managed: true, opacity: 0.0)
+2025-07-14 10:20:12.538 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Logout (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:12.538 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Logout: visible=true, managed=true
+2025-07-14 10:20:12.538 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Logout (New managed: true, opacity: 0.0)
+2025-07-14 10:20:13.017 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Mouse Exited Sidebar - Collapsing...
+2025-07-14 10:20:13.018 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Dashboard (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:13.018 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Reports (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:13.018 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Settings (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:13.019 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Users (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:13.019 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Execution (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:13.019 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Debug (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:13.019 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Switch Tester (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:13.020 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Projects (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:13.020 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label for collapse: Logout (Initial managed: true, opacity: 1.0)
+2025-07-14 10:20:13.221 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Dashboard (New managed: false, opacity: 0.0)
+2025-07-14 10:20:13.221 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Reports (New managed: false, opacity: 0.0)
+2025-07-14 10:20:13.222 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Settings (New managed: false, opacity: 0.0)
+2025-07-14 10:20:13.222 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Users (New managed: false, opacity: 0.0)
+2025-07-14 10:20:13.222 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Execution (New managed: false, opacity: 0.0)
+2025-07-14 10:20:13.222 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Debug (New managed: false, opacity: 0.0)
+2025-07-14 10:20:13.222 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Switch Tester (New managed: false, opacity: 0.0)
+2025-07-14 10:20:13.222 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Projects (New managed: false, opacity: 0.0)
+2025-07-14 10:20:13.222 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Faded OUT label: Logout (New managed: false, opacity: 0.0)
+2025-07-14 10:20:13.574 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Modbus status UI updated: Disconnected.
+2025-07-14 10:20:13.575 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Modbus connection attempt already in progress. Skipping new attempt.
+2025-07-14 10:20:14.269 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher - Mouse Entered Sidebar - Expanding...
+2025-07-14 10:20:14.270 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Dashboard (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:14.270 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Dashboard: visible=true, managed=true
+2025-07-14 10:20:14.270 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Dashboard (New managed: true, opacity: 0.0)
+2025-07-14 10:20:14.270 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Reports (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:14.270 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Reports: visible=true, managed=true
+2025-07-14 10:20:14.270 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Reports (New managed: true, opacity: 0.0)
+2025-07-14 10:20:14.270 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Settings (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:14.270 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Settings: visible=true, managed=true
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Settings (New managed: true, opacity: 0.0)
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Users (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Users: visible=true, managed=true
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Users (New managed: true, opacity: 0.0)
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Execution (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Execution: visible=true, managed=true
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Execution (New managed: true, opacity: 0.0)
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Debug (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Debug: visible=true, managed=true
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Debug (New managed: true, opacity: 0.0)
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Switch Tester (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Switch Tester: visible=true, managed=true
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Switch Tester (New managed: true, opacity: 0.0)
+2025-07-14 10:20:14.272 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Projects (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:14.273 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Projects: visible=true, managed=true
+2025-07-14 10:20:14.273 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Projects (New managed: true, opacity: 0.0)
+2025-07-14 10:20:14.273 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -   Processing label: Logout (Initial managed: false, opacity: 0.0)
+2025-07-14 10:20:14.273 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Parent HBox for Logout: visible=true, managed=true
+2025-07-14 10:20:14.274 [JavaFX Application Thread] DEBUG com.switchtester.app.ApplicationLauncher -     Fading IN label: Logout (New managed: true, opacity: 0.0)
+2025-07-14 10:20:15.289 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - Logout button clicked!
+2025-07-14 10:20:15.290 [JavaFX Application Thread] INFO  com.switchtester.app.ApplicationLauncher - DashboardViewModel: Modbus status scheduler shut down on logout.

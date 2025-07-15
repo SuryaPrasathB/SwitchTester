@@ -1,18 +1,5 @@
 package com.switchtester.app;
 
-import com.switchtester.app.service.ModbusService; // Import ModbusService
-import com.switchtester.app.viewmodel.LoginViewModel;
-import com.switchtester.app.viewmodel.SplashViewModel;
-import com.switchtester.app.viewmodel.DashboardViewModel;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.scene.image.Image;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -25,6 +12,20 @@ import java.util.Set; // Import Set for permissions
 // Import SLF4J Logger
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.switchtester.app.service.ModbusService; // Import ModbusService
+import com.switchtester.app.viewmodel.DashboardViewModel;
+import com.switchtester.app.viewmodel.LoginViewModel;
+import com.switchtester.app.viewmodel.SplashViewModel;
+
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * Main application class for the Switch Tester project.

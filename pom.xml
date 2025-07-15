@@ -1,70 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.18</version> <!-- Using a stable Spring Boot 2.x version -->
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
     <groupId>com.switchtester</groupId>
     <artifactId>SwitchTesterApp</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <name>SwitchTesterApp</name>
+    <description>Spring Boot &amp; JavaFX Application for Switch Testing</description>
     <packaging>jar</packaging>
 
     <properties>
+        <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.class>com.switchtester.app.ApplicationLauncher</main.class> <!-- CORRECTED: Point to ApplicationLauncher -->
+        <main.class>com.switchtester.app.SwitchTesterApplication</main.class> <!-- New main class for Spring Boot -->
         <log4j.version>2.17.1</log4j.version>
     </properties>
 
     <dependencies>
+        <!-- Spring Boot Starters -->
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <!-- Exclude Tomcat if you don't need a web server, but it's often useful for Actuator/REST endpoints -->
+            <!-- <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions> -->
+        </dependency>
+
+        <!-- MySQL Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version> <!-- Use a compatible version -->
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- JavaFX Dependencies (if not using OpenJFX plugin, which is recommended for modular apps) -->
+        <!-- For Java 8, these are typically provided by the JRE/JDK. For newer Java, you'd use OpenJFX.
+             Assuming Java 8 for now based on your current setup. -->
+        <!-- If you move to Java 11+, you'd need:
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>17.0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>17.0.0.1</version>
+        </dependency>
+        -->
+
+        <!-- Jackson for JSON serialization/deserialization (Spring Boot often includes it, but explicit if needed) -->
+        <!-- <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.15.2</version>
-        </dependency>
+        </dependency> -->
 
+        <!-- BCrypt for password hashing (still needed if you use org.mindrot.jbcrypt directly) -->
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
 
-        <!-- Log4j2 Dependencies -->
+        <!-- Log4j2 Dependencies (Spring Boot uses Logback by default, but can be configured for Log4j2) -->
+        <!-- To use Log4j2 with Spring Boot, you'd typically exclude Logback and include Log4j2 starters. -->
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>${log4j.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
+        <!-- Exclude default Logback from web starter -->
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <!-- Include Log4j-slf4j-impl if you plan to use SLF4J API (good practice) -->
+
+
+        <!-- Modbus TCP Library (net.wimpi/jamod) -->
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>${log4j.version}</version>
-            <scope>runtime</scope>
+            <groupId>net.wimpi</groupId>
+            <artifactId>jamod</artifactId>
+            <version>1.2</version>
         </dependency>
+
+        <!-- Spring Boot Test -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.32</version> <!-- Use a compatible SLF4J API version -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
-		
-		<!-- https://mvnrepository.com/artifact/net.wimpi/jamod -->
-		<dependency>
-		    <groupId>net.wimpi</groupId>
-		    <artifactId>jamod</artifactId>
-		    <version>1.2</version>
-		</dependency>
-		       
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                    <!-- This allows you to run the Spring Boot app directly without needing exec:java -->
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -100,39 +161,8 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <mainClass>${main.class}</mainClass>
-                    <executable>java</executable>
-                    <arguments>
-                        <argument>-Djavafx.embed.singleThread=true</argument>
-                    </arguments>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>${main.class}</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
+            <!-- Removed exec-maven-plugin as Spring Boot plugin handles execution -->
+            <!-- Removed maven-jar-plugin as Spring Boot plugin creates an executable jar -->
         </plugins>
     </build>
 </project>

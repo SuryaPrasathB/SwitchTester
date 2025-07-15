@@ -2,89 +2,86 @@ package com.switchtester.app.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.switchtester.app.model.config.ArduinoOptaConfig; // Import the new config model
-import com.switchtester.app.ApplicationLauncher; // For logging
+import com.switchtester.app.model.config.ArduinoOptaConfig;
 
 import java.io.File;
 import java.io.IOException;
 
 /**
- * Manages loading and saving of Arduino Opta PLC configuration.
- * Configuration is stored in a JSON file.
+ * Manages loading and saving of Arduino Opta configuration.
+ * This class ensures a singleton configuration is available throughout the application.
  */
 public class ArduinoOptaConfigManager {
 
     private static final String CONFIG_FILE_PATH = "arduino_opta_config.json"; // Stored in app's root directory
+    private static ArduinoOptaConfig currentConfig;
     private static ObjectMapper objectMapper = new ObjectMapper();
-    private static ArduinoOptaConfig currentConfig; // Cache the loaded configuration
 
     static {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT); // Pretty print JSON
-        // Load config on application startup
-        currentConfig = loadConfig();
     }
 
     /**
-     * Loads the Arduino Opta configuration from the JSON file.
-     * If the file doesn't exist or is empty, it creates and saves a default configuration.
-     * @return The loaded or default ArduinoOptaConfig object.
+     * Retrieves the current Arduino Opta configuration.
+     * If the configuration file does not exist or cannot be loaded, a default configuration is created and saved.
+     * @return The current ArduinoOptaConfig instance.
      */
-    public static ArduinoOptaConfig loadConfig() {
-        File configFile = new File(CONFIG_FILE_PATH);
-        if (!configFile.exists() || configFile.length() == 0) {
-            // If file doesn't exist or is empty, create default configuration
-            ArduinoOptaConfig defaultConfig = createDefaultConfig();
-            saveConfig(defaultConfig); // Save default for the first time
-            ApplicationLauncher.logger.info("Created and saved default Arduino Opta configuration.");
-            return defaultConfig;
-        }
-        try {
-            currentConfig = objectMapper.readValue(configFile, ArduinoOptaConfig.class);
-            ApplicationLauncher.logger.info("Loaded Arduino Opta configuration from file.");
-            return currentConfig;
-        } catch (IOException e) {
-            ApplicationLauncher.logger.error("Error loading Arduino Opta configuration: {}", e.getMessage(), e);
-            // Fallback to default config on error
-            ArduinoOptaConfig defaultConfig = createDefaultConfig();
-            ApplicationLauncher.logger.warn("Falling back to default Arduino Opta configuration due to load error.");
-            return defaultConfig;
-        }
-    }
-
-    /**
-     * Saves the given Arduino Opta configuration to the JSON file.
-     * @param config The ArduinoOptaConfig object to save.
-     */
-    public static void saveConfig(ArduinoOptaConfig config) {
-        File configFile = new File(CONFIG_FILE_PATH);
-        try {
-            objectMapper.writeValue(configFile, config);
-            currentConfig = config; // Update cached config
-            ApplicationLauncher.logger.info("Saved Arduino Opta configuration to file.");
-        } catch (IOException e) {
-            ApplicationLauncher.logger.error("Error saving Arduino Opta configuration: {}", e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Returns the currently loaded Arduino Opta configuration.
-     * Ensures a configuration is always available (either loaded or default).
-     * @return The current ArduinoOptaConfig object.
-     */
-    public static ArduinoOptaConfig getCurrentConfig() {
+    public static synchronized ArduinoOptaConfig getCurrentConfig() {
         if (currentConfig == null) {
-            currentConfig = loadConfig(); // Ensure it's loaded if not already
+            currentConfig = loadConfig();
         }
         return currentConfig;
     }
 
     /**
-     * Creates and returns a default ArduinoOptaConfig object.
-     * @return A new ArduinoOptaConfig object with default values.
+     * Loads the Arduino Opta configuration from the JSON file.
+     * If the file doesn't exist or there's an error loading, it creates a default.
+     * @return The loaded or default ArduinoOptaConfig.
+     */
+    private static ArduinoOptaConfig loadConfig() {
+        File configFile = new File(CONFIG_FILE_PATH);
+        if (!configFile.exists() || configFile.length() == 0) {
+            System.out.println("Arduino Opta config file not found or is empty. Creating default configuration.");
+            ArduinoOptaConfig defaultConfig = createDefaultConfig();
+            saveConfig(defaultConfig); // Save the newly created default config
+            return defaultConfig;
+        }
+        try {
+            return objectMapper.readValue(configFile, ArduinoOptaConfig.class);
+        } catch (IOException e) {
+            System.err.println("Error loading Arduino Opta configuration: " + e.getMessage());
+            e.printStackTrace();
+            // Fallback to default if loading fails
+            System.err.println("Falling back to default Arduino Opta configuration due to load error.");
+            ArduinoOptaConfig defaultConfig = createDefaultConfig();
+            saveConfig(defaultConfig); // Attempt to save the new default config
+            return defaultConfig;
+        }
+    }
+
+    /**
+     * Saves the current Arduino Opta configuration to the JSON file.
+     * @param config The ArduinoOptaConfig instance to save.
+     */
+    public static synchronized void saveConfig(ArduinoOptaConfig config) {
+        File configFile = new File(CONFIG_FILE_PATH);
+        try {
+            objectMapper.writeValue(configFile, config);
+            currentConfig = config; // Update the cached config
+            System.out.println("Arduino Opta configuration saved successfully.");
+        } catch (IOException e) {
+            System.err.println("Error saving Arduino Opta configuration: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Creates a default Arduino Opta configuration.
+     * @return A new ArduinoOptaConfig instance with default values.
      */
     private static ArduinoOptaConfig createDefaultConfig() {
-        // You can set sensible defaults here.
-        // These are example values; replace with your actual Arduino Opta's default IP and Modbus coil address.
-        return new ArduinoOptaConfig("192.168.1.10", 502); // Default IP, Port, Piston Coil 0
+        // Use a common default IP for testing, and include defaults for new fields
+        // Removed pistonCoilAddress as it's no longer managed here
+        return new ArduinoOptaConfig("192.168.1.123", 502, 5, 100, 101);
     }
 }

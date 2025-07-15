@@ -78,6 +78,9 @@ public class DashboardViewModel implements Initializable {
     private Stage dashboardStage;
     private ScheduledExecutorService statusUpdateScheduler; // For periodic status updates
 
+    // Flag to prevent multiple concurrent Modbus connection attempts
+    private static volatile boolean isConnectionAttemptInProgress = false;
+
     // Map to hold references to navigation HBoxes for easier RBAC application
     private Map<String, HBox> navItems = new HashMap<>();
     // Map to hold references to navigation Labels for opacity control
@@ -175,14 +178,14 @@ public class DashboardViewModel implements Initializable {
 
             // Fade in labels
             for (Label label : navLabels.values()) {
-                ApplicationLauncher.logger.debug("  Processing label: {} (Initial managed: {}, opacity: {})", label.getText(), label.isManaged(), label.getOpacity());
+                //ApplicationLauncher.logger.debug("  Processing label: {} (Initial managed: {}, opacity: {})", label.getText(), label.isManaged(), label.getOpacity());
 
                 // Check if the parent HBox (nav item) is visible. If not, this label should not animate.
                 boolean parentHBoxVisible = true;
                 if (label.getParent() instanceof HBox) {
                     HBox parentHBox = (HBox) label.getParent();
                     parentHBoxVisible = parentHBox.isVisible();
-                    ApplicationLauncher.logger.debug("    Parent HBox for {}: visible={}, managed={}", label.getText(), parentHBox.isVisible(), parentHBox.isManaged());
+                    //ApplicationLauncher.logger.debug("    Parent HBox for {}: visible={}, managed={}", label.getText(), parentHBox.isVisible(), parentHBox.isManaged());
                 } else {
                     ApplicationLauncher.logger.debug("    Label {} parent is not an HBox or is null.", label.getText());
                 }
@@ -194,7 +197,7 @@ public class DashboardViewModel implements Initializable {
                             new KeyFrame(Duration.seconds(0.2), new KeyValue(label.opacityProperty(), 1.0))
                     );
                     fadeInTimeline.play();
-                    ApplicationLauncher.logger.debug("    Fading IN label: {} (New managed: {}, opacity: {})", label.getText(), label.isManaged(), label.getOpacity());
+                    //ApplicationLauncher.logger.debug("    Fading IN label: {} (New managed: {}, opacity: {})", label.getText(), label.isManaged(), label.getOpacity());
                 } else {
                     ApplicationLauncher.logger.debug("    Skipping label {} - Parent HBox is not visible (RBAC).", label.getText());
                 }
@@ -213,7 +216,7 @@ public class DashboardViewModel implements Initializable {
 
             // Fade out labels
             for (Label label : navLabels.values()) {
-                ApplicationLauncher.logger.debug("  Processing label for collapse: {} (Initial managed: {}, opacity: {})", label.getText(), label.isManaged(), label.getOpacity());
+                //ApplicationLauncher.logger.debug("  Processing label for collapse: {} (Initial managed: {}, opacity: {})", label.getText(), label.isManaged(), label.getOpacity());
                 // Only fade out labels that are currently managed and visible (i.e., not already hidden by RBAC)
                 if (label.isManaged() && label.getOpacity() > 0) { // Only animate if it's currently visible
                     Timeline fadeOutTimeline = new Timeline(
@@ -222,7 +225,7 @@ public class DashboardViewModel implements Initializable {
                     fadeOutTimeline.setOnFinished(e -> {
                         // After fading out, set managed to false to remove from layout calculation
                         label.setManaged(false);
-                        ApplicationLauncher.logger.debug("    Faded OUT label: {} (New managed: {}, opacity: {})", label.getText(), label.isManaged(), label.getOpacity());
+                        //ApplicationLauncher.logger.debug("    Faded OUT label: {} (New managed: {}, opacity: {})", label.getText(), label.isManaged(), label.getOpacity());
                     });
                     fadeOutTimeline.play();
                 } else {
@@ -299,6 +302,15 @@ public class DashboardViewModel implements Initializable {
      */
     private void showScreen(String fxmlPath, String title) {
         try {
+            // Cleanup previous DebugViewModel if navigating away from it
+            if (contentArea.getChildren().size() > 0) {
+                Parent currentContent = (Parent) contentArea.getChildren().get(0);
+                if (currentContent.getUserData() instanceof DebugViewModel) {
+                     ((DebugViewModel) currentContent.getUserData()).cleanup();
+                     ApplicationLauncher.logger.info("DashboardViewModel: Cleaned up previous DebugViewModel.");
+                }
+            }
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent screen = loader.load();
 
@@ -312,11 +324,7 @@ public class DashboardViewModel implements Initializable {
                 ((UsersViewModel) controller).setOwnerStage(dashboardStage);
             } else if (controller instanceof TestTypeConfigViewModel) {
                 ((TestTypeConfigViewModel) controller).setOwnerStage(dashboardStage);
-            } else if (controller instanceof DebugViewModel) { // Add cleanup for DebugViewModel
-                // If navigating away from DebugView, ensure its scheduler is stopped
-                if (contentArea.getChildren().size() > 0 && contentArea.getChildren().get(0).getUserData() instanceof DebugViewModel) {
-                     ((DebugViewModel) contentArea.getChildren().get(0).getUserData()).cleanup();
-                }
+            } else if (controller instanceof DebugViewModel) {
                 // Set the current DebugViewModel instance as user data for cleanup later
                 screen.setUserData(controller);
             }
@@ -512,23 +520,30 @@ public class DashboardViewModel implements Initializable {
     private void handleLogoutButton(MouseEvent event) {
         ApplicationLauncher.logger.info("Logout button clicked!");
         if (dashboardStage != null) {
-            // Before closing the stage, ensure any running schedulers are shut down
+            // Shut down Modbus status scheduler immediately
             if (statusUpdateScheduler != null && !statusUpdateScheduler.isShutdown()) {
                 statusUpdateScheduler.shutdownNow();
                 ApplicationLauncher.logger.info("DashboardViewModel: Modbus status scheduler shut down on logout.");
             }
-            // Also, ensure Modbus service is disconnected
-            ModbusService.disconnect();
-            ApplicationLauncher.logger.info("Modbus service disconnected on logout.");
 
-            dashboardStage.close();
-            ApplicationLauncher.logger.debug("Dashboard stage closed.");
+            // Perform Modbus disconnection on a background thread
+            new Thread(() -> {
+                ModbusService.disconnect(); // This can block
+                ApplicationLauncher.logger.info("Modbus service disconnected on logout (background thread).");
+
+                // After disconnection, perform UI updates on the JavaFX Application Thread
+                Platform.runLater(() -> {
+                    dashboardStage.close();
+                    ApplicationLauncher.logger.debug("Dashboard stage closed.");
+
+                    ApplicationLauncher.showLoginScreen();
+                    ApplicationLauncher.setLoggedInUserProfile(null); // Clear logged in user profile on logout
+                    NotificationManager.getInstance().showNotification(NotificationType.INFO,
+                                                                       "Logged Out",
+                                                                       "You have been successfully logged out.");
+                });
+            }, "LogoutModbusDisconnectThread").start(); // Name the thread for debugging
         }
-        ApplicationLauncher.showLoginScreen();
-        ApplicationLauncher.setLoggedInUserProfile(null); // Clear logged in user profile on logout
-        NotificationManager.getInstance().showNotification(NotificationType.INFO,
-                                                           "Logged Out",
-                                                           "You have been successfully logged out.");
     }
 
     /**
@@ -543,6 +558,7 @@ public class DashboardViewModel implements Initializable {
                 tcpStatusLabel.setText("TCP Server Connected");
                 retryModbusButton.setVisible(false);
                 retryModbusButton.setManaged(false);
+                isConnectionAttemptInProgress = false; // Reset flag if connected
                 ApplicationLauncher.logger.debug("Modbus status UI updated: Connected.");
             } else {
                 tcpStatusCircle.setFill(Color.RED);
@@ -550,10 +566,21 @@ public class DashboardViewModel implements Initializable {
                 retryModbusButton.setVisible(true);
                 retryModbusButton.setManaged(true);
                 ApplicationLauncher.logger.debug("Modbus status UI updated: Disconnected.");
-                // ONLY call connect if currently disconnected, to act as a periodic retry
-                // This will be executed on the JavaFX Application Thread, but ModbusService.connect()
-                // itself handles threading.
-                new Thread(() -> ModbusService.connect(), "PeriodicModbusConnect").start();
+
+                // ONLY call connect if currently disconnected AND no attempt is already in progress
+                if (!isConnectionAttemptInProgress) {
+                    isConnectionAttemptInProgress = true; // Set flag before starting attempt
+                    new Thread(() -> {
+                        ModbusService.connect(); // This will block until connection or timeout
+                        Platform.runLater(() -> {
+                            // After connection attempt, update UI again
+                            updateModbusConnectionStatusUI();
+                            isConnectionAttemptInProgress = false; // Reset flag after attempt
+                        });
+                    }, "PeriodicModbusConnect").start();
+                } else {
+                    ApplicationLauncher.logger.debug("Modbus connection attempt already in progress. Skipping new attempt.");
+                }
             }
         });
     }
@@ -564,12 +591,21 @@ public class DashboardViewModel implements Initializable {
     @FXML
     private void handleRetryModbusConnection(MouseEvent event) {
         ApplicationLauncher.logger.info("Retry Modbus Connection button clicked.");
-        // Attempt connection on a new thread to keep UI responsive
-        new Thread(() -> {
-            ModbusService.connect();
-            // After connection attempt, update UI
-            updateModbusConnectionStatusUI();
-        }, "ModbusRetryThread").start();
+        if (!isConnectionAttemptInProgress) {
+            isConnectionAttemptInProgress = true;
+            // Attempt connection on a new thread to keep UI responsive
+            new Thread(() -> {
+                ModbusService.connect();
+                // After connection attempt, update UI
+                Platform.runLater(() -> {
+                    updateModbusConnectionStatusUI();
+                    isConnectionAttemptInProgress = false;
+                });
+            }, "ModbusRetryThread").start();
+        } else {
+            NotificationManager.getInstance().showNotification(NotificationType.INFO,
+                    "Connection in Progress", "A Modbus connection attempt is already in progress.");
+        }
     }
 
     /**
@@ -598,7 +634,7 @@ public class DashboardViewModel implements Initializable {
                         ApplicationLauncher.logger.info("DashboardViewModel: Modbus status scheduler shut down on window close.");
                     }
                     // Also ensure Modbus service is disconnected when the primary stage closes
-                    ModbusService.disconnect();
+                    ModbusService.disconnect(); // This will be handled by the logout button's new thread if logout is pressed
                     ApplicationLauncher.logger.info("Modbus service disconnected on primary stage close.");
                 });
             }
