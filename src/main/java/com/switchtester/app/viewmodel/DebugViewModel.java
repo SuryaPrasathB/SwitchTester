@@ -40,6 +40,8 @@ public class DebugViewModel implements Initializable {
     @FXML private Button station1StopPrepButton;
     @FXML private Button station1ResetPrepButton;
     @FXML private Button station1UpdateTriggerButton;
+    // Removed: @FXML private TextField station1PrepRegisterAddressField;
+    // Removed: @FXML private TextField station1PrepCoilAddressField;
 
     // Station 2 Debug Controls
     @FXML private TitledPane station2TitledPane;
@@ -51,6 +53,8 @@ public class DebugViewModel implements Initializable {
     @FXML private Button station2StopPrepButton;
     @FXML private Button station2ResetPrepButton;
     @FXML private Button station2UpdateTriggerButton;
+    // Removed: @FXML private TextField station2PrepRegisterAddressField;
+    // Removed: @FXML private TextField station2PrepCoilAddressField;
 
     // Station 3 Debug Controls
     @FXML private TitledPane station3TitledPane;
@@ -62,6 +66,8 @@ public class DebugViewModel implements Initializable {
     @FXML private Button station3StopPrepButton;
     @FXML private Button station3ResetPrepButton;
     @FXML private Button station3UpdateTriggerButton;
+    // Removed: @FXML private TextField station3PrepRegisterAddressField;
+    // Removed: @FXML private TextField station3PrepCoilAddressField;
 
     // Station Selection CheckBoxes
     @FXML private TitledPane stationSelectionTitledPane;
@@ -162,7 +168,7 @@ public class DebugViewModel implements Initializable {
 
     // Default coil addresses for switches (can be adjusted by user in UI)
     // These are initial placeholders. Real values should come from a persistent config.
-    private static final int DEFAULT_STATION1_PISTON_COIL = 0; // Will be overridden by config
+    private static final int DEFAULT_STATION1_PISTON_COIL = 0;
     private static final int DEFAULT_STATION2_PISTON_COIL = 1;
     private static final int DEFAULT_STATION3_PISTON_COIL = 2;
 
@@ -207,6 +213,14 @@ public class DebugViewModel implements Initializable {
     private static final int DEFAULT_SET_VOLTAGE_REGISTER = 100;
     private static final int DEFAULT_SET_CURRENT_REGISTER = 101;
 
+    // New: Default addresses for START PREP. Modbus operations (now constants)
+    private static final int STATION1_PREP_REGISTER = 200;
+    private static final int STATION1_PREP_COIL = 201;
+    private static final int STATION2_PREP_REGISTER = 202;
+    private static final int STATION2_PREP_COIL = 203;
+    private static final int STATION3_PREP_REGISTER = 204;
+    private static final int STATION3_PREP_COIL = 205;
+
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -232,6 +246,8 @@ public class DebugViewModel implements Initializable {
             // Setup the new SETTINGS controls for Modbus register writes
             setupSettingsControls();
 
+            // Removed: setupStationSpecificModbusAddressFields(); as addresses are now constants
+
             // Attempt to connect to Modbus and then setup switches/periodic read on a separate thread
             new Thread(() -> {
                 // Ensure Modbus connection is attempted/established
@@ -256,8 +272,8 @@ public class DebugViewModel implements Initializable {
         } catch (Exception e) {
             ApplicationLauncher.logger.error("Error during Debug View initialization: {}", e.getMessage(), e);
             NotificationManager.getInstance().showNotification(NotificationType.ERROR,
-                                                               "Debug View Error",
-                                                               "Failed to initialize Debug View: " + e.getMessage());
+                    "Debug View Error",
+                    "Failed to initialize Debug View: " + e.getMessage());
         }
     }
 
@@ -396,6 +412,8 @@ public class DebugViewModel implements Initializable {
         setVoltageButton.setOnAction(event -> handleSetVoltage());
         setCurrentButton.setOnAction(event -> handleSetCurrent());
     }
+
+    // Removed: setupStationSpecificModbusAddressFields() as addresses are now constants
 
     /**
      * Adds a listener to a TextField to ensure only numeric input (integers) is allowed.
@@ -540,9 +558,7 @@ public class DebugViewModel implements Initializable {
         modbusReadScheduler.scheduleAtFixedRate(() -> {
             // Iterate through all linked switches and update their UI
             Platform.runLater(() -> { // Ensure UI updates are on JavaFX Application Thread
-                modbusControlledSwitches.forEach((toggleSwitch, addressField) ->
-                    readCoilStateAndUpdateUI(toggleSwitch, addressField)
-                );
+                modbusControlledSwitches.forEach(this::readCoilStateAndUpdateUI);
             });
         }, 5, 5, TimeUnit.SECONDS); // Read every 5 seconds
         ApplicationLauncher.logger.info("Periodic Modbus coil read scheduled.");
@@ -578,11 +594,75 @@ public class DebugViewModel implements Initializable {
      */
     private void handleStationButton(int stationNum, String action) {
         ApplicationLauncher.logger.info("Station {} {} button clicked.", stationNum, action);
-        NotificationManager.getInstance().showNotification(NotificationType.INFO,
-                                                           "Button Clicked",
-                                                           "Station " + stationNum + " " + action + " button clicked. (Logic to be implemented)");
-        // Future: Implement specific logic for each button, potentially involving Modbus writes to other coils/registers.
+
+        if ("START PREP.".equals(action)) {
+            handleStartPrep(stationNum);
+        } else {
+            NotificationManager.getInstance().showNotification(NotificationType.INFO,
+                    "Button Clicked",
+                    "Station " + stationNum + " " + action + " button clicked. (Logic to be implemented)");
+            // Future: Implement specific logic for other buttons, potentially involving Modbus writes to other coils/registers.
+        }
     }
+
+    /**
+     * Handles the "START PREP." action for a specific station.
+     * Writes '123' to a holding register and 'true' to a coil,
+     * using predefined constant addresses.
+     * @param stationNum The station number (1, 2, or 3).
+     */
+    private void handleStartPrep(int stationNum) {
+        int registerAddress;
+        int coilAddress;
+
+        switch (stationNum) {
+            case 1:
+                registerAddress = STATION1_PREP_REGISTER;
+                coilAddress = STATION1_PREP_COIL;
+                break;
+            case 2:
+                registerAddress = STATION2_PREP_REGISTER;
+                coilAddress = STATION2_PREP_COIL;
+                break;
+            case 3:
+                registerAddress = STATION3_PREP_REGISTER;
+                coilAddress = STATION3_PREP_COIL;
+                break;
+            default:
+                ApplicationLauncher.logger.error("Invalid station number for START PREP: {}", stationNum);
+                NotificationManager.getInstance().showNotification(NotificationType.ERROR,
+                        "Error", "Invalid station selected for START PREP.");
+                return;
+        }
+
+        ApplicationLauncher.logger.info("Station {} START PREP: Writing 123 to register {} and TRUE to coil {}",
+                stationNum, registerAddress, coilAddress);
+
+        new Thread(() -> {
+            boolean registerWriteSuccess = ModbusService.writeRegister(registerAddress, 123);
+            boolean coilWriteSuccess = ModbusService.writeCoil(coilAddress, true);
+
+            Platform.runLater(() -> {
+                if (registerWriteSuccess && coilWriteSuccess) {
+                    NotificationManager.getInstance().showNotification(NotificationType.SUCCESS,
+                            "START PREP. Success",
+                            "Station " + stationNum + ": Prep values written to Modbus.");
+                } else {
+                    String errorMessage = "Station " + stationNum + ": Failed to write all prep values to Modbus.";
+                    if (!registerWriteSuccess) {
+                        errorMessage += " (Register " + registerAddress + " failed)";
+                    }
+                    if (!coilWriteSuccess) {
+                        errorMessage += " (Coil " + coilAddress + " failed)";
+                    }
+                    NotificationManager.getInstance().showNotification(NotificationType.ERROR,
+                            "START PREP. Failed", errorMessage + ". Check connection/addresses.");
+                    ApplicationLauncher.logger.error(errorMessage);
+                }
+            });
+        }, "Station" + stationNum + "StartPrepThread").start();
+    }
+
 
     /**
      * Called when the DebugView is no longer active (e.g., user navigates away).
