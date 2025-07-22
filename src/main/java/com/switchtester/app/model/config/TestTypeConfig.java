@@ -1,10 +1,14 @@
 package com.switchtester.app.model.config;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties; // For JSON serialization
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-// Using Jackson annotations for robust JSON serialization/deserialization
-@JsonIgnoreProperties(ignoreUnknown = true) // Ignore any unknown fields in JSON
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TestTypeConfig {
     @JsonProperty("name")
     private String name;
@@ -20,10 +24,15 @@ public class TestTypeConfig {
     private String offTime;
     @JsonProperty("pf")
     private String pf;
-    @JsonProperty("outputVoltage")
-    private String outputVoltage;
-    @JsonProperty("outputCurrent")
-    private String outputCurrent;
+    
+    // Changed from String to List<String> to store multiple selections
+    @JsonProperty("outputVoltages")
+    private List<String> outputVoltages = new ArrayList<>();
+    
+    // Changed from String to List<String> to store multiple selections
+    @JsonProperty("outputCurrents")
+    private List<String> outputCurrents = new ArrayList<>();
+    
     @JsonProperty("watts")
     private String watts;
 
@@ -31,8 +40,9 @@ public class TestTypeConfig {
     public TestTypeConfig() {
     }
 
+    // Constructor updated to accept lists
     public TestTypeConfig(String name, String description, String numOperations, String cycleTime, String onTime,
-                          String offTime, String pf, String outputVoltage, String outputCurrent, String watts) {
+                          String offTime, String pf, List<String> outputVoltages, List<String> outputCurrents, String watts) {
         this.name = name;
         this.description = description;
         this.numOperations = numOperations;
@@ -40,95 +50,63 @@ public class TestTypeConfig {
         this.onTime = onTime;
         this.offTime = offTime;
         this.pf = pf;
-        this.outputVoltage = outputVoltage;
-        this.outputCurrent = outputCurrent;
+        this.outputVoltages = outputVoltages;
+        this.outputCurrents = outputCurrents;
         this.watts = watts;
     }
 
-    // Getters
-    public String getName() {
-        return name;
+    // --- Getters and Setters ---
+
+    // Getters and setters for the new lists
+    public List<String> getOutputVoltages() {
+        return outputVoltages;
     }
 
-    public String getDescription() {
-        return description;
+    public void setOutputVoltages(List<String> outputVoltages) {
+        this.outputVoltages = outputVoltages;
     }
 
-    public String getNumOperations() {
-        return numOperations;
+    public List<String> getOutputCurrents() {
+        return outputCurrents;
     }
 
-    public String getCycleTime() {
-        return cycleTime;
+    public void setOutputCurrents(List<String> outputCurrents) {
+        this.outputCurrents = outputCurrents;
     }
 
-    public String getOnTime() {
-        return onTime;
-    }
-
-    public String getOffTime() {
-        return offTime;
-    }
-
-    public String getPf() {
-        return pf;
-    }
-
+    // Helper methods for TableView display. @JsonIgnore prevents them from interfering with serialization.
+    @JsonIgnore
     public String getOutputVoltage() {
-        return outputVoltage;
+        if (outputVoltages == null || outputVoltages.isEmpty()) return "";
+        return String.join(", ", outputVoltages);
     }
 
+    @JsonIgnore
     public String getOutputCurrent() {
-        return outputCurrent;
+        if (outputCurrents == null || outputCurrents.isEmpty()) return "";
+        return String.join(", ", outputCurrents);
     }
-
-    public String getWatts() {
-        return watts;
-    }
-
-    // Setters
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setNumOperations(String numOperations) {
-        this.numOperations = numOperations;
-    }
-
-    public void setCycleTime(String cycleTime) {
-        this.cycleTime = cycleTime;
-    }
-
-    public void setOnTime(String onTime) {
-        this.onTime = onTime;
-    }
-
-    public void setOffTime(String offTime) {
-        this.offTime = offTime;
-    }
-
-    public void setPf(String pf) {
-        this.pf = pf;
-    }
-
-    public void setOutputVoltage(String outputVoltage) {
-        this.outputVoltage = outputVoltage;
-    }
-
-    public void setOutputCurrent(String outputCurrent) {
-        this.outputCurrent = outputCurrent;
-    }
-
-    public void setWatts(String watts) {
-        this.watts = watts;
-    }
+    
+    // Standard Getters and Setters
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getNumOperations() { return numOperations; }
+    public void setNumOperations(String numOperations) { this.numOperations = numOperations; }
+    public String getCycleTime() { return cycleTime; }
+    public void setCycleTime(String cycleTime) { this.cycleTime = cycleTime; }
+    public String getOnTime() { return onTime; }
+    public void setOnTime(String onTime) { this.onTime = onTime; }
+    public String getOffTime() { return offTime; }
+    public void setOffTime(String offTime) { this.offTime = offTime; }
+    public String getPf() { return pf; }
+    public void setPf(String pf) { this.pf = pf; }
+    public String getWatts() { return watts; }
+    public void setWatts(String watts) { this.watts = watts; }
 
     @Override
     public String toString() {
-        return name; // This is important for ComboBox to display the name
+        return name;
     }
 }

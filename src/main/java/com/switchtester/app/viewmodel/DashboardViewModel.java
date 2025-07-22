@@ -157,7 +157,7 @@ public class DashboardViewModel implements Initializable {
         // Initialize and start periodic Modbus connection status update
         // The initial update will also trigger a connection attempt if disconnected
         updateModbusConnectionStatusUI();
-        startModbusStatusScheduler(); // Start periodic updates
+        //startModbusStatusScheduler(); // Start periodic updates
         ApplicationLauncher.logger.info("Dashboard View Initialized successfully.");
     }
 

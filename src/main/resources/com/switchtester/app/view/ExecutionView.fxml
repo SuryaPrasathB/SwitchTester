@@ -4,24 +4,24 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8.0.161" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.switchtester.app.viewmodel.ExecutionViewModel"> <children>
+<AnchorPane stylesheets="@styles.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.switchtester.app.viewmodel.ExecutionViewModel">
+   <children>
       <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane hgap="20.0" vgap="20.0" VBox.vgrow="ALWAYS">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1447.800048828125" minWidth="804.5999755859375" percentWidth="64.0" prefWidth="1447.800048828125" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="785.400146484375" minWidth="142.199951171875" percentWidth="36.0" prefWidth="487.800048828125" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="65.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints vgrow="SOMETIMES" />
@@ -29,6 +29,7 @@
                   <RowConstraints vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
+                  <!-- Station 1 Configuration -->
                   <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #bdc3c7; -fx-border-width: 1;">
                      <children>
                         <Label styleClass="station-text" text="Station 1" textFill="#2c3e50">
@@ -36,60 +37,59 @@
                               <Font size="20.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="-5.0" top="-10.0" />
+                              <Insets top="-10.0" />
                            </VBox.margin>
                         </Label>
                         <GridPane hgap="10.0" styleClass="grid-cell" vgap="10.0">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                              <ColumnConstraints hgrow="NEVER" prefWidth="120.0" />
+                              <ColumnConstraints hgrow="ALWAYS" prefWidth="220.0" />
+                              <ColumnConstraints hgrow="ALWAYS" prefWidth="150.0" />
+                              <ColumnConstraints hgrow="NEVER" prefWidth="20.0" />
+                              <ColumnConstraints hgrow="NEVER" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="20.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
                               <Label text="Test Type :" GridPane.halignment="RIGHT" />
-                              <ComboBox fx:id="station1TestTypeComboBox" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Select Test Type" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                              <TextField fx:id="station1TestTypeDescField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Description" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-
+                              <ComboBox fx:id="station1TestTypeComboBox" prefWidth="220.0" promptText="Select Test Type" GridPane.columnIndex="1" />
+                              <TextField fx:id="station1TestTypeDescField" editable="false" prefWidth="150.0" promptText="Description" GridPane.columnIndex="2" />
                               <Label text="Switch Ratings :" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="station1VoltageComboBox" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Voltage" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="station1CurrentComboBox" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Current" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-
+                              <ComboBox fx:id="station1VoltageComboBox" prefWidth="220.0" promptText="Voltage" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="station1CurrentComboBox" prefWidth="150.0" promptText="Current" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                               <Label text="No. of Operations :" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                              <TextField fx:id="station1NumOperationsField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-
+                              <TextField fx:id="station1NumOperationsField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Label text="1 Cycle Time (ms) :" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                              <TextField fx:id="station1CycleTimeField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-
+                              <TextField fx:id="station1CycleTimeField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <Label text="ON Time (ms) :" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                              <TextField fx:id="station1OnTimeField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-
+                              <TextField fx:id="station1OnTimeField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Label text="OFF Time (ms) :" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                              <TextField fx:id="station1OffTimeField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                              <Button fx:id="station1StartButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleStation1Start" prefHeight="26.0" prefWidth="100.0" styleClass="start-button" text="START" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
-                              <Button fx:id="station1StopButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleStation1Stop" styleClass="stop-button" text="STOP" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Button fx:id="station1ResetButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleStation1Reset" styleClass="reset-button" text="RESET" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Button fx:id="station1SaveButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleStation1Save" styleClass="save-button" text="SAVE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                              <Button fx:id="station1LoadButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleStation1Load" styleClass="load-button" text="LOAD" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                              <TextField fx:id="station1OffTimeField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="4" GridPane.rowSpan="2147483647">
+                                 <children>
+                                    <Button fx:id="station1StartButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation1Start" styleClass="start-button" text="START" />
+                                    <Button fx:id="station1StopButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation1Stop" styleClass="stop-button" text="STOP" />
+                                    <Button fx:id="station1ResetButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation1Reset" styleClass="reset-button" text="RESET" />
+                                    <Button fx:id="station1SaveButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation1Save" styleClass="save-button" text="SAVE" />
+                                    <Button fx:id="station1LoadButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation1Load" styleClass="load-button" text="LOAD" />
+                                 </children>
+                              </VBox>
+                              <Separator orientation="VERTICAL" GridPane.columnIndex="3" GridPane.rowSpan="2147483647" />
                            </children>
                         </GridPane>
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
                   </VBox>
-
+                  <!-- Station 2 Configuration -->
                   <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #bdc3c7; -fx-border-width: 1;" GridPane.rowIndex="1">
                      <children>
                         <Label styleClass="station-text" text="Station 2" textFill="#2c3e50">
@@ -97,49 +97,51 @@
                               <Font name="Inter Bold" size="20.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="-5.0" top="-10.0" />
+                              <Insets top="-10.0" />
                            </VBox.margin>
                         </Label>
                         <GridPane hgap="10.0" styleClass="grid-cell" vgap="10.0">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                              <ColumnConstraints hgrow="NEVER" prefWidth="120.0" />
+                              <ColumnConstraints hgrow="ALWAYS" prefWidth="220.0" />
+                              <ColumnConstraints hgrow="ALWAYS" prefWidth="150.0" />
+                              <ColumnConstraints hgrow="NEVER" prefWidth="20.0" />
+                              <ColumnConstraints hgrow="NEVER" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="20.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label text="Test Type :" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
-                              <ComboBox fx:id="station2TestTypeComboBox" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Select Test Type" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-                              <TextField fx:id="station2TestTypeDescField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Description" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-
+                              <Label text="Test Type :" GridPane.halignment="RIGHT" />
+                              <ComboBox fx:id="station2TestTypeComboBox" prefWidth="220.0" promptText="Select Test Type" GridPane.columnIndex="1" />
+                              <TextField fx:id="station2TestTypeDescField" editable="false" prefWidth="150.0" promptText="Description" GridPane.columnIndex="2" />
                               <Label text="Switch Ratings :" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="station2VoltageComboBox" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Voltage" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="station2CurrentComboBox" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="220.0" promptText="Current" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-
+                              <ComboBox fx:id="station2VoltageComboBox" prefWidth="220.0" promptText="Voltage" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="station2CurrentComboBox" prefWidth="150.0" promptText="Current" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                               <Label text="No. of Operations :" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                              <TextField fx:id="station2NumOperationsField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-
+                              <TextField fx:id="station2NumOperationsField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Label text="1 Cycle Time (ms) :" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                              <TextField fx:id="station2CycleTimeField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-
+                              <TextField fx:id="station2CycleTimeField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <Label text="ON Time (ms) :" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                              <TextField fx:id="station2OnTimeField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-
+                              <TextField fx:id="station2OnTimeField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Label text="OFF Time (ms) :" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                              <TextField fx:id="station2OffTimeField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                              <Button fx:id="station2StartButton" mnemonicParsing="false" onAction="#handleStation2Start" styleClass="start-button" text="START" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
-                              <Button fx:id="station2StopButton" mnemonicParsing="false" onAction="#handleStation2Stop" styleClass="stop-button" text="STOP" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Button fx:id="station2ResetButton" mnemonicParsing="false" onAction="#handleStation2Reset" styleClass="reset-button" text="RESET" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Button fx:id="station2SaveButton" mnemonicParsing="false" onAction="#handleStation2Save" styleClass="save-button" text="SAVE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                              <Button fx:id="station2LoadButton" mnemonicParsing="false" onAction="#handleStation2Load" styleClass="load-button" text="LOAD" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                              <TextField fx:id="station2OffTimeField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="4" GridPane.rowSpan="2147483647">
+                                 <children>
+                                    <Button fx:id="station2StartButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation2Start" styleClass="start-button" text="START" />
+                                    <Button fx:id="station2StopButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation2Stop" styleClass="stop-button" text="STOP" />
+                                    <Button fx:id="station2ResetButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation2Reset" styleClass="reset-button" text="RESET" />
+                                    <Button fx:id="station2SaveButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation2Save" styleClass="save-button" text="SAVE" />
+                                    <Button fx:id="station2LoadButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation2Load" styleClass="load-button" text="LOAD" />
+                                 </children>
+                              </VBox>
+                              <Separator orientation="VERTICAL" GridPane.columnIndex="3" GridPane.rowSpan="2147483647" />
                            </children>
                         </GridPane>
                      </children>
@@ -147,7 +149,7 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
                   </VBox>
-
+                  <!-- Station 3 Configuration -->
                   <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #bdc3c7; -fx-border-width: 1;" GridPane.rowIndex="2">
                      <children>
                         <Label styleClass="station-text" text="Station 3" textFill="#2c3e50">
@@ -155,49 +157,51 @@
                               <Font name="Inter Bold" size="20.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="-5.0" top="-10.0" />
+                              <Insets top="-10.0" />
                            </VBox.margin>
                         </Label>
-                        <GridPane hgap="10.0" prefWidth="754.0" styleClass="grid-cell" vgap="10.0">
+                        <GridPane hgap="10.0" styleClass="grid-cell" vgap="10.0">
                            <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                              <ColumnConstraints hgrow="NEVER" prefWidth="120.0" />
+                              <ColumnConstraints hgrow="ALWAYS" prefWidth="220.0" />
+                              <ColumnConstraints hgrow="ALWAYS" prefWidth="150.0" />
+                              <ColumnConstraints hgrow="NEVER" prefWidth="20.0" />
+                              <ColumnConstraints hgrow="NEVER" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="20.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label text="Test Type :" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
-                              <ComboBox fx:id="station3TestTypeComboBox" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Select Test Type" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-                              <TextField fx:id="station3TestTypeDescField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Description" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-
+                              <Label text="Test Type :" GridPane.halignment="RIGHT" />
+                              <ComboBox fx:id="station3TestTypeComboBox" prefWidth="220.0" promptText="Select Test Type" GridPane.columnIndex="1" />
+                              <TextField fx:id="station3TestTypeDescField" editable="false" prefWidth="150.0" promptText="Description" GridPane.columnIndex="2" />
                               <Label text="Switch Ratings :" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="station3VoltageComboBox" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="220.0" promptText="Voltage" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="station3CurrentComboBox" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="220.0" promptText="Current" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-
+                              <ComboBox fx:id="station3VoltageComboBox" prefWidth="220.0" promptText="Voltage" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="station3CurrentComboBox" prefWidth="150.0" promptText="Current" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                               <Label text="No. of Operations :" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                              <TextField fx:id="station3NumOperationsField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-
+                              <TextField fx:id="station3NumOperationsField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <Label text="1 Cycle Time (ms) :" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                              <TextField fx:id="station3CycleTimeField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-
+                              <TextField fx:id="station3CycleTimeField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <Label text="ON Time (ms) :" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                              <TextField fx:id="station3OnTimeField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-
+                              <TextField fx:id="station3OnTimeField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <Label text="OFF Time (ms) :" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                              <TextField fx:id="station3OffTimeField" editable="false" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                              <Button fx:id="station3StartButton" mnemonicParsing="false" onAction="#handleStation3Start" styleClass="start-button" text="START" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
-                              <Button fx:id="station3StopButton" mnemonicParsing="false" onAction="#handleStation3Stop" styleClass="stop-button" text="STOP" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <Button fx:id="station3ResetButton" mnemonicParsing="false" onAction="#handleStation3Reset" styleClass="reset-button" text="RESET" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                              <Button fx:id="station3SaveButton" mnemonicParsing="false" onAction="#handleStation3Save" styleClass="save-button" text="SAVE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                              <Button fx:id="station3LoadButton" mnemonicParsing="false" onAction="#handleStation3Load" styleClass="load-button" text="LOAD" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                              <TextField fx:id="station3OffTimeField" editable="false" prefWidth="220.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="4" GridPane.rowSpan="2147483647">
+                                 <children>
+                                    <Button fx:id="station3StartButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation3Start" styleClass="start-button" text="START" />
+                                    <Button fx:id="station3StopButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation3Stop" styleClass="stop-button" text="STOP" />
+                                    <Button fx:id="station3ResetButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation3Reset" styleClass="reset-button" text="RESET" />
+                                    <Button fx:id="station3SaveButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation3Save" styleClass="save-button" text="SAVE" />
+                                    <Button fx:id="station3LoadButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleStation3Load" styleClass="load-button" text="LOAD" />
+                                 </children>
+                              </VBox>
+                              <Separator orientation="VERTICAL" GridPane.columnIndex="3" GridPane.rowSpan="2147483647" />
                            </children>
                         </GridPane>
                      </children>
@@ -205,8 +209,8 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
                   </VBox>
-      
-                  <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #bdc3c7; -fx-border-width: 1;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                  <!-- Station 1 Parameters -->
+                  <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #bdc3c7; -fx-border-width: 1;" GridPane.columnIndex="1">
                      <children>
                         <Label styleClass="station-text" text="Station 1 Params" textFill="#2c3e50">
                            <font>
@@ -216,84 +220,43 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </Label>
-                        <HBox prefHeight="222.0" prefWidth="538.0">
+                        <GridPane styleClass="grid-cell" VBox.vgrow="ALWAYS">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                           </rowConstraints>
                            <children>
-                              <VBox prefHeight="208.0" prefWidth="254.0">
-                                 <children>
-                                    <GridPane prefHeight="226.0" prefWidth="254.0" styleClass="grid-cell">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="180.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="180.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <children>
-                                          <Label text="NO. OF CYCLES" GridPane.halignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="12.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField fx:id="station1TotalCyclesField" alignment="CENTER" prefHeight="152.0" prefWidth="213.0" text="1" GridPane.rowIndex="1">
-                                             <font>
-                                                <Font name="System Bold" size="40.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                             <GridPane.margin>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <TextField fx:id="station1TotalCyclesField" alignment="CENTER" prefHeight="152.0" prefWidth="213.0" text="40000" GridPane.rowIndex="3">
-                                             <font>
-                                                <Font name="System Bold" size="40.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                             <GridPane.margin>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <Line endX="100.0" startX="-100.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                       </children>
-                                    </GridPane>
-                                 </children>
-                              </VBox>
-                              <Pane prefHeight="222.0" prefWidth="26.0" />
-                              <GridPane hgap="10.0" styleClass="grid-cell" vgap="10.0">
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <children>
-                                    <Label text="Voltage :" GridPane.halignment="RIGHT" />
-                                    <TextField fx:id="station1VoltageField" editable="false" GridPane.columnIndex="1" />
-                                    <Label text="Current :" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                    <TextField fx:id="station1CurrentField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label text="Watts :" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                    <TextField fx:id="station1WattsField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Pf :" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                    <TextField fx:id="station1PfField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                 </children>
-                              </GridPane>
+                              <Label text="NO. OF CYCLES" GridPane.halignment="CENTER" />
+                              <TextField fx:id="station1CyclesField" alignment="CENTER" editable="false" text="1" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="40.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="station1TotalCyclesField" alignment="CENTER" editable="false" text="40000" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font name="System Bold" size="40.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Line endX="100.0" startX="-100.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                            </children>
-                        </HBox>
+                        </GridPane>
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
                   </VBox>
-      
+                  <!-- Station 2 Parameters -->
                   <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #bdc3c7; -fx-border-width: 1;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Label styleClass="station-text" text="Station 2 Params" textFill="#2c3e50">
@@ -304,84 +267,43 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </Label>
-                        <HBox prefHeight="222.0" prefWidth="538.0">
+                        <GridPane styleClass="grid-cell" VBox.vgrow="ALWAYS">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                           </rowConstraints>
                            <children>
-                              <VBox prefHeight="208.0" prefWidth="254.0">
-                                 <children>
-                                    <GridPane prefHeight="226.0" prefWidth="254.0" styleClass="grid-cell">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="180.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="180.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Label text="NO. OF CYCLES" GridPane.halignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="12.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField fx:id="station2CyclesField" alignment="CENTER" prefHeight="152.0" prefWidth="213.0" text="110" GridPane.rowIndex="1">
-                                             <font>
-                                                <Font name="System Bold" size="40.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                             <GridPane.margin>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <TextField fx:id="station2TotalCyclesField" alignment="CENTER" prefHeight="152.0" prefWidth="213.0" text="40000" GridPane.rowIndex="3">
-                                             <font>
-                                                <Font name="System Bold" size="40.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                             <GridPane.margin>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <Line endX="100.0" startX="-100.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                       </children>
-                                    </GridPane>
-                                 </children>
-                              </VBox>
-                              <Pane prefHeight="222.0" prefWidth="26.0" />
-                              <GridPane hgap="10.0" styleClass="grid-cell" vgap="10.0">
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <children>
-                                    <Label text="Voltage :" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
-                                    <TextField fx:id="station2VoltageField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                    <Label text="Current :" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                    <TextField fx:id="station2CurrentField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label text="Watts :" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                    <TextField fx:id="station2WattsField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Pf :" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                    <TextField fx:id="station2PfField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                 </children>
-                              </GridPane>
+                              <Label text="NO. OF CYCLES" GridPane.halignment="CENTER" />
+                              <TextField fx:id="station2CyclesField" alignment="CENTER" editable="false" text="110" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="40.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="station2TotalCyclesField" alignment="CENTER" editable="false" text="40000" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font name="System Bold" size="40.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Line endX="100.0" startX="-100.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                            </children>
-                        </HBox>
+                        </GridPane>
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
                   </VBox>
-      
+                  <!-- Station 3 Parameters -->
                   <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #bdc3c7; -fx-border-width: 1;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
                         <Label styleClass="station-text" text="Station 3 Params" textFill="#2c3e50">
@@ -392,78 +314,37 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </Label>
-                        <HBox prefHeight="222.0" prefWidth="538.0">
+                        <GridPane styleClass="grid-cell" VBox.vgrow="ALWAYS">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints vgrow="SOMETIMES" />
+                           </rowConstraints>
                            <children>
-                              <VBox prefHeight="208.0" prefWidth="254.0">
-                                 <children>
-                                    <GridPane prefHeight="226.0" prefWidth="254.0" styleClass="grid-cell">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="180.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="180.0" minHeight="10.0" prefHeight="180.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Label text="NO. OF CYCLES" GridPane.halignment="CENTER">
-                                             <font>
-                                                <Font name="System Bold" size="12.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField fx:id="station3CyclesField" alignment="CENTER" prefHeight="152.0" prefWidth="213.0" text="12354" GridPane.rowIndex="1">
-                                             <font>
-                                                <Font name="System Bold" size="40.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                             <GridPane.margin>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <TextField fx:id="station3TotalCyclesField" alignment="CENTER" prefHeight="152.0" prefWidth="213.0" text="40000" GridPane.rowIndex="3">
-                                             <font>
-                                                <Font name="System Bold" size="40.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                             <GridPane.margin>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <Line endX="100.0" startX="-100.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                                       </children>
-                                    </GridPane>
-                                 </children>
-                              </VBox>
-                              <Pane prefHeight="222.0" prefWidth="26.0" />
-                              <GridPane hgap="10.0" styleClass="grid-cell" vgap="10.0">
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <children>
-                                    <Label text="Voltage :" GridPane.halignment="RIGHT" GridPane.rowIndex="0" />
-                                    <TextField fx:id="station3VoltageField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                    <Label text="Current :" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                    <TextField fx:id="station3CurrentField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label text="Watts :" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                    <TextField fx:id="station3WattsField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Pf :" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                    <TextField fx:id="station3PfField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                 </children>
-                              </GridPane>
+                              <Label text="NO. OF CYCLES" GridPane.halignment="CENTER" />
+                              <TextField fx:id="station3CyclesField" alignment="CENTER" editable="false" text="12354" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font name="System Bold" size="40.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="station3TotalCyclesField" alignment="CENTER" editable="false" text="40000" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font name="System Bold" size="40.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Line endX="100.0" startX="-100.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                            </children>
-                        </HBox>
+                        </GridPane>
                      </children>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

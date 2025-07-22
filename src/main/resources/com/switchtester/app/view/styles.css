@@ -1,49 +1,21 @@
-/* Button Styles */
-.start-button {
-    -fx-background-color: #2ecc71;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 5;
-	-fx-pref-width: 100;
-}
+/* --- General Component Styling --- */
+/* These styles act as a base default for the application */
 
-.stop-button {
-    -fx-background-color: #e74c3c;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 5;
-	-fx-pref-width: 100;
-}
-
-.reset-button {
-    -fx-background-color: #f39c12;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 5;
-	-fx-pref-width: 100;
-}
-
-.save-button, .load-button {
-    -fx-background-color: #3498db;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 5;
-	-fx-pref-width: 100;
-}
-
-.grid-cell {
-	-fx-border-color: black;
-	-fx-border-width: 2;
-	-fx-padding: 5;
-}
-
-.station-text {
-	-fx-font-weight: bold;
-}
-
-/* General styling for the debug view */
 .root {
-    -fx-background-color: #f4f7f6; /* Light background */
+    -fx-background-color: #f4f7f6; /* Light background for all views */
+    -fx-font-family: "Inter";
+}
+
+.label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #333333;
+}
+
+.text-field {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 4px;
+    -fx-padding: 5px;
 }
 
 .titled-pane > .title {
@@ -62,35 +34,76 @@
     -fx-padding: 15px;
 }
 
-.label {
-    -fx-font-size: 13px;
-    -fx-text-fill: #333333;
-}
 
-.text-field {
-    -fx-background-color: #f0f0f0;
-    -fx-border-color: #cccccc;
-    -fx-border-radius: 4px;
-    -fx-padding: 5px;
-}
+/* --- Execution Screen Specific Button Styles --- */
+/* These styles will apply to buttons with the specific style classes */
 
-.button {
-    -fx-background-color: #3498db; /* Blue for buttons */
+.start-button {
+    -fx-background-color: #2ecc71; /* Green */
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-background-radius: 5px;
-    -fx-padding: 8px 15px;
+    -fx-background-radius: 5;
+	-fx-pref-width: 100;
     -fx-cursor: hand;
 }
-
-.button:hover {
-    -fx-background-color: #2980b9; /* Darker blue on hover */
+.start-button:hover {
+    -fx-background-color: #27ae60; /* Darker Green */
 }
 
-/* Toggle Switch Styling for CheckBox */
+.stop-button {
+    -fx-background-color: #e74c3c; /* Red */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+	-fx-pref-width: 100;
+    -fx-cursor: hand;
+}
+.stop-button:hover {
+    -fx-background-color: #c0392b; /* Darker Red */
+}
+
+.reset-button {
+    -fx-background-color: #f39c12; /* Yellow/Orange */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+	-fx-pref-width: 100;
+    -fx-cursor: hand;
+}
+.reset-button:hover {
+    -fx-background-color: #d35400; /* Darker Orange */
+}
+
+.save-button, .load-button {
+    -fx-background-color: #3498db; /* Blue */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+	-fx-pref-width: 100;
+    -fx-cursor: hand;
+}
+.save-button:hover, .load-button:hover {
+    -fx-background-color: #2980b9; /* Darker Blue */
+}
+
+
+/* --- General UI Element Styles --- */
+
+.grid-cell {
+	-fx-border-color: black;
+	-fx-border-width: 2;
+	-fx-padding: 5;
+}
+
+.station-text {
+	-fx-font-weight: bold;
+}
+
+
+/* --- Toggle Switch Styling for CheckBox --- */
+/* Used in the Debug View */
 .toggle-switch {
     -fx-padding: 0;
-    /* Ensure no default background image for the checkbox itself */
     -fx-background-image: null;
 }
 
@@ -98,24 +111,19 @@
     -fx-background-color: #ccc;
     -fx-background-radius: 15px;
     -fx-padding: 3px;
-    -fx-pref-width: 55px; /* Increased width of the switch track for more room */
-    -fx-pref-height: 25px; /* Height of the switch track */
+    -fx-pref-width: 55px;
+    -fx-pref-height: 25px;
 }
 
 .toggle-switch .mark {
-    /* This is the thumb (circle) */
     -fx-background-color: white;
-    -fx-background-radius: 10px; /* Makes it a circle, slightly smaller radius for 16px size */
-    -fx-pref-width: 20px; /* Size of the thumb (smaller) */
-    -fx-pref-height: 16px;
-    -fx-max-width: 30px; /* Enforce min width */
-    -fx-max-height: 20px; /* Enforce min height */
-    -fx-translate-x: -10; /* Initial position for OFF state */
+    -fx-background-radius: 10px;
+    -fx-pref-width: 20px;
+    -fx-pref-height: 20px;
+    -fx-translate-x: -12px; /* Initial position for OFF state */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 1);
-    -fx-transition: -fx-translate-x 0.2s ease-in-out; /* Smooth transition */
-    /* Crucial: Remove the default checkmark shape and background image */
-    -fx-shape: null; /* This hides the default tick shape */
-    -fx-background-image: null; /* Ensures no default tick image is drawn */
+    -fx-shape: null;
+    -fx-background-image: null;
 }
 
 .toggle-switch:selected .box {
@@ -123,7 +131,7 @@
 }
 
 .toggle-switch:selected .mark {
-    -fx-translate-x: 10px; /* Adjusted translate-x to match new box width (55 - 19 - 3*2 = 30) */
+    -fx-translate-x: 12px; /* Corrected position for ON state */
 }
 
 .toggle-switch .text {

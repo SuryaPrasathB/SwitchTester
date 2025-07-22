@@ -1,5 +1,7 @@
 {
-  "ipAddress" : "192.168.1.123",
+  "ipAddress" : "192.168.0.123",
   "port" : 502,
-  "pistonCoilAddress" : 0
+  "timeoutSeconds" : 5,
+  "setVoltageRegisterAddress" : 100,
+  "setCurrentRegisterAddress" : 101
 }

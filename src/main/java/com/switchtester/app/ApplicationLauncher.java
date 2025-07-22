@@ -267,24 +267,38 @@ public class ApplicationLauncher extends Application { // Renamed from MainApp
      */
     public static void showMainDashboardScreen() {
         try {
-            primaryStage.initStyle(StageStyle.DECORATED);
+            // Create a new stage for the dashboard to avoid IllegalStateException
+            Stage dashboardStage = new Stage();
+
+            // Set the style on the new stage BEFORE it is shown
+            dashboardStage.initStyle(StageStyle.DECORATED);
 
             FXMLLoader loader = new FXMLLoader(ApplicationLauncher.class.getResource("view/DashboardView.fxml"));
             Parent dashboardRoot = loader.load();
 
+            // Pass the new dashboard stage to the controller
             DashboardViewModel dashboardViewModel = loader.getController();
-            dashboardViewModel.setDashboardStage(primaryStage);
+            dashboardViewModel.setDashboardStage(dashboardStage);
 
             Scene dashboardScene = new Scene(dashboardRoot);
 
-            primaryStage.setScene(dashboardScene);
-            primaryStage.setFullScreen(true);
-            primaryStage.setFullScreenExitHint("");
-            primaryStage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.valueOf("Esc"));
+            dashboardStage.setScene(dashboardScene);
+            dashboardStage.setFullScreen(true);
+            dashboardStage.setFullScreenExitHint("");
+            dashboardStage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.valueOf("Esc"));
 
-            primaryStage.setTitle("Switch Tester Dashboard");
-            primaryStage.show();
+            dashboardStage.setTitle("Switch Tester Dashboard");
+
+            // Show the new dashboard stage
+            dashboardStage.show();
+
+            // Hide the original primary stage (the login window)
+            if (primaryStage != null) {
+                primaryStage.hide();
+            }
+
             logger.info("Main Dashboard screen displayed in fullscreen.");
+
         } catch (IOException e) {
             logger.error("Error loading dashboard screen: {}", e.getMessage(), e);
         }

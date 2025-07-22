@@ -1,30 +1,36 @@
 package com.switchtester.app.viewmodel;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import com.switchtester.app.ApplicationLauncher;
 import com.switchtester.app.model.config.TestTypeConfig;
+import com.switchtester.app.service.ModbusService;
+import com.switchtester.app.service.NotificationManager;
 import com.switchtester.app.service.TestTypeConfigManager;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import com.switchtester.app.viewmodel.NotificationViewModel.NotificationType;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
 /**
  * ViewModel for the Execution Screen.
- * Handles the logic for managing test execution for each station,
- * including populating configurable options and handling actions.
+ * Manages the UI and logic for configuring and running tests on three independent stations.
  */
 public class ExecutionViewModel implements Initializable {
 
-    // FXML elements for Station 1
-    @FXML private ComboBox<TestTypeConfig> station1TestTypeComboBox; // Changed to TestTypeConfig
+    // region FXML UI Components - Station 1
+    @FXML private ComboBox<String> station1TestTypeComboBox;
     @FXML private TextField station1TestTypeDescField;
     @FXML private ComboBox<String> station1VoltageComboBox;
     @FXML private ComboBox<String> station1CurrentComboBox;
@@ -37,14 +43,12 @@ public class ExecutionViewModel implements Initializable {
     @FXML private Button station1ResetButton;
     @FXML private Button station1SaveButton;
     @FXML private Button station1LoadButton;
-    @FXML private TextField station1VoltageField; // Output Voltage
-    @FXML private TextField station1CurrentField; // Output Current
-    @FXML private TextField station1WattsField;
-    @FXML private TextField station1PfField;
     @FXML private TextField station1CyclesField;
+    @FXML private TextField station1TotalCyclesField;
+    // endregion
 
-    // FXML elements for Station 2
-    @FXML private ComboBox<TestTypeConfig> station2TestTypeComboBox; // Changed to TestTypeConfig
+    // region FXML UI Components - Station 2
+    @FXML private ComboBox<String> station2TestTypeComboBox;
     @FXML private TextField station2TestTypeDescField;
     @FXML private ComboBox<String> station2VoltageComboBox;
     @FXML private ComboBox<String> station2CurrentComboBox;
@@ -57,14 +61,12 @@ public class ExecutionViewModel implements Initializable {
     @FXML private Button station2ResetButton;
     @FXML private Button station2SaveButton;
     @FXML private Button station2LoadButton;
-    @FXML private TextField station2VoltageField; // Output Voltage
-    @FXML private TextField station2CurrentField; // Output Current
-    @FXML private TextField station2WattsField;
-    @FXML private TextField station2PfField;
     @FXML private TextField station2CyclesField;
+    @FXML private TextField station2TotalCyclesField;
+    // endregion
 
-    // FXML elements for Station 3
-    @FXML private ComboBox<TestTypeConfig> station3TestTypeComboBox; // Changed to TestTypeConfig
+    // region FXML UI Components - Station 3
+    @FXML private ComboBox<String> station3TestTypeComboBox;
     @FXML private TextField station3TestTypeDescField;
     @FXML private ComboBox<String> station3VoltageComboBox;
     @FXML private ComboBox<String> station3CurrentComboBox;
@@ -77,298 +79,302 @@ public class ExecutionViewModel implements Initializable {
     @FXML private Button station3ResetButton;
     @FXML private Button station3SaveButton;
     @FXML private Button station3LoadButton;
-    @FXML private TextField station3VoltageField; // Output Voltage
-    @FXML private TextField station3CurrentField; // Output Current
-    @FXML private TextField station3WattsField;
-    @FXML private TextField station3PfField;
     @FXML private TextField station3CyclesField;
+    @FXML private TextField station3TotalCyclesField;
+    // endregion
 
-    // ObservableList for Test Types (now loaded from config)
-    private ObservableList<TestTypeConfig> availableTestTypes;
+    // region Modbus Addresses (Hardcoded)
+    private static final int STATION1_TEST_TYPE_ADDR = 200;
+    private static final int STATION1_VOLTAGE_ADDR = 201;
+    private static final int STATION1_CURRENT_ADDR = 202;
+    private static final int STATION1_NUM_CYCLES_ADDR = 203;
+    private static final int STATION1_ON_TIME_ADDR = 204;
+    private static final int STATION1_OFF_TIME_ADDR = 205;
+    private static final int STATION1_CURRENT_CYCLE_COUNT_ADDR = 206;
 
-    // Dummy data for Voltage and Current (remain hardcoded as per request)
-    private ObservableList<String> voltages = FXCollections.observableArrayList(
-            "12 V", "24 V", "48 V", "120 V", "230 V", "240 V", "400 V"
-    );
+    private static final int STATION2_CURRENT_CYCLE_COUNT_ADDR = 216;
+    private static final int STATION3_CURRENT_CYCLE_COUNT_ADDR = 226;
+    // endregion
 
-    private ObservableList<String> currents = FXCollections.observableArrayList(
-            "1 A", "2 A", "5 A", "6 A", "10 A", "15 A", "20 A"
-    );
+    private List<TestTypeConfig> testConfigs;
+    private ScheduledExecutorService cycleCountScheduler;
+    private boolean isUpdatingComboBoxes = false;
 
-    /**
-     * Initializes the controller class. This method is automatically called
-     * after the FXML file has been loaded.
-     *
-     * @param location The location used to resolve relative paths for the root object, or null if the location is not known.
-     * @param resources The resources used to localize the root object, or null if the root object was not localized.
-     */
+    private final StationConfig savedStation1Config = new StationConfig();
+    private final StationConfig savedStation2Config = new StationConfig();
+    private final StationConfig savedStation3Config = new StationConfig();
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ApplicationLauncher.logger.info("Execution View Initialized.");
-
-        // Load test types from configuration
-        availableTestTypes = FXCollections.observableArrayList(TestTypeConfigManager.loadTestTypeConfigs());
-
-        // Populate ComboBoxes
-        station1TestTypeComboBox.setItems(availableTestTypes);
-        station1VoltageComboBox.setItems(voltages);
-        station1CurrentComboBox.setItems(currents);
-
-        station2TestTypeComboBox.setItems(availableTestTypes);
-        station2VoltageComboBox.setItems(voltages);
-        station2CurrentComboBox.setItems(currents);
-
-        station3TestTypeComboBox.setItems(availableTestTypes);
-        station3VoltageComboBox.setItems(voltages);
-        station3CurrentComboBox.setItems(currents);
-
-        // Set initial dummy values for parameters and descriptions
-        setInitialStationData(1);
-        setInitialStationData(2);
-        setInitialStationData(3);
-
-        // Add listeners to ComboBoxes to update parameters
-        station1TestTypeComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
-                updateStationParameters(1, newVal, station1VoltageComboBox.getValue(), station1CurrentComboBox.getValue()));
-        station1VoltageComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
-                updateStationParameters(1, station1TestTypeComboBox.getValue(), newVal, station1CurrentComboBox.getValue()));
-        station1CurrentComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
-                updateStationParameters(1, station1TestTypeComboBox.getValue(), station1VoltageComboBox.getValue(), newVal));
-
-        station2TestTypeComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
-                updateStationParameters(2, newVal, station2VoltageComboBox.getValue(), station2CurrentComboBox.getValue()));
-        station2VoltageComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
-                updateStationParameters(2, station2TestTypeComboBox.getValue(), newVal, station2CurrentComboBox.getValue()));
-        station2CurrentComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
-                updateStationParameters(2, station2TestTypeComboBox.getValue(), station2VoltageComboBox.getValue(), newVal));
-
-        station3TestTypeComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
-                updateStationParameters(3, newVal, station3VoltageComboBox.getValue(), station3CurrentComboBox.getValue()));
-        station3VoltageComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
-                updateStationParameters(3, station3TestTypeComboBox.getValue(), newVal, station3CurrentComboBox.getValue()));
-        station3CurrentComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) ->
-                updateStationParameters(3, station3TestTypeComboBox.getValue(), station3VoltageComboBox.getValue(), newVal));
+        ApplicationLauncher.logger.info("ExecutionViewModel initializing...");
+        loadTestConfigs();
+        populateTestTypeComboBoxes();
+        populateStaticComboBoxes(); // Populate Voltage and Current
+        setupStationListeners();
+        setupInterlocks();
+        // setupButtonActions() is no longer needed as we use @FXML annotations directly
+        startPeriodicCycleCountRead();
     }
 
-    /**
-     * Sets initial data for a specific station's parameters and descriptions.
-     * Selects the first available test type and default voltage/current.
-     * @param stationNumber The station number (1, 2, or 3).
-     */
-    private void setInitialStationData(int stationNumber) {
-        TestTypeConfig defaultTestType = availableTestTypes.isEmpty() ? null : availableTestTypes.get(0);
-        String defaultVoltage = voltages.isEmpty() ? null : voltages.get(0);
-        String defaultCurrent = currents.isEmpty() ? null : currents.get(0);
-
-        switch (stationNumber) {
-            case 1:
-                station1TestTypeComboBox.getSelectionModel().select(defaultTestType);
-                station1VoltageComboBox.getSelectionModel().select(defaultVoltage);
-                station1CurrentComboBox.getSelectionModel().select(defaultCurrent);
-                updateStationParameters(1, defaultTestType, defaultVoltage, defaultCurrent);
-                break;
-            case 2:
-                station2TestTypeComboBox.getSelectionModel().select(defaultTestType);
-                station2VoltageComboBox.getSelectionModel().select(defaultVoltage);
-                station2CurrentComboBox.getSelectionModel().select(defaultCurrent);
-                updateStationParameters(2, defaultTestType, defaultVoltage, defaultCurrent);
-                break;
-            case 3:
-                station3TestTypeComboBox.getSelectionModel().select(defaultTestType);
-                station3VoltageComboBox.getSelectionModel().select(defaultVoltage);
-                station3CurrentComboBox.getSelectionModel().select(defaultCurrent);
-                updateStationParameters(3, defaultTestType, defaultVoltage, defaultCurrent);
-                break;
-        }
-    }
-
-    /**
-     * Updates the parameter fields based on the selected test type, voltage, and current.
-     * This method now fetches data from the TestTypeConfig object.
-     * @param stationNumber The station number (1, 2, or 3).
-     * @param selectedTestTypeConfig The currently selected TestTypeConfig object.
-     * @param selectedVoltage The currently selected switch voltage.
-     * @param selectedCurrent The currently selected switch current.
-     */
-    private void updateStationParameters(int stationNumber, TestTypeConfig selectedTestTypeConfig, String selectedVoltage, String selectedCurrent) {
-        String testTypeDesc = "";
-        String numOperations = "N/A";
-        String cycleTime = "N/A";
-        String onTime = "N/A";
-        String offTime = "N/A";
-        String pf = "N/A";
-        String outputVoltage = selectedVoltage != null ? selectedVoltage : "N/A";
-        String outputCurrent = selectedCurrent != null ? selectedCurrent : "N/A";
-        String watts = "N/A";
-
-        if (selectedTestTypeConfig != null) {
-            testTypeDesc = selectedTestTypeConfig.getDescription();
-            numOperations = selectedTestTypeConfig.getNumOperations();
-            cycleTime = selectedTestTypeConfig.getCycleTime();
-            onTime = selectedTestTypeConfig.getOnTime();
-            offTime = selectedTestTypeConfig.getOffTime();
-            pf = selectedTestTypeConfig.getPf();
-
-            // Override output voltage/current if specified in TestTypeConfig
-            if (selectedTestTypeConfig.getOutputVoltage() != null && !selectedTestTypeConfig.getOutputVoltage().isEmpty() && !"N/A".equalsIgnoreCase(selectedTestTypeConfig.getOutputVoltage())) {
-                outputVoltage = selectedTestTypeConfig.getOutputVoltage();
-            }
-            if (selectedTestTypeConfig.getOutputCurrent() != null && !selectedTestTypeConfig.getOutputCurrent().isEmpty() && !"N/A".equalsIgnoreCase(selectedTestTypeConfig.getOutputCurrent())) {
-                outputCurrent = selectedTestTypeConfig.getOutputCurrent();
-            }
-        }
-
-        // Calculate Watts if voltage and current are numbers and PF is available
+    private void loadTestConfigs() {
         try {
-            double voltageVal = Double.parseDouble(outputVoltage.replaceAll("[^\\d.]", ""));
-            double currentVal = Double.parseDouble(outputCurrent.replaceAll("[^\\d.]", ""));
-            double pfVal = Double.parseDouble(pf);
-            if (!Double.isNaN(voltageVal) && !Double.isNaN(currentVal) && !Double.isNaN(pfVal)) {
-                watts = String.format("%.2f W", voltageVal * currentVal * pfVal);
+            testConfigs = TestTypeConfigManager.loadTestTypeConfigs();
+            if (testConfigs == null || testConfigs.isEmpty()) {
+                NotificationManager.getInstance().showNotification(NotificationType.ERROR, "Config Error", "Could not load test configurations.");
             }
-        } catch (NumberFormatException e) {
-            watts = "N/A"; // If parsing fails, keep as N/A
+        } catch (Exception e) {
+            NotificationManager.getInstance().showNotification(NotificationType.ERROR, "Config Error", "Exception while loading test configs.");
+            ApplicationLauncher.logger.error("Exception loading test configs", e);
         }
+    }
 
+    private void populateTestTypeComboBoxes() {
+        if (testConfigs != null) {
+            List<String> testNames = testConfigs.stream().map(TestTypeConfig::getName).collect(Collectors.toList());
+            station1TestTypeComboBox.getItems().addAll(testNames);
+            station2TestTypeComboBox.getItems().addAll(testNames);
+            station3TestTypeComboBox.getItems().addAll(testNames);
+        }
+    }
 
-        // Update the fields for the specific station
-        switch (stationNumber) {
+    private void populateStaticComboBoxes() {
+        List<String> voltages = Arrays.asList("230V", "240V", "250V");
+        List<String> currents = Arrays.asList("6A", "10A", "13A", "16A");
+
+        station1VoltageComboBox.getItems().setAll(voltages);
+        station2VoltageComboBox.getItems().setAll(voltages);
+        station3VoltageComboBox.getItems().setAll(voltages);
+
+        station1CurrentComboBox.getItems().setAll(currents);
+        station2CurrentComboBox.getItems().setAll(currents);
+        station3CurrentComboBox.getItems().setAll(currents);
+    }
+
+    private void setupStationListeners() {
+        station1TestTypeComboBox.valueProperty().addListener(createTestTypeListener(
+                station1TestTypeDescField, station1NumOperationsField,
+                station1CycleTimeField, station1OnTimeField, station1OffTimeField
+        ));
+        station2TestTypeComboBox.valueProperty().addListener(createTestTypeListener(
+                station2TestTypeDescField, station2NumOperationsField,
+                station2CycleTimeField, station2OnTimeField, station2OffTimeField
+        ));
+        station3TestTypeComboBox.valueProperty().addListener(createTestTypeListener(
+                station3TestTypeDescField, station3NumOperationsField,
+                station3CycleTimeField, station3OnTimeField, station3OffTimeField
+        ));
+    }
+
+    private void setupInterlocks() {
+        station1TestTypeComboBox.valueProperty().addListener((obs, ov, nv) -> updateOthers(nv, station2TestTypeComboBox, station3TestTypeComboBox));
+        station2TestTypeComboBox.valueProperty().addListener((obs, ov, nv) -> updateOthers(nv, station1TestTypeComboBox, station3TestTypeComboBox));
+        station3TestTypeComboBox.valueProperty().addListener((obs, ov, nv) -> updateOthers(nv, station1TestTypeComboBox, station2TestTypeComboBox));
+
+        station1VoltageComboBox.valueProperty().addListener((obs, ov, nv) -> updateOthers(nv, station2VoltageComboBox, station3VoltageComboBox));
+        station2VoltageComboBox.valueProperty().addListener((obs, ov, nv) -> updateOthers(nv, station1VoltageComboBox, station3VoltageComboBox));
+        station3VoltageComboBox.valueProperty().addListener((obs, ov, nv) -> updateOthers(nv, station1VoltageComboBox, station2VoltageComboBox));
+
+        station1CurrentComboBox.valueProperty().addListener((obs, ov, nv) -> updateOthers(nv, station2CurrentComboBox, station3CurrentComboBox));
+        station2CurrentComboBox.valueProperty().addListener((obs, ov, nv) -> updateOthers(nv, station1CurrentComboBox, station3CurrentComboBox));
+        station3CurrentComboBox.valueProperty().addListener((obs, ov, nv) -> updateOthers(nv, station1CurrentComboBox, station2CurrentComboBox));
+    }
+
+    @SafeVarargs
+    private final <T> void updateOthers(T newValue, ComboBox<T>... others) {
+        if (isUpdatingComboBoxes) return;
+
+        isUpdatingComboBoxes = true;
+        for (ComboBox<T> other : others) {
+            other.setValue(newValue);
+        }
+        isUpdatingComboBoxes = false;
+    }
+
+    // --- FXML Button Handlers ---
+
+    @FXML private void handleStation1Start() { handleGenericButton("Start", 1); }
+    @FXML private void handleStation1Stop() { handleGenericButton("Stop", 1); }
+    @FXML private void handleStation1Reset() { handleGenericButton("Reset", 1); }
+    @FXML private void handleStation1Save() { handleSave(1); }
+    @FXML private void handleStation1Load() { handleLoad(1); }
+
+    @FXML private void handleStation2Start() { handleGenericButton("Start", 2); }
+    @FXML private void handleStation2Stop() { handleGenericButton("Stop", 2); }
+    @FXML private void handleStation2Reset() { handleGenericButton("Reset", 2); }
+    @FXML private void handleStation2Save() { handleSave(2); }
+    @FXML private void handleStation2Load() { handleLoad(2); }
+
+    @FXML private void handleStation3Start() { handleGenericButton("Start", 3); }
+    @FXML private void handleStation3Stop() { handleGenericButton("Stop", 3); }
+    @FXML private void handleStation3Reset() { handleGenericButton("Reset", 3); }
+    @FXML private void handleStation3Save() { handleSave(3); }
+    @FXML private void handleStation3Load() { handleLoad(3); }
+
+    // --- Button Logic Implementation ---
+
+    private void handleSave(int stationNum) {
+        ApplicationLauncher.logger.info("Saving configuration for Station {}", stationNum);
+        
+        StationConfig config;
+        ComboBox<String> testTypeCombo, voltageCombo, currentCombo;
+        TextField numOpsField, onTimeField, offTimeField;
+
+        switch(stationNum) {
             case 1:
-                station1TestTypeDescField.setText(testTypeDesc);
-                station1NumOperationsField.setText(numOperations);
-                station1CycleTimeField.setText(cycleTime);
-                station1OnTimeField.setText(onTime);
-                station1OffTimeField.setText(offTime);
-                station1VoltageField.setText(outputVoltage);
-                station1CurrentField.setText(outputCurrent);
-                station1WattsField.setText(watts);
-                station1PfField.setText(pf);
+                config = savedStation1Config; testTypeCombo = station1TestTypeComboBox; voltageCombo = station1VoltageComboBox; currentCombo = station1CurrentComboBox;
+                numOpsField = station1NumOperationsField; onTimeField = station1OnTimeField; offTimeField = station1OffTimeField;
                 break;
             case 2:
-                station2TestTypeDescField.setText(testTypeDesc);
-                station2NumOperationsField.setText(numOperations);
-                station2CycleTimeField.setText(cycleTime);
-                station2OnTimeField.setText(onTime);
-                station2OffTimeField.setText(offTime);
-                station2VoltageField.setText(outputVoltage);
-                station2CurrentField.setText(outputCurrent);
-                station2WattsField.setText(watts);
-                station2PfField.setText(pf);
+                config = savedStation2Config; testTypeCombo = station2TestTypeComboBox; voltageCombo = station2VoltageComboBox; currentCombo = station2CurrentComboBox;
+                numOpsField = station2NumOperationsField; onTimeField = station2OnTimeField; offTimeField = station2OffTimeField;
                 break;
             case 3:
-                station3TestTypeDescField.setText(testTypeDesc);
-                station3NumOperationsField.setText(numOperations);
-                station3CycleTimeField.setText(cycleTime);
-                station3OnTimeField.setText(onTime);
-                station3OffTimeField.setText(offTime);
-                station3VoltageField.setText(outputVoltage);
-                station3CurrentField.setText(outputCurrent);
-                station3WattsField.setText(watts);
-                station3PfField.setText(pf);
+                config = savedStation3Config; testTypeCombo = station3TestTypeComboBox; voltageCombo = station3VoltageComboBox; currentCombo = station3CurrentComboBox;
+                numOpsField = station3NumOperationsField; onTimeField = station3OnTimeField; offTimeField = station3OffTimeField;
                 break;
+            default: return;
+        }
+
+        config.setTestType(testTypeCombo.getValue());
+        config.setVoltage(voltageCombo.getValue());
+        config.setCurrent(currentCombo.getValue());
+        config.setNumOperations(numOpsField.getText());
+        config.setOnTime(onTimeField.getText());
+        config.setOffTime(offTimeField.getText());
+
+        if (config.isValid()) {
+            NotificationManager.getInstance().showNotification(NotificationType.SUCCESS, "Config Saved", "Configuration for Station " + stationNum + " has been saved.");
+        } else {
+            NotificationManager.getInstance().showNotification(NotificationType.WARNING, "Save Failed", "Please select all parameters before saving.");
         }
     }
 
+    private void handleLoad(int stationNum) {
+        ApplicationLauncher.logger.info("Loading configuration to PLC for Station {}", stationNum);
+        
+        StationConfig config;
+        int[] addresses;
 
-    // --- Action Handlers for Station 1 ---
-    @FXML
-    private void handleStation1Start(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 1 START clicked!");
-        // Logic to start test on Station 1
-        station1CyclesField.setText("Running..."); // Update status
+        switch(stationNum) {
+            case 1:
+                config = savedStation1Config;
+                addresses = new int[]{STATION1_TEST_TYPE_ADDR, STATION1_VOLTAGE_ADDR, STATION1_CURRENT_ADDR, STATION1_NUM_CYCLES_ADDR, STATION1_ON_TIME_ADDR, STATION1_OFF_TIME_ADDR};
+                break;
+            case 2:
+                config = savedStation2Config;
+                addresses = new int[]{210, 211, 212, 213, 214, 215}; // Placeholder addresses
+                break;
+            case 3:
+                config = savedStation3Config;
+                addresses = new int[]{220, 221, 222, 223, 224, 225}; // Placeholder addresses
+                break;
+            default: return;
+        }
+
+        if (!config.isValid()) {
+            NotificationManager.getInstance().showNotification(NotificationType.ERROR, "Load Failed", "No valid configuration saved for Station " + stationNum + ".");
+            return;
+        }
+        if (!ModbusService.isConnected()) {
+            NotificationManager.getInstance().showNotification(NotificationType.ERROR, "Modbus Error", "Modbus not connected.");
+            return;
+        }
+
+        station1TotalCyclesField.setText(config.getNumOperations());
+        station2TotalCyclesField.setText(config.getNumOperations());
+        station3TotalCyclesField.setText(config.getNumOperations());
+
+        new Thread(() -> {
+            try {
+                boolean t_success = ModbusService.writeRegister(addresses[0], 0); // Placeholder for test type
+                boolean v_success = ModbusService.writeRegister(addresses[1], Integer.parseInt(config.getVoltage().replace("V", "").trim()));
+                boolean c_success = ModbusService.writeRegister(addresses[2], Integer.parseInt(config.getCurrent().replace("A", "").trim()));
+                boolean n_success = ModbusService.writeRegister(addresses[3], Integer.parseInt(config.getNumOperations()));
+                boolean on_success = ModbusService.writeRegister(addresses[4], Integer.parseInt(config.getOnTime()));
+                boolean off_success = ModbusService.writeRegister(addresses[5], Integer.parseInt(config.getOffTime()));
+
+                Platform.runLater(() -> {
+                    if (t_success && v_success && c_success && n_success && on_success && off_success) {
+                        NotificationManager.getInstance().showNotification(NotificationType.SUCCESS, "Load Complete", "Configuration for Station " + stationNum + " sent to PLC.");
+                    } else {
+                        NotificationManager.getInstance().showNotification(NotificationType.ERROR, "Load Failed", "Failed to write one or more parameters to PLC for Station " + stationNum + ".");
+                    }
+                });
+            } catch (NumberFormatException e) {
+                Platform.runLater(() -> NotificationManager.getInstance().showNotification(NotificationType.ERROR, "Data Error", "Invalid numeric data in saved configuration."));
+            }
+        }, "LoadConfigThread-Station" + stationNum).start();
+    }
+    
+    private void handleGenericButton(String action, int stationNum) {
+        ApplicationLauncher.logger.info("{} button clicked for Station {}", action, stationNum);
+        NotificationManager.getInstance().showNotification(NotificationType.INFO, action + " Clicked", "Station " + stationNum + " " + action + " command issued.");
     }
 
-    @FXML
-    private void handleStation1Stop(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 1 STOP clicked!");
-        // Logic to stop test on Station 1
-        station1CyclesField.setText("Stopped"); // Update status
+    private void startPeriodicCycleCountRead() {
+        if (cycleCountScheduler != null && !cycleCountScheduler.isShutdown()) {
+            cycleCountScheduler.shutdownNow();
+        }
+        cycleCountScheduler = Executors.newSingleThreadScheduledExecutor();
+        cycleCountScheduler.scheduleAtFixedRate(() -> {
+            if (ModbusService.isConnected()) {
+                Platform.runLater(this::updateAllCycleCounters);
+            }
+        }, 0, 2, TimeUnit.SECONDS);
     }
 
-    @FXML
-    private void handleStation1Reset(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 1 RESET clicked!");
-        // Logic to reset Station 1
-        station1CyclesField.setText("0"); // Reset cycles
+    private void updateAllCycleCounters() {
+        new Thread(() -> {
+            Integer value1 = ModbusService.readRegister(STATION1_CURRENT_CYCLE_COUNT_ADDR);
+            if (value1 != null) Platform.runLater(() -> station1CyclesField.setText(String.valueOf(value1)));
+        }).start();
+        new Thread(() -> {
+            Integer value2 = ModbusService.readRegister(STATION2_CURRENT_CYCLE_COUNT_ADDR);
+            if (value2 != null) Platform.runLater(() -> station2CyclesField.setText(String.valueOf(value2)));
+        }).start();
+        new Thread(() -> {
+            Integer value3 = ModbusService.readRegister(STATION3_CURRENT_CYCLE_COUNT_ADDR);
+            if (value3 != null) Platform.runLater(() -> station3CyclesField.setText(String.valueOf(value3)));
+        }).start();
     }
 
-    @FXML
-    private void handleStation1Save(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 1 SAVE clicked!");
-        // Logic to save current configuration for Station 1
+    public void cleanup() {
+        if (cycleCountScheduler != null && !cycleCountScheduler.isShutdown()) {
+            cycleCountScheduler.shutdownNow();
+            ApplicationLauncher.logger.info("ExecutionViewModel scheduler shut down.");
+        }
     }
 
-    @FXML
-    private void handleStation1Load(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 1 LOAD clicked!");
-        // Logic to load a saved configuration for Station 1
+    private ChangeListener<String> createTestTypeListener(TextField descField, TextField... fields) {
+        return (obs, oldVal, newVal) -> {
+            if (newVal == null) return;
+            testConfigs.stream()
+                    .filter(c -> c.getName().equals(newVal))
+                    .findFirst()
+                    .ifPresent(config -> {
+                        descField.setText(config.getDescription());
+                        fields[0].setText(config.getNumOperations());
+                        fields[1].setText(config.getCycleTime());
+                        fields[2].setText(config.getOnTime());
+                        fields[3].setText(config.getOffTime());
+                    });
+        };
     }
 
-    // --- Action Handlers for Station 2 ---
-    @FXML
-    private void handleStation2Start(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 2 START clicked!");
-        // Logic to start test on Station 2
-        station2CyclesField.setText("Running..."); // Update status
-    }
-
-    @FXML
-    private void handleStation2Stop(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 2 STOP clicked!");
-        // Logic to stop test on Station 2
-        station2CyclesField.setText("Stopped"); // Update status
-    }
-
-    @FXML
-    private void handleStation2Reset(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 2 RESET clicked!");
-        // Logic to reset Station 2
-        station2CyclesField.setText("0"); // Reset cycles
-    }
-
-    @FXML
-    private void handleStation2Save(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 2 SAVE clicked!");
-        // Logic to save current configuration for Station 2
-    }
-
-    @FXML
-    private void handleStation2Load(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 2 LOAD clicked!");
-        // Logic to load a saved configuration for Station 2
-    }
-
-    // --- Action Handlers for Station 3 ---
-    @FXML
-    private void handleStation3Start(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 3 START clicked!");
-        // Logic to start test on Station 3
-        station3CyclesField.setText("Running..."); // Update status
-    }
-
-    @FXML
-    private void handleStation3Stop(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 3 STOP clicked!");
-        // Logic to stop test on Station 3
-        station3CyclesField.setText("Stopped"); // Update status
-    }
-
-    @FXML
-    private void handleStation3Reset(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 3 RESET clicked!");
-        // Logic to reset Station 3
-        station3CyclesField.setText("0"); // Reset cycles
-    }
-
-    @FXML
-    private void handleStation3Save(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 3 SAVE clicked!");
-        // Logic to save current configuration for Station 3
-    }
-
-    @FXML
-    private void handleStation3Load(ActionEvent event) {
-        ApplicationLauncher.logger.info("Station 3 LOAD clicked!");
-        // Logic to load a saved configuration for Station 3
+    private static class StationConfig {
+        private String testType, voltage, current, numOperations, onTime, offTime;
+        public boolean isValid() { return testType != null && !testType.isEmpty() && voltage != null && !voltage.isEmpty() && current != null && !current.isEmpty(); }
+        public void setTestType(String testType) { this.testType = testType; }
+        public String getVoltage() { return voltage; }
+        public void setVoltage(String voltage) { this.voltage = voltage; }
+        public String getCurrent() { return current; }
+        public void setCurrent(String current) { this.current = current; }
+        public String getNumOperations() { return numOperations; }
+        public void setNumOperations(String numOperations) { this.numOperations = numOperations; }
+        public String getOnTime() { return onTime; }
+        public void setOnTime(String onTime) { this.onTime = onTime; }
+        public String getOffTime() { return offTime; }
+        public void setOffTime(String offTime) { this.offTime = offTime; }
     }
 }

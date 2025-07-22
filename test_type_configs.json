@@ -6,8 +6,8 @@
   "onTime" : "500",
   "offTime" : "1500",
   "pf" : "0.8",
-  "outputVoltage" : "N/A",
-  "outputCurrent" : "N/A",
+  "outputVoltages" : [ "230V", "240V", "250V" ],
+  "outputCurrents" : [ "6A", "13A", "16A" ],
   "watts" : "N/A"
 }, {
   "name" : "Over Current",
@@ -17,8 +17,8 @@
   "onTime" : "N/A",
   "offTime" : "N/A",
   "pf" : "N/A",
-  "outputVoltage" : "500 V DC",
-  "outputCurrent" : "N/A",
+  "outputVoltages" : [ ],
+  "outputCurrents" : [ ],
   "watts" : "N/A"
 }, {
   "name" : "Dielectric Strength Test",
@@ -28,8 +28,8 @@
   "onTime" : "N/A",
   "offTime" : "N/A",
   "pf" : "N/A",
-  "outputVoltage" : "1500 V AC",
-  "outputCurrent" : "0.001 A",
+  "outputVoltages" : [ ],
+  "outputCurrents" : [ ],
   "watts" : "N/A"
 }, {
   "name" : "Full Load",
@@ -39,7 +39,7 @@
   "onTime" : "1000",
   "offTime" : "1000",
   "pf" : "",
-  "outputVoltage" : "",
-  "outputCurrent" : "",
+  "outputVoltages" : [ ],
+  "outputCurrents" : [ ],
   "watts" : ""
 } ]

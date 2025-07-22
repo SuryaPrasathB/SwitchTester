@@ -58,6 +58,10 @@ public class TestTypeConfigManager {
     private static List<TestTypeConfig> createDefaultTestTypeConfigs() {
         List<TestTypeConfig> defaults = new ArrayList<>();
 
+        // Default voltages and currents for standard tests
+        List<String> defaultVoltages = Arrays.asList("230V", "240V", "250V");
+        List<String> defaultCurrents = Arrays.asList("6A", "10A", "13A", "16A");
+
         defaults.add(new TestTypeConfig(
                 "Normal Operation Test with Inductive Loads",
                 "as per 19.1 of IS3854:2023",
@@ -66,7 +70,9 @@ public class TestTypeConfigManager {
                 "500",
                 "1500",
                 "0.8",
-                "N/A", "N/A", "N/A"
+                defaultVoltages, // Pass list of voltages
+                defaultCurrents, // Pass list of currents
+                "N/A"
         ));
 
         defaults.add(new TestTypeConfig(
@@ -77,7 +83,9 @@ public class TestTypeConfigManager {
                 "300",
                 "700",
                 "1.0",
-                "N/A", "N/A", "N/A"
+                defaultVoltages, // Pass list of voltages
+                defaultCurrents, // Pass list of currents
+                "N/A"
         ));
 
         defaults.add(new TestTypeConfig(
@@ -88,8 +96,8 @@ public class TestTypeConfigManager {
                 "N/A",
                 "N/A",
                 "N/A",
-                "1500 V AC",
-                "0.001 A",
+                new ArrayList<>(Arrays.asList("1500 V AC")), // Pass single item list
+                new ArrayList<>(Arrays.asList("0.001 A")),  // Pass single item list
                 "N/A"
         ));
 
@@ -101,8 +109,8 @@ public class TestTypeConfigManager {
                 "N/A",
                 "N/A",
                 "N/A",
-                "500 V DC",
-                "N/A",
+                new ArrayList<>(Arrays.asList("500 V DC")), // Pass single item list
+                new ArrayList<>(),                         // Pass empty list
                 "N/A"
         ));
 

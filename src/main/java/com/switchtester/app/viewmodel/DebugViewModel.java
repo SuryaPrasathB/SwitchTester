@@ -26,148 +26,185 @@ import java.util.concurrent.TimeUnit;
  * ViewModel for the Debug Screen.
  * Manages debug controls for each station, including Modbus TCP communication for Piston switches
  * and other configurable Modbus coils, allowing dynamic coil address changes via text fields.
- * Also includes controls for setting voltage and current via Modbus registers.
+ * Also includes controls for setting voltage, current, and duty cycle via Modbus registers.
  */
 public class DebugViewModel implements Initializable {
 
-    // Station 1 Debug Controls
+    // --- FXML UI Components ---
+
+    // region Station 1 Components
     @FXML private TitledPane station1TitledPane;
     @FXML private CheckBox station1PistonSwitch;
-    @FXML private TextField station1PistonCoilAddressField; // Coil Address Field
+    @FXML private TextField station1PistonCoilAddressField;
     @FXML private TextField station1StateValueField;
     @FXML private TextField station1CompCyclesField;
     @FXML private Button station1StartPrepButton;
     @FXML private Button station1StopPrepButton;
     @FXML private Button station1ResetPrepButton;
     @FXML private Button station1UpdateTriggerButton;
-    // Removed: @FXML private TextField station1PrepRegisterAddressField;
-    // Removed: @FXML private TextField station1PrepCoilAddressField;
+    // endregion
 
-    // Station 2 Debug Controls
+    // region Station 2 Components
     @FXML private TitledPane station2TitledPane;
     @FXML private CheckBox station2PistonSwitch;
-    @FXML private TextField station2PistonCoilAddressField; // Coil Address Field
+    @FXML private TextField station2PistonCoilAddressField;
     @FXML private TextField station2StateValueField;
     @FXML private TextField station2CompCyclesField;
     @FXML private Button station2StartPrepButton;
     @FXML private Button station2StopPrepButton;
     @FXML private Button station2ResetPrepButton;
     @FXML private Button station2UpdateTriggerButton;
-    // Removed: @FXML private TextField station2PrepRegisterAddressField;
-    // Removed: @FXML private TextField station2PrepCoilAddressField;
+    // endregion
 
-    // Station 3 Debug Controls
+    // region Station 3 Components
     @FXML private TitledPane station3TitledPane;
     @FXML private CheckBox station3PistonSwitch;
-    @FXML private TextField station3PistonCoilAddressField; // Coil Address Field
+    @FXML private TextField station3PistonCoilAddressField;
     @FXML private TextField station3StateValueField;
     @FXML private TextField station3CompCyclesField;
     @FXML private Button station3StartPrepButton;
     @FXML private Button station3StopPrepButton;
     @FXML private Button station3ResetPrepButton;
     @FXML private Button station3UpdateTriggerButton;
-    // Removed: @FXML private TextField station3PrepRegisterAddressField;
-    // Removed: @FXML private TextField station3PrepCoilAddressField;
+    // endregion
 
-    // Station Selection CheckBoxes
+    // region Station Selection Components
     @FXML private TitledPane stationSelectionTitledPane;
     @FXML private CheckBox stationSelectionSwitch1;
-    @FXML private TextField stationSelectionSwitch1CoilAddressField; // Coil Address Field
+    @FXML private TextField stationSelectionSwitch1CoilAddressField;
     @FXML private CheckBox stationSelectionSwitch2;
-    @FXML private TextField stationSelectionSwitch2CoilAddressField; // Coil Address Field
+    @FXML private TextField stationSelectionSwitch2CoilAddressField;
     @FXML private CheckBox stationSelectionSwitch3;
-    @FXML private TextField stationSelectionSwitch3CoilAddressField; // Coil Address Field
+    @FXML private TextField stationSelectionSwitch3CoilAddressField;
+    // endregion
 
-    // New: SETTINGS Controls
-    @FXML private TitledPane settingsTitledPane; // Renamed from stationSelectionTitledPane1 for clarity
-    @FXML private TextField setVoltageCoilAddressField; // Address for voltage register
-    @FXML private TextField setCurrentCoilAddressField; // Address for current register
+    // region Settings Components
+    @FXML private TitledPane settingsTitledPane;
+    @FXML private TextField setVoltageCoilAddressField;
+    @FXML private TextField setCurrentCoilAddressField;
     @FXML private Button setVoltageButton;
     @FXML private Button setCurrentButton;
-    @FXML private TextField voltageTextBox; // Value for voltage
-    @FXML private TextField currentTextBox; // Value for current
+    @FXML private TextField voltageTextBox;
+    @FXML private TextField currentTextBox;
+    // endregion
+    
+    // region Duty Cycle Components
+    @FXML private TitledPane dutyCycleTitledPane;
+    @FXML private TitledPane dutyCycleTitledPane1;
+    @FXML private TextField onTimeCoilAddressField1;
+    @FXML private TextField offTimeCoilAddressField1;
+    @FXML private TextField onTimeField1;
+    @FXML private TextField offTimeField1;
+    @FXML private Button updateDutyCycle1;
+    @FXML private Button decDutyCycle1;
+    @FXML private Button incDutyCycle1;
 
+    @FXML private TitledPane dutyCycleTitledPane2;
+    @FXML private TextField onTimeCoilAddressField2;
+    @FXML private TextField offTimeCoilAddressField2;
+    @FXML private TextField onTimeField2;
+    @FXML private TextField offTimeField2;
+    @FXML private Button updateDutyCycle2;
+    @FXML private Button decDutyCycle2;
+    @FXML private Button incDutyCycle2;
 
-    // Test Selection CheckBoxes
+    @FXML private TitledPane dutyCycleTitledPane3;
+    @FXML private TextField onTimeCoilAddressField3;
+    @FXML private TextField offTimeCoilAddressField3;
+    @FXML private TextField onTimeField3;
+    @FXML private TextField offTimeField3;
+    @FXML private Button updateDutyCycle3;
+    @FXML private Button decDutyCycle3;
+    @FXML private Button incDutyCycle3;
+    // endregion
+
+    // region Test Selection Components
     @FXML private TitledPane testSelectionTitledPane;
     @FXML private CheckBox testSelectionSwitchNrml_IL;
-    @FXML private TextField testSelectionSwitchNrml_ILCoilAddressField; // Coil Address Field
+    @FXML private TextField testSelectionSwitchNrml_ILCoilAddressField;
     @FXML private CheckBox testSelectionSwitchOvr_IL;
-    @FXML private TextField testSelectionSwitchOvr_ILCoilAddressField; // Coil Address Field
+    @FXML private TextField testSelectionSwitchOvr_ILCoilAddressField;
     @FXML private CheckBox testSelectionSwitchOvr_FL;
-    @FXML private TextField testSelectionSwitchOvr_FLCoilAddressField; // Coil Address Field
+    @FXML private TextField testSelectionSwitchOvr_FLCoilAddressField;
+    // endregion
 
-    // Voltage Controls CheckBoxes
+    // region Voltage Controls Components
     @FXML private TitledPane voltageControlsTitledPane;
     @FXML private CheckBox voltageControlSwitch230;
-    @FXML private TextField voltageControlSwitch230CoilAddressField; // Coil Address Field
+    @FXML private TextField voltageControlSwitch230CoilAddressField;
     @FXML private CheckBox voltageControlSwitch240;
-    @FXML private TextField voltageControlSwitch240CoilAddressField; // Coil Address Field
+    @FXML private TextField voltageControlSwitch240CoilAddressField;
     @FXML private CheckBox voltageControlSwitch250;
-    @FXML private TextField voltageControlSwitch250CoilAddressField; // Coil Address Field
+    @FXML private TextField voltageControlSwitch250CoilAddressField;
+    // endregion
 
-    // Normal Operation - IL CheckBoxes (Currents)
+    // region Normal Operation - IL Components
     @FXML private TitledPane normalOperationIL_TitledPane;
     @FXML private CheckBox normalOpIL_1A;
-    @FXML private TextField normalOpIL_1ACoilAddressField; // Coil Address Field
+    @FXML private TextField normalOpIL_1ACoilAddressField;
     @FXML private CheckBox normalOpIL_2A_1;
-    @FXML private TextField normalOpIL_2A_1CoilAddressField; // Coil Address Field
+    @FXML private TextField normalOpIL_2A_1CoilAddressField;
     @FXML private CheckBox normalOpIL_2A_2;
-    @FXML private TextField normalOpIL_2A_2CoilAddressField; // Coil Address Field
+    @FXML private TextField normalOpIL_2A_2CoilAddressField;
     @FXML private CheckBox normalOpIL_5A;
-    @FXML private TextField normalOpIL_5ACoilAddressField; // Coil Address Field
+    @FXML private TextField normalOpIL_5ACoilAddressField;
     @FXML private CheckBox normalOpIL_10A_1;
-    @FXML private TextField normalOpIL_10A_1CoilAddressField; // Coil Address Field
+    @FXML private TextField normalOpIL_10A_1CoilAddressField;
     @FXML private CheckBox normalOpIL_10A_2;
-    @FXML private TextField normalOpIL_10A_2CoilAddressField; // Coil Address Field
+    @FXML private TextField normalOpIL_10A_2CoilAddressField;
     @FXML private CheckBox normalOpIL_10A_3;
-    @FXML private TextField normalOpIL_10A_3CoilAddressField; // Coil Address Field
+    @FXML private TextField normalOpIL_10A_3CoilAddressField;
+    // endregion
 
-    // Overload Test - IL CheckBoxes (Currents)
+    // region Overload Test - IL Components
     @FXML private TitledPane overloadTestIL_TitledPane;
     @FXML private CheckBox overloadIL_0_1A;
-    @FXML private TextField overloadIL_0_1ACoilAddressField; // Coil Address Field
+    @FXML private TextField overloadIL_0_1ACoilAddressField;
     @FXML private CheckBox overloadIL_0_2A_1;
-    @FXML private TextField overloadIL_0_2A_1CoilAddressField; // Coil Address Field
+    @FXML private TextField overloadIL_0_2A_1CoilAddressField;
     @FXML private CheckBox overloadIL_0_2A_2;
-    @FXML private TextField overloadIL_0_2A_2CoilAddressField; // Coil Address Field
+    @FXML private TextField overloadIL_0_2A_2CoilAddressField;
     @FXML private CheckBox overloadIL_0_5A;
-    @FXML private TextField overloadIL_0_5ACoilAddressField; // Coil Address Field
+    @FXML private TextField overloadIL_0_5ACoilAddressField;
     @FXML private CheckBox overloadIL_1A;
-    @FXML private TextField overloadIL_1ACoilAddressField; // Coil Address Field
+    @FXML private TextField overloadIL_1ACoilAddressField;
     @FXML private CheckBox overloadIL_2A_1;
-    @FXML private TextField overloadIL_2A_1CoilAddressField; // Coil Address Field
+    @FXML private TextField overloadIL_2A_1CoilAddressField;
     @FXML private CheckBox overloadIL_2A_2;
-    @FXML private TextField overloadIL_2A_2CoilAddressField; // Coil Address Field
+    @FXML private TextField overloadIL_2A_2CoilAddressField;
     @FXML private CheckBox overloadIL_5A;
-    @FXML private TextField overloadIL_5ACoilAddressField; // Coil Address Field
+    @FXML private TextField overloadIL_5ACoilAddressField;
     @FXML private CheckBox overloadIL_10A_1;
-    @FXML private TextField overloadIL_10A_1CoilAddressField; // Coil Address Field
+    @FXML private TextField overloadIL_10A_1CoilAddressField;
     @FXML private CheckBox overloadIL_10A_2;
-    @FXML private TextField overloadIL_10A_2CoilAddressField; // Coil Address Field
+    @FXML private TextField overloadIL_10A_2CoilAddressField;
     @FXML private CheckBox overloadIL_10A_3;
-    @FXML private TextField overloadIL_10A_3CoilAddressField; // Coil Address Field
+    @FXML private TextField overloadIL_10A_3CoilAddressField;
+    // endregion
 
-    // Overload Test - FL CheckBoxes (Bulbs)
+    // region Overload Test - FL Components
     @FXML private TitledPane overloadTestFL_TitledPane;
     @FXML private CheckBox overloadFl_6A_Bulbs;
-    @FXML private TextField overloadFl_6A_BulbsCoilAddressField; // Coil Address Field
+    @FXML private TextField overloadFl_6A_BulbsCoilAddressField;
     @FXML private CheckBox overloadFl_10A_Bulbs;
-    @FXML private TextField overloadFl_10A_BulbsCoilAddressField; // Coil Address Field
+    @FXML private TextField overloadFl_10A_BulbsCoilAddressField;
     @FXML private CheckBox overloadFl_13A_Bulbs;
-    @FXML private TextField overloadFl_13A_BulbsCoilAddressField; // Coil Address Field
+    @FXML private TextField overloadFl_13A_BulbsCoilAddressField;
     @FXML private CheckBox overloadFl_16A_Bulbs;
-    @FXML private TextField overloadFl_16A_BulbsCoilAddressField; // Coil Address Field
-
+    @FXML private TextField overloadFl_16A_BulbsCoilAddressField;
+    // endregion
 
     private ArduinoOptaConfig currentConfig;
     private ScheduledExecutorService modbusReadScheduler; // For periodic reading
 
     // Map to store all Modbus-controlled switches and their associated address fields
-    private Map<CheckBox, TextField> modbusControlledSwitches = new HashMap<>();
+    private final Map<CheckBox, TextField> modbusControlledSwitches = new HashMap<>();
 
-    // Default coil addresses for switches (can be adjusted by user in UI)
-    // These are initial placeholders. Real values should come from a persistent config.
+    // --- Constants ---
+    private static final int TOTAL_CYCLE_TIME_MS = 2000;
+    private static final double INITIAL_DUTY_CYCLE_PERCENTAGE = 0.25; // 25%
+
+    // --- Default Coil and Register Addresses ---
     private static final int DEFAULT_STATION1_PISTON_COIL = 0;
     private static final int DEFAULT_STATION2_PISTON_COIL = 1;
     private static final int DEFAULT_STATION3_PISTON_COIL = 2;
@@ -209,57 +246,36 @@ public class DebugViewModel implements Initializable {
     private static final int DEFAULT_OVERLOAD_FL_13A_COIL = 72;
     private static final int DEFAULT_OVERLOAD_FL_16A_COIL = 73;
 
-    // Default register addresses for the new SETTINGS controls
     private static final int DEFAULT_SET_VOLTAGE_REGISTER = 100;
     private static final int DEFAULT_SET_CURRENT_REGISTER = 101;
 
-    // New: Default addresses for START PREP. Modbus operations (now constants)
-    private static final int STATION1_PREP_REGISTER = 200;
-    private static final int STATION1_PREP_COIL = 201;
-    private static final int STATION2_PREP_REGISTER = 202;
-    private static final int STATION2_PREP_COIL = 203;
-    private static final int STATION3_PREP_REGISTER = 204;
-    private static final int STATION3_PREP_COIL = 205;
+    private static final int STATION1_PREP_REGISTER = 0;
+    private static final int STATION1_PREP_COIL = 4;
+    private static final int STATION2_PREP_REGISTER = 16;
+    private static final int STATION2_PREP_COIL = 5;
+    private static final int STATION3_PREP_REGISTER = 32;
+    private static final int STATION3_PREP_COIL = 6;
 
 
-    /**
-     * Initializes the controller class. This method is automatically called
-     * after the FXML file has been loaded.
-     *
-     * @param location The location used to resolve relative paths for the root object, or null if the location is not known.
-     * @param resources The resources used to localize the root object, or null if the root object was not localized.
-     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         ApplicationLauncher.logger.info("Debug View Initializing...");
 
         try {
-            // Load the current Arduino Opta configuration
             currentConfig = ArduinoOptaConfigManager.getCurrentConfig();
-
-            // Setup button handlers (these don't depend on Modbus connection)
             setupButtonHandlers();
-
-            // Link and set up all Modbus-controlled switches with their address fields
             setupAllModbusControlledSwitches();
-
-            // Setup the new SETTINGS controls for Modbus register writes
             setupSettingsControls();
+            setupAllDutyCycleControls(); // Re-integrated this call
 
-            // Removed: setupStationSpecificModbusAddressFields(); as addresses are now constants
-
-            // Attempt to connect to Modbus and then setup switches/periodic read on a separate thread
             new Thread(() -> {
-                // Ensure Modbus connection is attempted/established
                 if (!ModbusService.isConnected()) {
                     ModbusService.connect();
                 }
 
-                // All UI updates MUST be on the JavaFX Application Thread
                 Platform.runLater(() -> {
-                    // Start periodic read only if Modbus is connected
                     if (ModbusService.isConnected()) {
-                        startPeriodicCoilRead();
+                        // startPeriodicCoilRead(); // Uncomment to enable periodic reading
                     } else {
                         ApplicationLauncher.logger.warn("Modbus not connected, periodic coil read will not start.");
                         NotificationManager.getInstance().showNotification(NotificationType.WARNING,
@@ -267,44 +283,150 @@ public class DebugViewModel implements Initializable {
                     }
                     ApplicationLauncher.logger.info("Debug View UI setup complete.");
                 });
-            }, "ModbusInitThread").start(); // Give the thread a name for easier debugging
+            }, "ModbusInitThread").start();
 
         } catch (Exception e) {
             ApplicationLauncher.logger.error("Error during Debug View initialization: {}", e.getMessage(), e);
             NotificationManager.getInstance().showNotification(NotificationType.ERROR,
-                    "Debug View Error",
-                    "Failed to initialize Debug View: " + e.getMessage());
+                    "Debug View Error", "Failed to initialize Debug View: " + e.getMessage());
         }
     }
 
     /**
+     * Sets up all duty cycle controls for every station.
+     */
+    private void setupAllDutyCycleControls() {
+        // Setup for Station 1
+        setupStationDutyCycle(onTimeField1, offTimeField1, incDutyCycle1, decDutyCycle1);
+        updateDutyCycle1.setOnAction(e -> handleUpdateDutyCycle(1, onTimeField1, offTimeField1, onTimeCoilAddressField1, offTimeCoilAddressField1));
+
+        // Setup for Station 2
+        setupStationDutyCycle(onTimeField2, offTimeField2, incDutyCycle2, decDutyCycle2);
+        updateDutyCycle2.setOnAction(e -> handleUpdateDutyCycle(2, onTimeField2, offTimeField2, onTimeCoilAddressField2, offTimeCoilAddressField2));
+
+        // Setup for Station 3
+        setupStationDutyCycle(onTimeField3, offTimeField3, incDutyCycle3, decDutyCycle3);
+        updateDutyCycle3.setOnAction(e -> handleUpdateDutyCycle(3, onTimeField3, offTimeField3, onTimeCoilAddressField3, offTimeCoilAddressField3));
+
+        // Set initial values based on the default duty cycle
+        int initialOnTime = (int) (TOTAL_CYCLE_TIME_MS * INITIAL_DUTY_CYCLE_PERCENTAGE);
+        onTimeField1.setText(String.valueOf(initialOnTime));
+        onTimeField2.setText(String.valueOf(initialOnTime));
+        onTimeField3.setText(String.valueOf(initialOnTime));
+    }
+
+    /**
+     * Sets up the listeners and handlers for a single station's duty cycle controls.
+     *
+     * @param onTimeField  The TextField for ON time.
+     * @param offTimeField The TextField for OFF time.
+     * @param incButton    The button to increment ON time.
+     * @param decButton    The button to decrement ON time.
+     */
+    private void setupStationDutyCycle(TextField onTimeField, TextField offTimeField, Button incButton, Button decButton) {
+        // Listener to automatically update OFF time when ON time changes.
+        onTimeField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                int onTime = Integer.parseInt(newValue);
+                if (onTime >= 0 && onTime <= TOTAL_CYCLE_TIME_MS) {
+                    int offTime = TOTAL_CYCLE_TIME_MS - onTime;
+                    offTimeField.setText(String.valueOf(offTime));
+                } else {
+                    offTimeField.setText(""); // Clear if out of range
+                }
+            } catch (NumberFormatException e) {
+                offTimeField.setText(""); // Clear if not a number
+            }
+        });
+
+        // Handler for the increment button
+        incButton.setOnAction(e -> {
+            try {
+                int currentOnTime = Integer.parseInt(onTimeField.getText());
+                if (currentOnTime < TOTAL_CYCLE_TIME_MS) {
+                    onTimeField.setText(String.valueOf(currentOnTime + 1));
+                }
+            } catch (NumberFormatException ex) {
+                onTimeField.setText("1"); // Start from 1 if invalid
+            }
+        });
+
+        // Handler for the decrement button
+        decButton.setOnAction(e -> {
+            try {
+                int currentOnTime = Integer.parseInt(onTimeField.getText());
+                if (currentOnTime > 0) {
+                    onTimeField.setText(String.valueOf(currentOnTime - 1));
+                }
+            } catch (NumberFormatException ex) {
+                onTimeField.setText("0"); // Start from 0 if invalid
+            }
+        });
+    }
+
+    /**
+     * Handles the "Update" button click for a station's duty cycle.
+     * Writes the ON and OFF time values to their respective Modbus registers.
+     *
+     * @param stationNumber The station number (1, 2, or 3).
+     * @param onTimeField The TextField for the ON time value.
+     * @param offTimeField The TextField for the OFF time value.
+     * @param onTimeAddressField The TextField for the ON time register address.
+     * @param offTimeAddressField The TextField for the OFF time register address.
+     */
+    private void handleUpdateDutyCycle(int stationNumber, TextField onTimeField, TextField offTimeField, TextField onTimeAddressField, TextField offTimeAddressField) {
+        try {
+            int onTime = Integer.parseInt(onTimeField.getText());
+            int offTime = Integer.parseInt(offTimeField.getText());
+            int onTimeAddress = Integer.parseInt(onTimeAddressField.getText());
+            int offTimeAddress = Integer.parseInt(offTimeAddressField.getText());
+            
+            ApplicationLauncher.logger.info("Updating Station {} Duty Cycle: ON={}ms (Addr:{}), OFF={}ms (Addr:{})", 
+                                            stationNumber, onTime, onTimeAddress, offTime, offTimeAddress);
+
+            new Thread(() -> {
+                boolean onTimeSuccess = ModbusService.writeRegister(onTimeAddress, onTime);
+                boolean offTimeSuccess = ModbusService.writeRegister(offTimeAddress, offTime);
+                
+                Platform.runLater(() -> {
+                    if(onTimeSuccess && offTimeSuccess) {
+                         NotificationManager.getInstance().showNotification(NotificationType.SUCCESS, "Duty Cycle Updated", "Station " + stationNumber + " updated successfully.");
+                    } else {
+                        String errorMessage = "Could not update duty cycle for station " + stationNumber + ".";
+                        if (!onTimeSuccess) errorMessage += " Failed to write ON time.";
+                        if (!offTimeSuccess) errorMessage += " Failed to write OFF time.";
+                         NotificationManager.getInstance().showNotification(NotificationType.ERROR, "Update Failed", errorMessage);
+                    }
+                });
+            }, "UpdateDutyCycleThread-Station" + stationNumber).start();
+
+        } catch (NumberFormatException e) {
+            NotificationManager.getInstance().showNotification(NotificationType.ERROR,
+                    "Invalid Input", "Please enter valid numbers for duty cycle times and addresses.");
+        }
+    }
+
+
+    /**
      * Links each CheckBox to its corresponding TextField for coil address and sets up listeners.
-     * Also populates the `modbusControlledSwitches` map.
      */
     private void setupAllModbusControlledSwitches() {
-        // Station 1 Piston
         setupModbusToggleSwitch(station1PistonSwitch, station1PistonCoilAddressField, DEFAULT_STATION1_PISTON_COIL);
-        // Station 2 Piston
         setupModbusToggleSwitch(station2PistonSwitch, station2PistonCoilAddressField, DEFAULT_STATION2_PISTON_COIL);
-        // Station 3 Piston
         setupModbusToggleSwitch(station3PistonSwitch, station3PistonCoilAddressField, DEFAULT_STATION3_PISTON_COIL);
 
-        // Station Selection
         setupModbusToggleSwitch(stationSelectionSwitch1, stationSelectionSwitch1CoilAddressField, DEFAULT_STATION_SELECT_1_COIL);
         setupModbusToggleSwitch(stationSelectionSwitch2, stationSelectionSwitch2CoilAddressField, DEFAULT_STATION_SELECT_2_COIL);
         setupModbusToggleSwitch(stationSelectionSwitch3, stationSelectionSwitch3CoilAddressField, DEFAULT_STATION_SELECT_3_COIL);
 
-        // Test Selection
         setupModbusToggleSwitch(testSelectionSwitchNrml_IL, testSelectionSwitchNrml_ILCoilAddressField, DEFAULT_TEST_NRML_IL_COIL);
         setupModbusToggleSwitch(testSelectionSwitchOvr_IL, testSelectionSwitchOvr_ILCoilAddressField, DEFAULT_TEST_OVR_IL_COIL);
         setupModbusToggleSwitch(testSelectionSwitchOvr_FL, testSelectionSwitchOvr_FLCoilAddressField, DEFAULT_TEST_OVR_FL_COIL);
 
-        // Voltage Controls
         setupModbusToggleSwitch(voltageControlSwitch230, voltageControlSwitch230CoilAddressField, DEFAULT_VOLTAGE_230_COIL);
         setupModbusToggleSwitch(voltageControlSwitch240, voltageControlSwitch240CoilAddressField, DEFAULT_VOLTAGE_240_COIL);
         setupModbusToggleSwitch(voltageControlSwitch250, voltageControlSwitch250CoilAddressField, DEFAULT_VOLTAGE_250_COIL);
 
-        // Normal Operation - IL (Currents)
         setupModbusToggleSwitch(normalOpIL_1A, normalOpIL_1ACoilAddressField, DEFAULT_NORMAL_OP_IL_1A_COIL);
         setupModbusToggleSwitch(normalOpIL_2A_1, normalOpIL_2A_1CoilAddressField, DEFAULT_NORMAL_OP_IL_2A_1_COIL);
         setupModbusToggleSwitch(normalOpIL_2A_2, normalOpIL_2A_2CoilAddressField, DEFAULT_NORMAL_OP_IL_2A_2_COIL);
@@ -313,7 +435,6 @@ public class DebugViewModel implements Initializable {
         setupModbusToggleSwitch(normalOpIL_10A_2, normalOpIL_10A_2CoilAddressField, DEFAULT_NORMAL_OP_IL_10A_2_COIL);
         setupModbusToggleSwitch(normalOpIL_10A_3, normalOpIL_10A_3CoilAddressField, DEFAULT_NORMAL_OP_IL_10A_3_COIL);
 
-        // Overload Test - IL (Currents)
         setupModbusToggleSwitch(overloadIL_0_1A, overloadIL_0_1ACoilAddressField, DEFAULT_OVERLOAD_IL_0_1A_COIL);
         setupModbusToggleSwitch(overloadIL_0_2A_1, overloadIL_0_2A_1CoilAddressField, DEFAULT_OVERLOAD_IL_0_2A_1_COIL);
         setupModbusToggleSwitch(overloadIL_0_2A_2, overloadIL_0_2A_2CoilAddressField, DEFAULT_OVERLOAD_IL_0_2A_2_COIL);
@@ -326,7 +447,6 @@ public class DebugViewModel implements Initializable {
         setupModbusToggleSwitch(overloadIL_10A_2, overloadIL_10A_2CoilAddressField, DEFAULT_OVERLOAD_IL_10A_2_COIL);
         setupModbusToggleSwitch(overloadIL_10A_3, overloadIL_10A_3CoilAddressField, DEFAULT_OVERLOAD_IL_10A_3_COIL);
 
-        // Overload Test - FL (Bulbs)
         setupModbusToggleSwitch(overloadFl_6A_Bulbs, overloadFl_6A_BulbsCoilAddressField, DEFAULT_OVERLOAD_FL_6A_COIL);
         setupModbusToggleSwitch(overloadFl_10A_Bulbs, overloadFl_10A_BulbsCoilAddressField, DEFAULT_OVERLOAD_FL_10A_COIL);
         setupModbusToggleSwitch(overloadFl_13A_Bulbs, overloadFl_13A_BulbsCoilAddressField, DEFAULT_OVERLOAD_FL_13A_COIL);
@@ -335,46 +455,25 @@ public class DebugViewModel implements Initializable {
 
     /**
      * Sets up a Modbus-controlled CheckBox and its associated TextField for coil address.
-     * This method handles:
-     * 1. Initializing the TextField with a default address.
-     * 2. Adding a listener to the CheckBox to write to Modbus based on the TextField's address.
-     * 3. Adding input validation to the TextField to ensure it's an integer.
-     * 4. Adding the CheckBox and TextField to the `modbusControlledSwitches` map for periodic reads.
      *
-     * @param toggleSwitch The CheckBox that controls a Modbus coil.
-     * @param addressField The TextField where the user can input the coil address.
+     * @param toggleSwitch   The CheckBox that controls a Modbus coil.
+     * @param addressField   The TextField where the user can input the coil address.
      * @param defaultAddress The default integer address to set in the TextField.
      */
     private void setupModbusToggleSwitch(CheckBox toggleSwitch, TextField addressField, int defaultAddress) {
-        // Populate the map for periodic reads
         modbusControlledSwitches.put(toggleSwitch, addressField);
-
-        // Set initial text for the address field
         addressField.setText(String.valueOf(defaultAddress));
+        addNumericValidation(addressField);
 
-        // Add listener for input validation on the address field
-        addressField.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.matches("\\d*")) { // Allow only digits
-                Platform.runLater(() -> {
-                    addressField.setText(oldVal); // Revert to old value if invalid
-                    NotificationManager.getInstance().showNotification(NotificationType.WARNING,
-                            "Invalid Input", "Coil address must be a number.");
-                });
-            }
-        });
-
-        // Add listener for when the switch is toggled by the user
         toggleSwitch.selectedProperty().addListener((obs, oldVal, newVal) -> {
             try {
                 int coilAddress = Integer.parseInt(addressField.getText());
                 ApplicationLauncher.logger.debug("Switch for coil {} toggled to: {}", coilAddress, newVal);
-                // Execute Modbus write on a separate thread to keep UI responsive
                 new Thread(() -> {
                     boolean success = ModbusService.writeCoil(coilAddress, newVal);
                     if (!success) {
-                        // If write failed, revert UI state as it doesn't reflect actual PLC state
                         Platform.runLater(() -> {
-                            toggleSwitch.setSelected(oldVal); // Revert to previous state
+                            toggleSwitch.setSelected(oldVal); // Revert UI on failure
                             NotificationManager.getInstance().showNotification(NotificationType.ERROR,
                                     "Modbus Write Failed", "Failed to write to coil " + coilAddress + ". Check connection.");
                         });
@@ -383,42 +482,25 @@ public class DebugViewModel implements Initializable {
             } catch (NumberFormatException e) {
                 NotificationManager.getInstance().showNotification(NotificationType.ERROR,
                         "Invalid Address", "Please enter a valid number for the coil address.");
-                Platform.runLater(() -> toggleSwitch.setSelected(oldVal)); // Revert switch if address is invalid
+                Platform.runLater(() -> toggleSwitch.setSelected(oldVal));
             }
         });
-
-        // Initial read of coil state to set the switch's initial position
-        // This is called after Modbus connection attempt in initialize()
-        readCoilStateAndUpdateUI(toggleSwitch, addressField);
     }
 
     /**
      * Sets up the controls within the "SETTINGS" TitledPane for writing to Modbus registers.
      */
     private void setupSettingsControls() {
-        // Initialize address fields with default values
         setVoltageCoilAddressField.setText(String.valueOf(DEFAULT_SET_VOLTAGE_REGISTER));
         setCurrentCoilAddressField.setText(String.valueOf(DEFAULT_SET_CURRENT_REGISTER));
-
-        // Add validation for address fields (numeric only)
         addNumericValidation(setVoltageCoilAddressField);
         addNumericValidation(setCurrentCoilAddressField);
-
-        // Add validation for value text boxes (numeric, allowing decimals)
         addDoubleValidation(voltageTextBox);
         addDoubleValidation(currentTextBox);
-
-        // Set action handlers for buttons
         setVoltageButton.setOnAction(event -> handleSetVoltage());
         setCurrentButton.setOnAction(event -> handleSetCurrent());
     }
 
-    // Removed: setupStationSpecificModbusAddressFields() as addresses are now constants
-
-    /**
-     * Adds a listener to a TextField to ensure only numeric input (integers) is allowed.
-     * @param textField The TextField to validate.
-     */
     private void addNumericValidation(TextField textField) {
         textField.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.matches("\\d*")) {
@@ -431,13 +513,8 @@ public class DebugViewModel implements Initializable {
         });
     }
 
-    /**
-     * Adds a listener to a TextField to ensure only numeric input (integers or decimals) is allowed.
-     * @param textField The TextField to validate.
-     */
     private void addDoubleValidation(TextField textField) {
         textField.textProperty().addListener((obs, oldVal, newVal) -> {
-            // Allow empty string, or numbers with optional decimal part
             if (!newVal.matches("-?\\d*(\\.\\d*)?")) {
                 Platform.runLater(() -> {
                     textField.setText(oldVal);
@@ -448,170 +525,110 @@ public class DebugViewModel implements Initializable {
         });
     }
 
-    /**
-     * Handles the action for the "SET VOLTAGE" button.
-     * Reads the address and value, then attempts to write to the Modbus register.
-     */
     @FXML
     private void handleSetVoltage() {
-        try {
-            int registerAddress = Integer.parseInt(setVoltageCoilAddressField.getText());
-            double voltageValue = Double.parseDouble(voltageTextBox.getText());
-            int intValue = (int) voltageValue; // Modbus registers typically hold integers
-
-            ApplicationLauncher.logger.info("Attempting to set voltage: {} to address {}", voltageValue, registerAddress);
-
-            new Thread(() -> {
-                boolean success = ModbusService.writeRegister(registerAddress, intValue);
-                Platform.runLater(() -> {
-                    if (success) {
-                        NotificationManager.getInstance().showNotification(NotificationType.SUCCESS,
-                                "Voltage Set", "Voltage " + voltageValue + " written to register " + registerAddress);
-                    } else {
-                        NotificationManager.getInstance().showNotification(NotificationType.ERROR,
-                                "Modbus Write Failed", "Failed to write voltage to register " + registerAddress + ". Check connection.");
-                    }
-                });
-            }, "SetVoltageThread").start();
-
-        } catch (NumberFormatException e) {
-            NotificationManager.getInstance().showNotification(NotificationType.ERROR,
-                    "Invalid Input", "Please enter valid numbers for voltage and address.");
-            ApplicationLauncher.logger.error("Invalid input for set voltage: {}", e.getMessage());
-        }
+        handleRegisterWrite(setVoltageCoilAddressField, voltageTextBox, "Voltage");
     }
 
-    /**
-     * Handles the action for the "SET CURRENT" button.
-     * Reads the address and value, then attempts to write to the Modbus register.
-     */
     @FXML
     private void handleSetCurrent() {
+        handleRegisterWrite(setCurrentCoilAddressField, currentTextBox, "Current");
+    }
+    
+    private void handleRegisterWrite(TextField addressField, TextField valueField, String valueName) {
         try {
-            int registerAddress = Integer.parseInt(setCurrentCoilAddressField.getText());
-            double currentValue = Double.parseDouble(currentTextBox.getText());
-            int intValue = (int) currentValue; // Modbus registers typically hold integers
+            int registerAddress = Integer.parseInt(addressField.getText());
+            double value = Double.parseDouble(valueField.getText());
+            int intValue = (int) value;
 
-            ApplicationLauncher.logger.info("Attempting to set current: {} to address {}", currentValue, registerAddress);
+            ApplicationLauncher.logger.info("Attempting to set {}: {} to address {}", valueName, value, registerAddress);
 
             new Thread(() -> {
                 boolean success = ModbusService.writeRegister(registerAddress, intValue);
                 Platform.runLater(() -> {
                     if (success) {
                         NotificationManager.getInstance().showNotification(NotificationType.SUCCESS,
-                                "Current Set", "Current " + currentValue + " written to register " + registerAddress);
+                                valueName + " Set", valueName + " " + value + " written to register " + registerAddress);
                     } else {
                         NotificationManager.getInstance().showNotification(NotificationType.ERROR,
-                                "Modbus Write Failed", "Failed to write current to register " + registerAddress + ". Check connection.");
+                                "Modbus Write Failed", "Failed to write " + valueName.toLowerCase() + " to register " + registerAddress + ". Check connection.");
                     }
                 });
-            }, "SetCurrentThread").start();
+            }, "Set" + valueName + "Thread").start();
 
         } catch (NumberFormatException e) {
             NotificationManager.getInstance().showNotification(NotificationType.ERROR,
-                    "Invalid Input", "Please enter valid numbers for current and address.");
-            ApplicationLauncher.logger.error("Invalid input for set current: {}", e.getMessage());
+                    "Invalid Input", "Please enter valid numbers for " + valueName.toLowerCase() + " and address.");
+            ApplicationLauncher.logger.error("Invalid input for set {}: {}", valueName, e.getMessage());
         }
     }
 
 
-    /**
-     * Reads the state of a specific Modbus coil (from its associated TextField)
-     * and updates the corresponding UI CheckBox.
-     * @param toggleSwitch The CheckBox to update.
-     * @param addressField The TextField containing the Modbus coil address to read.
-     */
     private void readCoilStateAndUpdateUI(CheckBox toggleSwitch, TextField addressField) {
-        // Only attempt to read if Modbus is actually connected
         if (!ModbusService.isConnected()) {
-            ApplicationLauncher.logger.debug("Skipping read for switch {} as Modbus is not connected.", toggleSwitch.getId());
             return;
         }
-
         try {
             int coilAddress = Integer.parseInt(addressField.getText());
             new Thread(() -> {
                 Boolean coilState = ModbusService.readCoil(coilAddress);
                 if (coilState != null) {
                     Platform.runLater(() -> toggleSwitch.setSelected(coilState));
-                    ApplicationLauncher.logger.debug("Coil {} state read: {}", coilAddress, coilState);
-                } else {
-                    ApplicationLauncher.logger.warn("Could not read state of coil {}. Modbus connection might be down or address invalid.", coilAddress);
-                    // Notification for read failure is handled by ModbusService itself
                 }
             }, "ModbusReadThread-" + coilAddress).start();
         } catch (NumberFormatException e) {
+            // Log silently, don't spam user with notifications for periodic task failures
             ApplicationLauncher.logger.error("Invalid coil address for switch {}: {}", toggleSwitch.getId(), addressField.getText());
-            // No notification here, as periodic read shouldn't spam with "invalid address"
         }
     }
 
-    /**
-     * Starts a scheduled task to periodically read the state of all Modbus-controlled coils
-     * and update their respective UI switches.
-     */
     private void startPeriodicCoilRead() {
         if (modbusReadScheduler != null && !modbusReadScheduler.isShutdown()) {
-            modbusReadScheduler.shutdownNow(); // Ensure any previous scheduler is stopped
+            modbusReadScheduler.shutdownNow();
         }
         modbusReadScheduler = Executors.newSingleThreadScheduledExecutor();
         modbusReadScheduler.scheduleAtFixedRate(() -> {
-            // Iterate through all linked switches and update their UI
-            Platform.runLater(() -> { // Ensure UI updates are on JavaFX Application Thread
-                modbusControlledSwitches.forEach(this::readCoilStateAndUpdateUI);
-            });
-        }, 5, 5, TimeUnit.SECONDS); // Read every 5 seconds
+            Platform.runLater(() -> modbusControlledSwitches.forEach(this::readCoilStateAndUpdateUI));
+        }, 5, 5, TimeUnit.SECONDS);
         ApplicationLauncher.logger.info("Periodic Modbus coil read scheduled.");
     }
 
-    /**
-     * Sets up action handlers for all buttons.
-     */
     private void setupButtonHandlers() {
-        // Station 1 Buttons
-        station1StartPrepButton.setOnAction(event -> handleStationButton(1, "START PREP."));
-        station1StopPrepButton.setOnAction(event -> handleStationButton(1, "STOP PREP."));
-        station1ResetPrepButton.setOnAction(event -> handleStationButton(1, "RESET PREP."));
+        station1StartPrepButton.setOnAction(event -> handleStartPrep(1));
+        station1StopPrepButton.setOnAction(event -> handleStopPrep(1));
+        station1ResetPrepButton.setOnAction(event -> handleResetPrep(1));
         station1UpdateTriggerButton.setOnAction(event -> handleStationButton(1, "UPDATE TRIGGER"));
 
-        // Station 2 Buttons
-        station2StartPrepButton.setOnAction(event -> handleStationButton(2, "START PREP."));
-        station2StopPrepButton.setOnAction(event -> handleStationButton(2, "STOP PREP."));
-        station2ResetPrepButton.setOnAction(event -> handleStationButton(2, "RESET PREP."));
+        station2StartPrepButton.setOnAction(event -> handleStartPrep(2));
+        station2StopPrepButton.setOnAction(event -> handleStopPrep(2));
+        station2ResetPrepButton.setOnAction(event -> handleResetPrep(2));
         station2UpdateTriggerButton.setOnAction(event -> handleStationButton(2, "UPDATE TRIGGER"));
 
-        // Station 3 Buttons
-        station3StartPrepButton.setOnAction(event -> handleStationButton(3, "START PREP."));
-        station3StopPrepButton.setOnAction(event -> handleStationButton(3, "STOP PREP."));
-        station3ResetPrepButton.setOnAction(event -> handleStationButton(3, "RESET PREP."));
+        station3StartPrepButton.setOnAction(event -> handleStartPrep(3));
+        station3StopPrepButton.setOnAction(event -> handleStopPrep(3));
+        station3ResetPrepButton.setOnAction(event -> handleResetPrep(3));
         station3UpdateTriggerButton.setOnAction(event -> handleStationButton(3, "UPDATE TRIGGER"));
     }
 
-    /**
-     * Generic handler for station buttons.
-     * @param stationNum The station number.
-     * @param action The action performed (e.g., "START PREP.").
-     */
     private void handleStationButton(int stationNum, String action) {
         ApplicationLauncher.logger.info("Station {} {} button clicked.", stationNum, action);
-
-        if ("START PREP.".equals(action)) {
-            handleStartPrep(stationNum);
-        } else {
-            NotificationManager.getInstance().showNotification(NotificationType.INFO,
-                    "Button Clicked",
-                    "Station " + stationNum + " " + action + " button clicked. (Logic to be implemented)");
-            // Future: Implement specific logic for other buttons, potentially involving Modbus writes to other coils/registers.
-        }
+        NotificationManager.getInstance().showNotification(NotificationType.INFO,
+                "Button Clicked", "Station " + stationNum + " " + action + " button clicked. (Logic to be implemented)");
     }
 
-    /**
-     * Handles the "START PREP." action for a specific station.
-     * Writes '123' to a holding register and 'true' to a coil,
-     * using predefined constant addresses.
-     * @param stationNum The station number (1, 2, or 3).
-     */
     private void handleStartPrep(int stationNum) {
+        handlePrepAction(stationNum, 123, "START PREP.");
+    }
+
+    private void handleStopPrep(int stationNum) {
+        handlePrepAction(stationNum, 456, "STOP PREP.");
+    }
+
+    private void handleResetPrep(int stationNum) {
+        handlePrepAction(stationNum, 789, "RESET PREP.");
+    }
+    
+    private void handlePrepAction(int stationNum, int registerValue, String actionName) {
         int registerAddress;
         int coilAddress;
 
@@ -629,49 +646,33 @@ public class DebugViewModel implements Initializable {
                 coilAddress = STATION3_PREP_COIL;
                 break;
             default:
-                ApplicationLauncher.logger.error("Invalid station number for START PREP: {}", stationNum);
-                NotificationManager.getInstance().showNotification(NotificationType.ERROR,
-                        "Error", "Invalid station selected for START PREP.");
+                ApplicationLauncher.logger.error("Invalid station number for {}: {}", actionName, stationNum);
                 return;
         }
 
-        ApplicationLauncher.logger.info("Station {} START PREP: Writing 123 to register {} and TRUE to coil {}",
-                stationNum, registerAddress, coilAddress);
+        ApplicationLauncher.logger.info("Station {} {}: Writing {} to register {} and TRUE to coil {}",
+                stationNum, actionName, registerValue, registerAddress, coilAddress);
 
         new Thread(() -> {
-            boolean registerWriteSuccess = ModbusService.writeRegister(registerAddress, 123);
-            boolean coilWriteSuccess = ModbusService.writeCoil(coilAddress, true);
+            boolean regSuccess = ModbusService.writeRegister(registerAddress, registerValue);
+            boolean coilSuccess = ModbusService.writeCoil(coilAddress, true);
 
             Platform.runLater(() -> {
-                if (registerWriteSuccess && coilWriteSuccess) {
+                if (regSuccess && coilSuccess) {
                     NotificationManager.getInstance().showNotification(NotificationType.SUCCESS,
-                            "START PREP. Success",
-                            "Station " + stationNum + ": Prep values written to Modbus.");
+                            actionName + " Success", "Station " + stationNum + ": Prep values written.");
                 } else {
-                    String errorMessage = "Station " + stationNum + ": Failed to write all prep values to Modbus.";
-                    if (!registerWriteSuccess) {
-                        errorMessage += " (Register " + registerAddress + " failed)";
-                    }
-                    if (!coilWriteSuccess) {
-                        errorMessage += " (Coil " + coilAddress + " failed)";
-                    }
                     NotificationManager.getInstance().showNotification(NotificationType.ERROR,
-                            "START PREP. Failed", errorMessage + ". Check connection/addresses.");
-                    ApplicationLauncher.logger.error(errorMessage);
+                            actionName + " Failed", "Station " + stationNum + ": Failed to write all prep values.");
                 }
             });
-        }, "Station" + stationNum + "StartPrepThread").start();
+        }, "Station" + stationNum + actionName.replace(" ", "") + "Thread").start();
     }
-
-
-    /**
-     * Called when the DebugView is no longer active (e.g., user navigates away).
-     * Ensures Modbus periodic read scheduler is shut down.
-     */
+    
     public void cleanup() {
         if (modbusReadScheduler != null && !modbusReadScheduler.isShutdown()) {
             modbusReadScheduler.shutdownNow();
-            ApplicationLauncher.logger.info("DebugViewModel: Periodic Modbus read scheduler shut down during cleanup.");
+            ApplicationLauncher.logger.info("DebugViewModel: Periodic Modbus read scheduler shut down.");
         }
     }
 }
